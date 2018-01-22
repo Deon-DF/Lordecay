@@ -1,0 +1,62 @@
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Assembly-CSharp.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Assembly-CSharp.pdb
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\nunit.framework.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEditor.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Analytics.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.HoloLens.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Networking.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.TestRunner.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.UI.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.VR.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Mono.Cecil.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Unity.SerializationLogic.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Unity.DataContract.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Unity.UNetWeaver.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Unity.CecilTools.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Mono.Cecil.Pdb.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\Mono.Cecil.Mdb.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEditor.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.UI.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Networking.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.TestRunner.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\nunit.framework.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Analytics.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.HoloLens.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.VR.xml
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\obj\Debug\Assembly-CSharp.dll
+D:\Work\Unity Repository\Projects\Unity 5\UnityRPGTutorial\obj\Debug\Assembly-CSharp.pdb
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\obj\Debug\Assembly-CSharp.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\nunit.framework.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEditor.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Analytics.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.HoloLens.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Networking.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.TestRunner.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.UI.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.VR.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Unity.SerializationLogic.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Unity.DataContract.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Unity.UNetWeaver.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Unity.CecilTools.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Mono.Cecil.Pdb.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\Mono.Cecil.Mdb.dll
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEditor.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.UI.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Networking.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.TestRunner.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\nunit.framework.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.Analytics.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.HoloLens.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\Temp\bin\Debug\UnityEngine.VR.xml
+C:\Users\dchuraev\Documents\share\UnityRPGTutorial\obj\Debug\Assembly-CSharp.pdb

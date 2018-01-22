@@ -1,0 +1,150 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GlobalData {
+
+	public static bool paused = false;
+
+	public static Grid grid;
+
+	public static bool debugmode = true;
+
+
+
+	public static bool worldmap=false;
+	public static float mapMovementSpeed = 0.5f;
+	public static string nextEntry;
+	public static float playerSpawnX = 20f;
+	public static float playerSpawnY = 96f;
+
+
+	// Inventory
+
+	public static int inventorySize = 25;
+	public static int groundSlotOffset = 0;
+
+	// Item definition
+
+	public static Item nothing = new Item (
+		Item.Type.None,				// item type
+		"Empty", 					// name
+		Item.AttackType.None, 		// attack type
+		0,							// damage
+		false,						// is AOE
+		0f,							// weight
+		0,							// cost
+		0,							// protection
+		false,						// is equippable
+		false,						// is quest item
+		"Sprites/Characters/Blob",	// sprite
+		Item.Effect.None,			// effect
+		1);							// quantity
+
+
+	// standard empty equipment (nothing equipped)
+
+	public static Item punch = new Item (Item.Type.Weapon, "Bare hands", Item.AttackType.Melee, 10, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item empty_offhand = new Item (Item.Type.Offhand, "Empty offhand", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_head = new Item (Item.Type.Helmet, "Naked head", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_body = new Item (Item.Type.Bodywear, "Naked body", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_legs = new Item (Item.Type.Pants, "Naked legs", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_feet = new Item (Item.Type.Boots, "Naked feet", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+
+	// weapons
+	public static Item baseballBat = new Item(
+		Item.Type.Weapon,				// item type
+		"Baseball bat",					// name
+		Item.AttackType.Melee,			// attack type
+		30,								// damage
+		true,							// is AOE
+		1f,								// weight
+		50,								// cost
+		false,							// is quest item
+		"Sprites/UI/Items/baseballBat",	// sprite
+		Item.Effect.None);				// effect
+
+	public static Item sword = new Item(
+		Item.Type.Weapon,				// item type
+		"Sword",						// name
+		Item.AttackType.Melee,			// attack type
+		50,								// damage
+		false,							// is AOE
+		1f,								// weight
+		50,								// cost
+		false,							// is quest item
+		"Sprites/UI/Items/sword",		// sprite
+		Item.Effect.None);				// effect
+
+	// offhand
+
+	public static Item riotShield = new Item(
+		Item.Type.Offhand,				// item type
+		"Riot shield",					// name
+		5f,								// weight
+		50,								// cost
+		5,								// protection
+		false,							// is quest item
+		"Sprites/UI/Items/riotShield",	// sprite
+		Item.Effect.None);				// effect
+
+	// helmets
+
+	public static Item armyHelmet = new Item(
+		Item.Type.Helmet,				// item type
+		"Army helmet",					// name
+		2f,								// weight
+		20,								// cost
+		2,								// protection
+		false,							// is quest item
+		"Sprites/UI/Items/armyHelmet",	// sprite
+		Item.Effect.None);				// effect
+
+	// armors
+
+	public static Item kevlarVest = new Item(
+		Item.Type.Bodywear,				// item type
+		"Kevlar vest",					// name
+		4f,								// weight
+		40,								// cost
+		5,								// protection
+		false,							// is quest item
+		"Sprites/UI/Items/kevlarVest",	// sprite
+		Item.Effect.None);				// effect
+
+	// pants
+
+	public static Item camoPants = new Item(
+		Item.Type.Pants,				// item type
+		"Camo pants",					// name
+		2f,								// weight
+		15,								// cost
+		2,								// protection
+		false,							// is quest item
+		"Sprites/UI/Items/camoPants",	// sprite
+		Item.Effect.None);				// effect
+
+	// boots
+
+	public static Item leatherBoots = new Item(
+		Item.Type.Boots,				// item type
+		"Leather boots",				// name
+		2f,								// weight
+		25,								// cost
+		2,								// protection
+		false,							// is quest item
+		"Sprites/UI/Items/leatherBoots",// sprite
+		Item.Effect.None);				// effect
+	
+	// consumable
+
+	public static Item medKit = new Item(
+		Item.Type.Consumable,			// item type
+		"Medkit",						// name
+		1f,								// weight
+		50,								// cost
+		"Sprites/UI/Items/medkit",		// sprite
+		Item.Effect.Healing,			// effect
+		20,								// effect value
+		5);								// quantity
+}
