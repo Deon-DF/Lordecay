@@ -31,6 +31,7 @@ public class Player : MonoBehaviour {
 	private Vector2 lastMove;
 	private static bool playerExists = false;
 	private SpriteRenderer pSpriteRenderer;
+	private SpriteRenderer bootsSpriteRenderer;
 
 	// World
 
@@ -116,6 +117,7 @@ public class Player : MonoBehaviour {
 
 	void DrawRelative () {
 		pSpriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
+		bootsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
 	}
 
 	public bool IsPathChecking {
@@ -172,14 +174,14 @@ public class Player : MonoBehaviour {
 
 	public void testFreeStuff () { 
 		if (Input.GetKeyDown (KeyCode.H)) {
-			Item newItem = GlobalData.baseballBat;// actually gives baseball bat
-			Item newItem2 = GlobalData.sword;// actually gives sword
-			Item newItem3 = GlobalData.riotShield;// actually gives riot shield
-			Item newItem4 = GlobalData.armyHelmet;// actually gives army helmet
-			Item newItem5 = GlobalData.kevlarVest;// actually gives kevlar vest
-			Item newItem6 = GlobalData.medKit;// actually gives medkit
-			Item newItem7 = GlobalData.camoPants;// actually gives camo pants
-			Item newItem8 = GlobalData.leatherBoots;// actually gives leather boots
+			Item newItem = new Item(Item.Type.Weapon, "Baseball bat");// actually gives baseball bat
+			Item newItem2 = new Item(Item.Type.Weapon, "Sword");// actually gives sword
+			Item newItem3 = new Item(Item.Type.Offhand, "Riot shield");// actually gives riot shield
+			Item newItem4 = new Item(Item.Type.Helmet, "Army helmet");// actually gives army helmet
+			Item newItem5 = new Item(Item.Type.Bodywear, "Kevlar vest");// actually gives kevlar vest
+			Item newItem6 = new Item(Item.Type.Consumable, "MedKit");//GlobalData.MedKit;
+			Item newItem7 = new Item(Item.Type.Pants, "Camo pants");// actually gives camo pants
+			Item newItem8 = new Item(Item.Type.Boots, "Leather boots");// actually gives leather boots
 			getItem (newItem);
 			getItem (newItem2);
 			getItem (newItem3);
@@ -222,7 +224,7 @@ public class Player : MonoBehaviour {
 				AttackArc sweep = Instantiate (player_attack_arc, spawnPosition - offset, direction);
 
 				sweep.origin = "player";
-				sweep.TTL = 0.2f;
+				sweep.TTL = 0.1f;
 				sweep.damage = weapon.damage;
 				sweep.isAOE = weapon.isAOE;
 				attackCooldownCounter = attackCooldown;
@@ -682,6 +684,7 @@ public class Player : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		pRigidbody = GetComponent<Rigidbody2D> ();
 		pSpriteRenderer = GetComponent<SpriteRenderer> ();
+		bootsSpriteRenderer = transform.Find("Boots").gameObject.GetComponent <SpriteRenderer> ();
 
 		// Do not destroy player after ot was created, do not create new players
 		if (!playerExists) {

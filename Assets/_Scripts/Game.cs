@@ -34,22 +34,17 @@ public class Game : MonoBehaviour {
 	// PLAYER CONTROLS AND ENEMY ACTIONS BEGIN
 
 	void EnemyActions (Monster monster, Player player) {
-		if (monster.health > 0) {
-			monster.FollowWaypoints ();
-			if (monster.RefreshAggro (player, lineOfSightMask)) {// ~(mask1|mask2) means NOT mask1+mask2; we dont want the aggro code to think that players/enemies block line of sight of each other
-			} else {
-				monster.aggroRememberCounter -= Time.deltaTime; // if monster did not refresh aggro on player, count down the aggro timer
-			}
-			if (monster.isAggressive) {
-				monster.TargetPlayer(player, lineOfSightMask, grid);  // ~(mask1|mask2) means NOT mask1+mask2; we dont want the targeting code to think that players/enemies block line of sight of each other
-			} else {
-				monster.Roam ();
-				monster.isPathFinding = false;
-			}
+		monster.FollowWaypoints ();
+		if (monster.RefreshAggro (player, lineOfSightMask)) {// ~(mask1|mask2) means NOT mask1+mask2; we dont want the aggro code to think that players/enemies block line of sight of each other
 		} else {
-			monster.Die();
+			monster.aggroRememberCounter -= Time.deltaTime; // if monster did not refresh aggro on player, count down the aggro timer
 		}
-
+		if (monster.isAggressive) {
+			monster.TargetPlayer(player, lineOfSightMask, grid);  // ~(mask1|mask2) means NOT mask1+mask2; we dont want the targeting code to think that players/enemies block line of sight of each other
+		} else {
+			monster.Roam ();
+			monster.isPathFinding = false;
+		}
 	}
 
 	public void HandleControls (Player player) {

@@ -10,8 +10,8 @@ public class Item {
 	public enum AttackType {None, Melee, Single, Cone}
 
 	public string name;
-	public Type type;
-	public AttackType attack;
+	public Type type = Type.None;
+	public AttackType attack = AttackType.None;
 	public int damage = 0;
 	public bool isAOE;
 
@@ -97,4 +97,159 @@ public class Item {
 		effectvalue = Effectvalue;
 		quantity = Quantity;
 	}
+
+
+
+	public Item (Type itemtype, string ItemName)
+	{
+		if (itemtype == Type.Consumable) {
+
+			// Consumables
+			switch (ItemName) {
+			case "MedKit":
+
+				type = Type.Consumable;
+				name = "MedKit";
+				weight = 1f;
+				cost = 50;
+				itemsprite = "Sprites/UI/Items/medkit";
+				effect = Effect.Healing;
+				effectvalue = 20;
+				quantity = 5;
+				break;
+
+			default: 
+				break;
+			}
+		}
+
+		// Helmets
+		if (itemtype == Type.Helmet) {
+			switch (ItemName) {
+			case "Army helmet":
+				type = Type.Helmet;
+				name = "Army helmet";
+				weight = 1f;
+				cost = 20;
+				protection = 2;
+				itemsprite = "Sprites/UI/Items/armyHelmet";
+				isEquippable = true;
+				break;
+
+			default: 
+				break;
+			}
+		}
+
+		// Bodyarmor
+
+		if (itemtype == Type.Bodywear) {
+			switch (ItemName) {
+			case "Kevlar vest":
+				type = Type.Bodywear;
+				name = "Kevlar Vest";
+				weight = 4f;
+				cost = 40;
+				protection = 5;
+				itemsprite = "Sprites/UI/Items/kevlarVest";
+				isEquippable = true;
+				break;
+
+			default: 
+				break;
+			}
+		}
+
+		// Pants
+
+		if (itemtype == Type.Pants) {
+			switch (ItemName) {
+			case "Camo pants":
+				type = Type.Pants;
+				name = "Camo pants";
+				weight = 2f;
+				cost = 15;
+				protection = 2;
+				itemsprite = "Sprites/UI/Items/camoPants";
+				isEquippable = true;
+				break;
+
+			default: 
+				break;
+			}
+		}
+
+		// Boots
+
+		if (itemtype == Type.Boots) {
+			switch (ItemName) {
+			case "Leather boots":
+				type = Type.Boots;
+				name = "Leather boots";
+				weight = 2f;
+				cost = 25;
+				protection = 2;
+				itemsprite = "Sprites/UI/Items/leatherBoots";
+				isEquippable = true;
+				break;
+
+			default: 
+				break;
+			}
+		}
+
+		// Offhand
+
+		if (itemtype == Type.Offhand) {
+			switch (ItemName) {
+			case "Riot shield":
+				type = Type.Offhand;
+				name = "Riot shield";
+				weight = 5f;
+				cost = 50;
+				protection = 5;
+				itemsprite = "Sprites/UI/Items/riotShield";
+				isEquippable = true;
+				break;
+
+			default: 
+				break;
+			}
+		}
+	
+	// Weapons
+
+		if (itemtype == Type.Weapon) {
+			switch (ItemName) {
+			case "Baseball bat":
+				type = Type.Weapon;
+				attack = AttackType.Melee;
+				name = "Baseball bat";
+				weight = 1f;
+				cost = 10;
+				damage = 30;
+				isAOE = true;
+				itemsprite = "Sprites/UI/Items/baseballBat";
+				isEquippable = true;
+				break;
+
+			case "Sword":
+				type = Type.Weapon;
+				attack = AttackType.Melee;
+				name = "Sword";
+				weight = 1f;
+				cost = 20;
+				damage = 50;
+				isAOE = false;
+				itemsprite = "Sprites/UI/Items/sword";
+				isEquippable = true;
+				break;
+			
+
+			default: 
+				break;
+			}
+		}
+	}
+
 }

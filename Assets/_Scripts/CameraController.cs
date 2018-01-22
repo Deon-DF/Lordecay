@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour {
 
 	public GameObject target;
 	private Vector3 targetPos;
-	private static bool cameraExists = false;
+	//private static bool cameraExists = false;
 
 	// Use this for initialization
 	void Awake () {

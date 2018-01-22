@@ -1,0 +1,20 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\GlobalData.cs">
+    <Files>
+      <File FileName="Assets\_Scripts\Monster.cs" Line="272" Column="82" />
+      <File FileName="Assets\_Scripts\CameraController.cs" Line="9" Column="4" />
+      <File FileName="Assets\_Scripts\AttackArc.cs" Line="43" Column="6" />
+      <File FileName="Assets\_Scripts\Game.cs" Line="81" Column="28" />
+      <File FileName="Assets\Gamelog.cs" Line="10" Column="37" />
+      <File FileName="Assets\_Scripts\GlobalData.cs" Line="34" Column="78" />
+      <File FileName="Assets\_Scripts\Player.cs" Line="120" Column="22" />
+      <File FileName="Assets\_Scripts\Item.cs" Line="245" Column="25" />
+      <File FileName="Assets\_Scripts\GUI.cs" Line="83" Column="7" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

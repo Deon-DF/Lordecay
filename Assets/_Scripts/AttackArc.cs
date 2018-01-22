@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+using System;
 
 public class AttackArc : MonoBehaviour {
 
@@ -21,8 +24,9 @@ public class AttackArc : MonoBehaviour {
 						Monster enemy = collider.transform.parent.gameObject.GetComponent <Monster> ();
 						int effectiveDMG = (damage - enemy.protection);
 						if (effectiveDMG > 0) {
-							enemy.health -= effectiveDMG;
+							enemy.Health -= effectiveDMG;
 						}
+					GlobalData.Gamelog += (Environment.NewLine + "You have hit " + enemy.name + " for " + effectiveDMG + " damage.");
 					Debug.Log ("You have hit " + enemy.name + " for " + effectiveDMG + " damage.");
 					}
 				}
@@ -34,6 +38,7 @@ public class AttackArc : MonoBehaviour {
 					if (effectiveDMG > 0) {
 						player.Health -= effectiveDMG;
 					}
+					GlobalData.Gamelog += (Environment.NewLine + "You were hit for " + effectiveDMG + " damage.");
 					Debug.Log ("You were hit for " + effectiveDMG + " damage.");
 				}
 				break;

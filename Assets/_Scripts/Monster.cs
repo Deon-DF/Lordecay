@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Monster : MonoBehaviour {
 
 	// Stats
-	public int health = 100;
+	public int maxhealth;
+	int health = 100;
 	public int protection = 0;
 
 
@@ -33,6 +35,7 @@ public class Monster : MonoBehaviour {
 	private float roamCooldownCounter;
 	private float roamDurationCounter;
 	private Vector3 moveDirection;
+
 	// Physics and sprites
 	public Rigidbody2D eRigidBody;
 	private SpriteRenderer eSpriteRenderer;
@@ -47,6 +50,42 @@ public class Monster : MonoBehaviour {
 	List<Tile> waypoints;
 	Vector3 nextWaypoint;
 	public bool isPathFinding;
+
+
+	// Health system
+
+	public int Health {
+
+		set {
+			int newhealth = value;
+
+			if (newhealth < health) {
+				health = Mathf.Max(0, value);
+				StartCoroutine("registerMonsterHit");
+
+				if (health <= 0) {
+					Die();
+				}
+
+			} else {
+				health = Mathf.Min(value, maxhealth);
+			}
+
+		}
+		get {
+			return health;
+		}
+	}
+
+	IEnumerator registerMonsterHit (){
+		Color c = Color.red;
+		Color w = Color.white;
+		//c.a = 0.2f;
+		eSpriteRenderer.color = c;
+		yield return new WaitForSeconds (0.2f);
+		eSpriteRenderer.color = w;
+
+	}
 
 	// Drawing
 	void DrawRelative ()
@@ -110,6 +149,7 @@ public class Monster : MonoBehaviour {
 		DropLoot (enemy);
 		StartCoroutine(bloodpool(enemy.transform.position, enemy.transform.rotation));*/
 		//GameSettings.enemiesKilled++;
+		GlobalData.Gamelog += (Environment.NewLine + name + " dies!");
 		GameObject.DestroyObject (this.gameObject);
 	}
 
@@ -220,16 +260,16 @@ public class Monster : MonoBehaviour {
 			eRigidBody.velocity = moveDirection * moveSpeed/2;
 			if (roamDurationCounter < 0) {
 				isMoving = false;
-				roamDurationCounter = Random.Range ((roamDuration * 0.75f), (roamDuration * 1.25f));
+				roamDurationCounter = UnityEngine.Random.Range ((roamDuration * 0.75f), (roamDuration * 1.25f));
 				CheckLastDirection(moveDirection);
 			}
 		} else {
 			eRigidBody.velocity = new Vector2 (0f, 0f);
 			if (roamCooldownCounter < 0) {
 				isMoving = true;
-				roamCooldownCounter = Random.Range ((roamCooldown * 0.75f), (roamCooldown * 1.25f));
+				roamCooldownCounter = UnityEngine.Random.Range ((roamCooldown * 0.75f), (roamCooldown * 1.25f));
 
-				moveDirection = new Vector3 (Random.Range (-1f, 1f), Random.Range (-1f, 1f), 0f);
+				moveDirection = new Vector3 (UnityEngine.Random.Range (-1f, 1f), UnityEngine.Random.Range (-1f, 1f), 0f);
 				CheckLastDirection(moveDirection);
 			}
 		}
@@ -247,8 +287,8 @@ public class Monster : MonoBehaviour {
 
 		attackCooldownCounter = attackCooldown;
 
-		roamCooldownCounter = Random.Range ((roamCooldown * 0.75f), roamCooldown * (1.25f));
-		roamDurationCounter = Random.Range ((roamDuration * 0.75f), roamDuration * (1.25f));
+		roamCooldownCounter = UnityEngine.Random.Range ((roamCooldown * 0.75f), roamCooldown * (1.25f));
+		roamDurationCounter = UnityEngine.Random.Range ((roamDuration * 0.75f), roamDuration * (1.25f));
 	}
 	
 
