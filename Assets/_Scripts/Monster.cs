@@ -14,8 +14,10 @@ public class Monster : MonoBehaviour {
 
 	// Attack capability
 
-	public int bluntDamage = 0;
-	public int pierceDamage = 0;
+	public int bluntMinDamage = 0;
+	public int bluntMaxDamage = 0;
+	public int pierceMinDamage = 0;
+	public int pierceMaxDamage = 0;
 	public float attackCooldown = 2f;
 	public float attackDistance = 0.7f;
 	public float aggroDistance = 5f;
@@ -114,8 +116,8 @@ public class Monster : MonoBehaviour {
 				AttackArc sweep = Instantiate (monster_attack_arc, spawnPosition - offset, direction);
 				sweep.origin = "enemy";
 				sweep.TTL = 0.2f;
-				sweep.pierceDamage = pierceDamage;
-				sweep.bluntDamage = bluntDamage;
+				sweep.pierceDamage = UnityEngine.Random.Range(pierceMinDamage, pierceMaxDamage + 1);
+				sweep.bluntDamage = UnityEngine.Random.Range(bluntMinDamage, bluntMaxDamage + 1);
 				attackCooldownCounter = attackCooldown;
 			}
 	}

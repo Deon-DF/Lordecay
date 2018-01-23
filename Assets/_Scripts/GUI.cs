@@ -7,8 +7,10 @@ public class GUI : MonoBehaviour {
 	public GameObject inventoryBG;
 	public GameObject inventoryTooltip;
 
-	public GameObject pierceArmorText;
+	public GameObject bluntDamageText;
+	public GameObject pierceDamageText;
 	public GameObject bluntArmorText;
+	public GameObject pierceArmorText;
 
 	public GameObject equipmentBox;
 	public GameObject equipmentSlotHelmet;
@@ -220,6 +222,9 @@ public class GUI : MonoBehaviour {
 		// Find UI elements
 		inventoryBG = GameObject.Find ("InventoryBackground").gameObject;
 		inventoryTooltip = GameObject.Find ("InventoryTooltip").gameObject;
+
+		bluntDamageText = GameObject.Find("Blunt damage");
+		pierceDamageText = GameObject.Find("Pierce damage");
 
 		bluntArmorText = GameObject.Find ("Blunt armor");
 		pierceArmorText = GameObject.Find ("Pierce armor");

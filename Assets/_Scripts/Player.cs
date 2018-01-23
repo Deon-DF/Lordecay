@@ -8,9 +8,24 @@ public class Player : MonoBehaviour {
 	// Stats
 	int maxhealth = 100;
 	int health = 100;
+
+	float maxstamina = 100;
+	float stamina = 100;
+
+	int bluntMinDamage = 3;
+	int bluntMaxDamage = 5;
+
+	int pierceMinDamage = 0;
+	int pierceMaxDamage = 0;
+
 	int bluntArmor = 0;
 	int pierceArmor = 0;
-	public float moveSpeed = 5;
+	float moveSpeed = 4;
+	float moveWeightModifier = 1;
+	float moveSprintModifier = 1;
+	float moveStaminaDrain = 20;
+	float staminaRecovery = 20;
+	float moveStaminaRecovery = 5;
 
 	// Attack
 	private float attackCooldown = 0.3f;
@@ -52,12 +67,31 @@ public class Player : MonoBehaviour {
 	// Inventory
 	public List<Item> inventory = new List<Item> ();
 
-	public Item weapon = GlobalData.punch;
+	Item weapon = GlobalData.punch;
 	public Item offhand = GlobalData.empty_offhand;
 	public Item helmet = GlobalData.naked_head;
 	public Item bodyarmor = GlobalData.naked_body;
 	public Item pants = GlobalData.naked_legs;
 	public Item boots = GlobalData.naked_feet;
+
+	public Item Weapon {
+		get {
+			return weapon;
+		}
+		set {
+			weapon = value;
+			SetDamageValues(Weapon);
+		}
+	}
+
+	public float MoveSpeed {
+		set {
+			moveSpeed = value;
+		}
+		get {
+			return moveSpeed * moveWeightModifier * moveSprintModifier;
+		}
+	}
 
 
 //	List<Tile> waypoints;
@@ -90,6 +124,34 @@ public class Player : MonoBehaviour {
 			return maxhealth;
 		}
 	}
+
+	public float Stamina {
+		set {
+			float newstamina = value;
+			if (newstamina < stamina) {
+				stamina = Mathf.Max (value, 0);
+			} else {
+				stamina = Mathf.Min (value, maxstamina);
+			}
+		}
+
+		get {
+			return stamina;
+		}
+
+	}
+
+	public float MaxStamina {
+		set {
+			maxstamina = value;
+		}
+
+		get {
+			return maxstamina;
+		}
+	}
+
+	// Protection and resistances
 
 	public int BluntArmor {
 		get {
@@ -130,6 +192,50 @@ public class Player : MonoBehaviour {
 		oImage.color = Color.white;
 	}
 
+// Damage system
+
+	public int BluntMinDamage {
+		get {
+			return bluntMinDamage;
+		}
+		set {
+			bluntMinDamage = value;
+		}
+	}
+
+	public int BluntMaxDamage {
+		get {
+			return bluntMaxDamage;
+		}
+		set {
+			bluntMaxDamage = value;
+		}
+	}
+
+	public int PierceMinDamage {
+		get {
+			return pierceMinDamage;
+		}
+		set {
+			pierceMinDamage = value;
+		}
+	}
+
+	public int PierceMaxDamage {
+		get {
+			return pierceMaxDamage;
+		}
+		set {
+			pierceMaxDamage = value;
+		}
+	}
+
+	void SetDamageValues (Item equipitem) {
+			BluntMinDamage = equipitem.bluntMinDamage;
+			BluntMaxDamage = equipitem.bluntMaxDamage;
+			PierceMinDamage = equipitem.pierceMinDamage;
+			PierceMaxDamage = equipitem.pierceMaxDamage;
+	}
 
 // GUI
 
@@ -253,8 +359,25 @@ public class Player : MonoBehaviour {
 	}
 
 
-	public void KeyboardControls () {
-		// Extra in-game real-time keyboard controls will go here
+	public void KeyboardControls ()
+	{
+		if (Input.GetKey (KeyCode.LeftShift) && playerMoving) {
+			Stamina -= moveStaminaDrain * Time.deltaTime;
+			if (Stamina > 0) {
+				moveSprintModifier = 1.5f;
+			} else {
+				moveSprintModifier = 1f;
+			}
+		} else {
+			if (Stamina < MaxStamina) {
+				if (playerMoving) {
+					Stamina += moveStaminaRecovery * Time.deltaTime;					
+				} else {
+					Stamina += staminaRecovery * Time.deltaTime;
+				}
+			}
+			moveSprintModifier = 1f;
+		}
 	}
 
 	public void MouseControls() {
@@ -271,10 +394,10 @@ public class Player : MonoBehaviour {
 
 				sweep.origin = "player";
 				sweep.TTL = 0.1f;
-				sweep.bluntDamage = Random.Range (weapon.bluntMinDamage, weapon.bluntMaxDamage + 1);
-				sweep.pierceDamage = Random.Range (weapon.pierceMinDamage, weapon.pierceMaxDamage + 1);
-				sweep.stunfactor = weapon.stunfactor;
-				sweep.isAOE = weapon.isAOE;
+				sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
+				sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
+				sweep.stunfactor = Weapon.stunfactor;
+				sweep.isAOE = Weapon.isAOE;
 				attackCooldownCounter = attackCooldown;
 				isAttacking = true;
 			}
@@ -304,21 +427,22 @@ public class Player : MonoBehaviour {
 			//waypoints.Remove (waypoints [0]);
 
 		}
-	}*/
-
+	}
 	public void MovePlayerToPosition (Vector3 position) {
 			Quaternion direction = Quaternion.LookRotation (Vector3.forward, position - transform.position);
 			pRigidbody.velocity = direction * Vector3.up * moveSpeed;
-	}
+	}*/
 
 	public void MovementControls () {
 		playerMoving = false;
+		Vector2 dirX = new Vector2 (0f, 0f);
+		Vector2 dirY = new Vector2 (0f, 0f);
 
 		if (!isAttacking) {
 			if (Input.GetAxisRaw ("Horizontal") > 0.5f || Input.GetAxisRaw ("Horizontal") < -0.5f) {
 				//transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f, 0f));
 				// We use physics velocity for movement to avoid "jerky bump" into colliders
-				pRigidbody.velocity = new Vector2 (Input.GetAxisRaw ("Horizontal") * moveSpeed, pRigidbody.velocity.y);
+				dirX = new Vector2 (Input.GetAxisRaw ("Horizontal"), 0f);
 				playerMoving = true;
 				lastMove = new Vector2 (Input.GetAxisRaw ("Horizontal"), 0f);
 			}
@@ -326,18 +450,20 @@ public class Player : MonoBehaviour {
 			if (Input.GetAxisRaw ("Vertical") > 0.5f || Input.GetAxisRaw ("Vertical") < -0.5f) {
 				//transform.Translate(new Vector3(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime, 0f));
 				// We use physics velocity for movement to avoid "jerky bump" into colliders
-				pRigidbody.velocity = new Vector2 (pRigidbody.velocity.x, Input.GetAxisRaw ("Vertical") * moveSpeed);
+				dirY = new Vector2 (0f, Input.GetAxisRaw ("Vertical"));
 				playerMoving = true;
 				lastMove = new Vector2 (0f, Input.GetAxisRaw ("Vertical"));
 			}
-
+			/*
 			if (Input.GetAxisRaw ("Horizontal") < 0.5f && Input.GetAxisRaw ("Horizontal") > -0.5) {
 				pRigidbody.velocity = new Vector2 (0f, pRigidbody.velocity.y);
 			}
 
 			if (Input.GetAxisRaw ("Vertical") < 0.5f && Input.GetAxisRaw ("Vertical") > -0.5) {
 				pRigidbody.velocity = new Vector2 (pRigidbody.velocity.x, 0f);
-			}
+			}*/
+
+			pRigidbody.velocity = (dirX + dirY).normalized * MoveSpeed;
 		} else {
 			pRigidbody.velocity = new Vector2 (0f, 0f); // Do not move while attacking
 		}
@@ -474,12 +600,12 @@ public class Player : MonoBehaviour {
 			PierceArmor -= boots.pierceArmor;
 			boots = GlobalData.naked_feet;
 			break;
-		case "weapon":
-			DropItemOnGround (weapon);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + weapon.name);
-			BluntArmor -= weapon.bluntArmor;
-			PierceArmor -= weapon.pierceArmor;
-			weapon = GlobalData.punch;
+		case "Weapon":
+			DropItemOnGround (Weapon);
+			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + Weapon.name);
+			BluntArmor -= Weapon.bluntArmor;
+			PierceArmor -= Weapon.pierceArmor;
+			Weapon = GlobalData.punch;
 			break;
 		case "offhand":
 			DropItemOnGround (offhand);
@@ -495,20 +621,23 @@ public class Player : MonoBehaviour {
 		if (inventory[index].isEquippable) {
 			Debug.Log ("Equipped item from inventory: " + inventory[index].name);
 
-			BluntArmor += inventory [index].bluntArmor;
-			PierceArmor += inventory [index].pierceArmor;
+			Item equipitem = inventory[index];
+
+			BluntArmor += equipitem.bluntArmor;
+			PierceArmor += equipitem.pierceArmor;
+
 
 			if (inventory [index].type == Item.Type.Weapon) {
-				if (weapon != GlobalData.punch) {
-					if (UnequipItem (weapon)) {
-						weapon = inventory [index];
-						Debug.Log ("Equipped new weapon: " + weapon.name);
+				if (Weapon != GlobalData.punch) {
+					if (UnequipItem (Weapon)) {
+						Weapon = inventory [index];
+						Debug.Log ("Equipped new Weapon: " + Weapon.name);
 						Debug.Log ("Removing item " + inventory [index].name + " from inventory");
 						inventory.Remove (inventory [index]);
 					}
 				} else {
-					weapon = inventory [index];
-					Debug.Log ("Equipped new weapon: " + weapon.name);
+					Weapon = inventory [index];
+					Debug.Log ("Equipped new Weapon: " + Weapon.name);
 					Debug.Log ("Removing item " + inventory [index].name + " from inventory");
 					inventory.Remove (inventory [index]);
 				}
@@ -609,7 +738,7 @@ public class Player : MonoBehaviour {
 			PierceArmor -= item.pierceArmor;
 
 			if (item.type == Item.Type.Weapon) {
-				weapon = GlobalData.punch;
+				Weapon = GlobalData.punch;
 			}
 
 			if (item.type == Item.Type.Offhand) {
@@ -660,7 +789,7 @@ public class Player : MonoBehaviour {
 				item = boots;
 				break;
 			case "weapon":
-				item = weapon;
+				item = Weapon;
 				break;
 			case "offhand":
 				item = offhand;
@@ -668,7 +797,7 @@ public class Player : MonoBehaviour {
 			}
 
 			if (item.type == Item.Type.Weapon) {
-				weapon = GlobalData.punch;
+				Weapon = GlobalData.punch;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
 				inventory.Add (item);
 			}

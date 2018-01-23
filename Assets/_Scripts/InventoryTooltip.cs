@@ -110,8 +110,8 @@ public class InventoryTooltip : MonoBehaviour {
 					}
 					break;
 				case "weapon":
-					if (player.weapon != GlobalData.punch) {
-						currentItem = player.weapon;
+					if (player.Weapon != GlobalData.punch) {
+						currentItem = player.Weapon;
 					}
 					break;
 				case "offhand":

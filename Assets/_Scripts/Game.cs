@@ -18,9 +18,9 @@ public class Game : MonoBehaviour {
 
 	// UI
 	GameObject healthbar;
-//	GameObject staminabar;
+	GameObject staminabar;
 
-	Text weaponText;
+	Text WeaponText;
 
 	// Inventory UI
 
@@ -111,8 +111,9 @@ public class Game : MonoBehaviour {
 	void UpdateUI (Player player, GUI gui) {
 
 		if (!GlobalData.worldmap) {
-			weaponText.text = player.weapon.name;
-			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / 100, 1, 1);
+			WeaponText.text = player.Weapon.name;
+			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / player.MaxHealth, 1, 1);
+			staminabar.transform.localScale = new Vector3 (player.Stamina * 1.0f / player.MaxStamina, 1, 1);
 
 			if (GlobalData.inventoryON) {
 				gui.inventoryBG.SetActive (true);
@@ -136,8 +137,11 @@ public class Game : MonoBehaviour {
 				Tile playerTile = player.GetPlayerTile (grid);
 				int numItemsOnGround = playerTile.groundItems.Count;
 
-				gui.bluntArmorText.GetComponent<Text> ().text = "Blunt: " + player.BluntArmor;
-				gui.pierceArmorText.GetComponent<Text> ().text = "Pierce: " + player.PierceArmor;
+				gui.bluntDamageText.GetComponent<Text> ().text = player.Weapon.bluntMinDamage + "-" + player.Weapon.bluntMaxDamage;
+				gui.pierceDamageText.GetComponent<Text> ().text = player.PierceMinDamage + "-" + player.PierceMaxDamage;
+
+				gui.bluntArmorText.GetComponent<Text> ().text = player.BluntArmor.ToString();
+				gui.pierceArmorText.GetComponent<Text> ().text = player.PierceArmor.ToString();
 
 				// Ground slots //
 				// Assign item images to ground slots with items
@@ -183,9 +187,9 @@ public class Game : MonoBehaviour {
 				}
 
 				// Handle drawing of equipment slots
-				if (player.weapon != GlobalData.punch) {
+				if (player.Weapon != GlobalData.punch) {
 					gui.equipmentSlotWeapon.SetActive (true);
-					gui.equipmentSlotWeapon.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.weapon.itemsprite);
+					gui.equipmentSlotWeapon.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.Weapon.itemsprite);
 				} else {
 					gui.equipmentSlotWeapon.SetActive (false);
 				}
@@ -232,8 +236,9 @@ public class Game : MonoBehaviour {
 			gui = GameObject.Find ("GUI").GetComponent <GUI> ();
 
 			healthbar = GameObject.Find ("Healthbar");
+			staminabar = GameObject.Find ("Staminabar");
 //		staminabar = GameObject.Find ("Staminabar");
-			weaponText = GameObject.Find ("WeaponText").GetComponent<Text> ();
+			WeaponText = GameObject.Find ("WeaponText").GetComponent<Text> ();
 
 			// Load resources and variables
 			passable_tile = Resources.Load ("Prefabs/UI/passable_tile") as GameObject;
