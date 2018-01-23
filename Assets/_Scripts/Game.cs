@@ -111,7 +111,7 @@ public class Game : MonoBehaviour {
 	void UpdateUI (Player player, GUI gui) {
 
 		if (!GlobalData.worldmap) {
-			weaponText.text = player.weapon.name + ", damage: " + player.weapon.mindamage + "-" + player.weapon.maxdamage;
+			weaponText.text = player.weapon.name;
 			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / 100, 1, 1);
 
 			if (GlobalData.inventoryON) {
@@ -135,6 +135,9 @@ public class Game : MonoBehaviour {
 				int numInventoryItems = player.inventory.Count;
 				Tile playerTile = player.GetPlayerTile (grid);
 				int numItemsOnGround = playerTile.groundItems.Count;
+
+				gui.bluntArmorText.GetComponent<Text> ().text = "Blunt: " + player.BluntArmor;
+				gui.pierceArmorText.GetComponent<Text> ().text = "Pierce: " + player.PierceArmor;
 
 				// Ground slots //
 				// Assign item images to ground slots with items

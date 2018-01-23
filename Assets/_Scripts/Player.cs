@@ -8,7 +8,8 @@ public class Player : MonoBehaviour {
 	// Stats
 	int maxhealth = 100;
 	int health = 100;
-	int protection = 0;
+	int bluntArmor = 0;
+	int pierceArmor = 0;
 	public float moveSpeed = 5;
 
 	// Attack
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour {
 	private Vector2 lastMove;
 	private static bool playerExists = false;
 	private SpriteRenderer pSpriteRenderer;
+	private SpriteRenderer helmetSpriteRenderer;
 	private SpriteRenderer armorSpriteRenderer;
 	private SpriteRenderer pantsSpriteRenderer;
 	private SpriteRenderer bootsSpriteRenderer;
@@ -89,16 +91,30 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public int Protection {
+	public int BluntArmor {
 		get {
-			return protection;
+			return bluntArmor;
 		}
 
 		set {
 			if (value < 0) {
 				value = 0;
 			}
-			protection = value;
+			bluntArmor = value;
+		}
+
+	}
+
+	public int PierceArmor {
+		get {
+			return pierceArmor;
+		}
+
+		set {
+			if (value < 0) {
+				value = 0;
+			}
+			pierceArmor = value;
 		}
 
 	}
@@ -119,6 +135,14 @@ public class Player : MonoBehaviour {
 
 	void DrawRelative () {
 		pSpriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
+
+		if (helmet != GlobalData.naked_head) {
+			helmetSpriteRenderer.enabled = true;
+			helmetSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
+			helmetSpriteRenderer.color = helmet.color;
+		} else {
+			helmetSpriteRenderer.enabled = false;
+		}
 
 		if (bodyarmor != GlobalData.naked_body) {
 			armorSpriteRenderer.enabled = true;
@@ -224,7 +248,7 @@ public class Player : MonoBehaviour {
 			} else {
 				Debug.Log ("Inventory is empty");
 			}
-			Debug.Log ("Protection value is: " + protection);
+			Debug.Log ("Protection value is: " + BluntArmor + " blunt, " + PierceArmor + " pierce.");
 		}
 	}
 
@@ -247,7 +271,8 @@ public class Player : MonoBehaviour {
 
 				sweep.origin = "player";
 				sweep.TTL = 0.1f;
-				sweep.damage = Random.Range (weapon.mindamage, weapon.maxdamage + 1);
+				sweep.bluntDamage = Random.Range (weapon.bluntMinDamage, weapon.bluntMaxDamage + 1);
+				sweep.pierceDamage = Random.Range (weapon.pierceMinDamage, weapon.pierceMaxDamage + 1);
 				sweep.stunfactor = weapon.stunfactor;
 				sweep.isAOE = weapon.isAOE;
 				attackCooldownCounter = attackCooldown;
@@ -424,37 +449,43 @@ public class Player : MonoBehaviour {
 		case "helmet": 
 			DropItemOnGround (helmet);
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + helmet.name);
-			Protection -= helmet.protection;
+			BluntArmor -= helmet.bluntArmor;
+			PierceArmor -= helmet.pierceArmor;
 			helmet = GlobalData.naked_head;
 			break;
 		case "bodyarmor":
 			DropItemOnGround (bodyarmor);
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + bodyarmor.name);
-			Protection -= bodyarmor.protection;
+			BluntArmor -= bodyarmor.bluntArmor;
+			PierceArmor -= bodyarmor.pierceArmor;
 			bodyarmor = GlobalData.naked_body;
 			break;
 		case "pants":
 			DropItemOnGround (pants);
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + pants.name);
-			Protection -= pants.protection;
+			BluntArmor -= pants.bluntArmor;
+			PierceArmor -= pants.pierceArmor;
 			pants = GlobalData.naked_legs;
 			break;
 		case "boots":
 			DropItemOnGround (boots);
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + boots.name);
-			Protection -= boots.protection;
+			BluntArmor -= boots.bluntArmor;
+			PierceArmor -= boots.pierceArmor;
 			boots = GlobalData.naked_feet;
 			break;
 		case "weapon":
 			DropItemOnGround (weapon);
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + weapon.name);
-			Protection -= weapon.protection;
+			BluntArmor -= weapon.bluntArmor;
+			PierceArmor -= weapon.pierceArmor;
 			weapon = GlobalData.punch;
 			break;
 		case "offhand":
 			DropItemOnGround (offhand);
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + offhand.name);
-			Protection -= offhand.protection;
+			BluntArmor -= offhand.bluntArmor;
+			PierceArmor -= offhand.pierceArmor;
 			offhand = GlobalData.empty_offhand;
 			break;
 		}
@@ -464,7 +495,8 @@ public class Player : MonoBehaviour {
 		if (inventory[index].isEquippable) {
 			Debug.Log ("Equipped item from inventory: " + inventory[index].name);
 
-			Protection += inventory [index].protection;
+			BluntArmor += inventory [index].bluntArmor;
+			PierceArmor += inventory [index].pierceArmor;
 
 			if (inventory [index].type == Item.Type.Weapon) {
 				if (weapon != GlobalData.punch) {
@@ -573,7 +605,8 @@ public class Player : MonoBehaviour {
 		if (inventory.Count < GlobalData.inventorySize) {
 			Debug.Log ("Unequipping and adding to inventory: " + item.name);
 			inventory.Add(item);
-			Protection -= item.protection;
+			BluntArmor -= item.bluntArmor;
+			PierceArmor -= item.pierceArmor;
 
 			if (item.type == Item.Type.Weapon) {
 				weapon = GlobalData.punch;
@@ -673,7 +706,8 @@ public class Player : MonoBehaviour {
 			}
 
 
-			Protection -= item.protection;
+			BluntArmor -= item.bluntArmor;
+			PierceArmor -= item.pierceArmor;
 		} else {
 			Debug.Log("Inventory is full, cannot unequip! Free up some inventory space first.");
 		}
@@ -708,6 +742,7 @@ public class Player : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		pRigidbody = GetComponent<Rigidbody2D> ();
 		pSpriteRenderer = GetComponent<SpriteRenderer> ();
+		helmetSpriteRenderer = transform.Find("Helmet").gameObject.GetComponent <SpriteRenderer> ();
 		armorSpriteRenderer = transform.Find("Armor").gameObject.GetComponent <SpriteRenderer> ();
 		pantsSpriteRenderer = transform.Find("Pants").gameObject.GetComponent <SpriteRenderer> ();
 		bootsSpriteRenderer = transform.Find("Boots").gameObject.GetComponent <SpriteRenderer> ();

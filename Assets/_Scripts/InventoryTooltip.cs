@@ -130,14 +130,27 @@ public class InventoryTooltip : MonoBehaviour {
 			}
 			icon.sprite = Resources.Load <Sprite> (currentItem.itemsprite);
 			if (currentItem.type == Item.Type.Weapon) {
-				description.text = "Damage: " + currentItem.mindamage + "-" + currentItem.maxdamage;
+				description.text = "Damage: ";
+				if (currentItem.bluntMaxDamage > 0) {
+					description.text += "\nBlunt " + currentItem.bluntMinDamage + "-" + currentItem.bluntMaxDamage;
+				}
+				if (currentItem.pierceMaxDamage > 0) {
+					description.text += "\nPierce " + currentItem.pierceMinDamage + "-" + currentItem.pierceMaxDamage;
+				}
+
 				description.text += "\nWeight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Helmet
 			          || currentItem.type == Item.Type.Bodyarmor
 			          || currentItem.type == Item.Type.Pants
 			          || currentItem.type == Item.Type.Boots
 			          || currentItem.type == Item.Type.Offhand) {
-				description.text = "Protection: " + currentItem.protection;
+				description.text = "Protection: ";
+				if (currentItem.bluntArmor > 0){
+					description.text += "\nBlunt " + currentItem.bluntArmor;
+				}
+				if (currentItem.pierceArmor > 0){
+					description.text += "\nPierce " + currentItem.pierceArmor;
+				}
 				description.text += "\nWeight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Consumable) {
 				description.text = "Uses left: " + currentItem.quantity;

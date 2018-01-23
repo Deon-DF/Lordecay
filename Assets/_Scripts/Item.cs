@@ -12,20 +12,29 @@ public class Item {
 	public string name;
 	public Type type = Type.None;
 	public AttackType attack = AttackType.None;
-	public int mindamage = 0;
-	public int maxdamage = 0;
+
+	public int pierceMinDamage = 0;
+	public int pierceMaxDamage = 0;
+	public int bluntMinDamage = 0;
+	public int bluntMaxDamage = 0;
+
 	public float stunfactor = 0f;
 	public bool isAOE;
 
 	public float weight = 0.1f;
 	public int cost = 0;
-	public int protection = 0;
+
+	public int pierceArmor = 0;
+	public int bluntArmor = 0;
+
 	public bool isEquippable = false;
 	public bool isQuestItem = false;
 	public string itemsprite;
 	public Effect effect = Item.Effect.None;
 	public int quantity = 1;
 	public int effectvalue = 0;
+
+	public Color color = Color.white;
 
 	/*
 	public void randomBonus (Item item) {
@@ -54,12 +63,12 @@ public class Item {
 		name = Name;
 		type = itemType;
 		attack = AttackType;
-		mindamage = minDamage;
-		maxdamage = maxDamage;
+		bluntMinDamage = minDamage;
+		bluntMaxDamage = maxDamage;
 		isAOE = AOE;
 		weight = Weight;
 		cost = Cost;
-		protection = Protection;
+		bluntArmor = Protection;
 		isEquippable = Equippable;
 		isQuestItem = Questitem;
 		itemsprite = Sprite;
@@ -72,8 +81,8 @@ public class Item {
 		type = itemType;
 		name = Name;
 		attack = AttackType;
-		mindamage = minDamage;
-		maxdamage = maxDamage;
+		bluntMinDamage = minDamage;
+		bluntMaxDamage = maxDamage;
 		isAOE = AOE;
 		weight = Weight;
 		cost = Cost;
@@ -89,7 +98,7 @@ public class Item {
 		type = itemType;
 		weight = Weight;
 		cost = Cost;
-		protection = Protection;
+		bluntArmor = Protection;
 		isEquippable = true;
 		isQuestItem = Questitem;
 		itemsprite = Sprite;
@@ -142,9 +151,11 @@ public class Item {
 				name = "Army Helmet";
 				weight = 1f;
 				cost = 20;
-				protection = 2;
+				bluntArmor = 3;
+				pierceArmor = 3;
 				itemsprite = "Sprites/UI/Items/armyHelmet";
 				isEquippable = true;
+				color = new Color(0.47f, 0.59f, 0.27f);
 				break;
 
 			default: 
@@ -161,7 +172,8 @@ public class Item {
 				name = "Kevlar Vest";
 				weight = 4f;
 				cost = 40;
-				protection = 5;
+				bluntArmor = 2;
+				pierceArmor = 5;
 				itemsprite = "Sprites/UI/Items/kevlarVest";
 				isEquippable = true;
 				break;
@@ -180,7 +192,8 @@ public class Item {
 				name = "Camo Pants";
 				weight = 2f;
 				cost = 15;
-				protection = 2;
+				bluntArmor = 1;
+				pierceArmor = 1;
 				itemsprite = "Sprites/UI/Items/camoPants";
 				isEquippable = true;
 				break;
@@ -199,7 +212,8 @@ public class Item {
 				name = "Leather Boots";
 				weight = 2f;
 				cost = 25;
-				protection = 2;
+				pierceArmor = 2;
+				bluntArmor = 2;
 				itemsprite = "Sprites/UI/Items/leatherBoots";
 				isEquippable = true;
 				break;
@@ -218,7 +232,8 @@ public class Item {
 				name = "Riot Shield";
 				weight = 5f;
 				cost = 50;
-				protection = 5;
+				bluntArmor = 5;
+				pierceArmor = 5;
 				itemsprite = "Sprites/UI/Items/riotShield";
 				isEquippable = true;
 				break;
@@ -238,8 +253,8 @@ public class Item {
 				name = "Baseball Bat";
 				weight = 1f;
 				cost = 10;
-				mindamage = 15;
-				maxdamage = 30;
+				bluntMinDamage = 15;
+				bluntMaxDamage = 30;
 				stunfactor = 0.4f;
 				isAOE = true;
 				itemsprite = "Sprites/UI/Items/baseballBat";
@@ -252,8 +267,8 @@ public class Item {
 				name = "Sword";
 				weight = 1f;
 				cost = 20;
-				mindamage = 25;
-				maxdamage = 40;
+				pierceMinDamage = 25;
+				pierceMaxDamage = 40;
 				stunfactor = 0.2f;
 				isAOE = false;
 				itemsprite = "Sprites/UI/Items/sword";

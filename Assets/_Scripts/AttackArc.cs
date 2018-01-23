@@ -8,7 +8,8 @@ using System;
 public class AttackArc : MonoBehaviour {
 
 	public float TTL;
-	public int damage = 0;
+	public int bluntDamage = 0;
+	public int pierceDamage = 0;
 	public float stunfactor = 0f;
 	public string origin;
 	public bool isAOE = false;
@@ -23,7 +24,7 @@ public class AttackArc : MonoBehaviour {
 					this.enemiesHit++;
 					if (this.enemiesHit == 1 || isAOE) {
 						Monster enemy = collider.transform.parent.gameObject.GetComponent <Monster> ();
-						int effectiveDMG = (damage - enemy.protection);
+						int effectiveDMG = ((pierceDamage - enemy.pierceArmor) + (bluntDamage - enemy.bluntArmor));
 						if (effectiveDMG > 0) {
 							enemy.isStunned = true;
 							enemy.stunCooldown = stunfactor;
@@ -40,7 +41,7 @@ public class AttackArc : MonoBehaviour {
 			case "enemy":
 				if (collider.tag == "PlayerHitbox") {
 					Player player = collider.transform.parent.gameObject.GetComponent <Player> ();
-					int effectiveDMG = (damage - player.Protection);
+					int effectiveDMG = ((bluntDamage - player.BluntArmor) + (pierceDamage - player.PierceArmor));
 					if (effectiveDMG > 0) {
 						GlobalData.Gamelog += (Environment.NewLine + "You were hit for " + effectiveDMG + " damage.");
 						//Debug.Log ("You were hit for " + effectiveDMG + " damage.");

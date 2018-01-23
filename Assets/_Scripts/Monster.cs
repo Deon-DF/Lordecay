@@ -8,12 +8,14 @@ public class Monster : MonoBehaviour {
 	// Stats
 	public int maxhealth;
 	int health = 100;
-	public int protection = 0;
+	public int bluntArmor = 0;
+	public int pierceArmor = 0;
 
 
 	// Attack capability
 
-	public int damage = 10;
+	public int bluntDamage = 0;
+	public int pierceDamage = 0;
 	public float attackCooldown = 2f;
 	public float attackDistance = 0.7f;
 	public float aggroDistance = 5f;
@@ -112,7 +114,8 @@ public class Monster : MonoBehaviour {
 				AttackArc sweep = Instantiate (monster_attack_arc, spawnPosition - offset, direction);
 				sweep.origin = "enemy";
 				sweep.TTL = 0.2f;
-				sweep.damage = damage;
+				sweep.pierceDamage = pierceDamage;
+				sweep.bluntDamage = bluntDamage;
 				attackCooldownCounter = attackCooldown;
 			}
 	}
