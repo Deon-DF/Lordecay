@@ -28,6 +28,9 @@ public class Monster : MonoBehaviour {
 	AttackArc monster_attack_arc;
 
 	// Movement
+	public bool isStunned = false;
+	public float stunCooldown = 0f;
+
 	public float moveSpeed;
 	public float roamCooldown;
 	public float roamDuration;
@@ -45,7 +48,7 @@ public class Monster : MonoBehaviour {
 	private Animator animator;
 	float lastMoveX;
 	float lastMoveY;
-	bool isMoving;
+	public bool isMoving;
 
 	List<Tile> waypoints;
 	Vector3 nextWaypoint;
@@ -181,7 +184,7 @@ public class Monster : MonoBehaviour {
 
 	public void TargetPlayer (Player player, int layerMask, Grid grid)
 	{
-		if (Vector3.Distance (transform.position, player.transform.position) < attackDistance) {
+		if (Vector3.Distance (transform.position, player.transform.position) < attackDistance && !isStunned) {
 			// Stop and attack
 			eRigidBody.velocity = new Vector2 (0f, 0f);
 			isPathFinding = false;
@@ -196,9 +199,15 @@ public class Monster : MonoBehaviour {
 				Quaternion direction = Quaternion.LookRotation (Vector3.forward, lastKnownPlayerPosition - transform.position);
 				CheckLastDirection(lastKnownPlayerPosition - transform.position);
 				moveDirection = direction * Vector3.up;
-				eRigidBody.velocity = moveDirection * moveSpeed;
-				isPathFinding = false;
-				isMoving = true;
+				if (!isStunned) {
+					eRigidBody.velocity = moveDirection * moveSpeed;
+					isPathFinding = false;
+					isMoving = true;
+				} else {
+					eRigidBody.velocity = new Vector2 (0f, 0f);
+					isPathFinding = false;
+					isMoving = false;
+				}
 			} else { 
 				if (isPathFinding == false) {
 					//Debug.Log(this.name + " is pathfinding to last player position!");
@@ -225,6 +234,7 @@ public class Monster : MonoBehaviour {
 		} else {
 			roamCooldownCounter -= Time.deltaTime;
 		}
+		stunCooldown -= Time.deltaTime;
 	}
 
 	// Moving
@@ -238,8 +248,14 @@ public class Monster : MonoBehaviour {
 					Quaternion direction = Quaternion.LookRotation (Vector3.forward, nextWaypoint - transform.position);
 					CheckLastDirection (nextWaypoint - transform.position);
 					moveDirection = direction * Vector3.up;
-					eRigidBody.velocity = moveDirection * moveSpeed;
-					isMoving = true;
+					if (!isStunned) {
+						eRigidBody.velocity = moveDirection * moveSpeed;
+						isMoving = true;
+					} else {
+						eRigidBody.velocity = new Vector2 (0f, 0f);
+						isPathFinding = false;
+						isMoving = false;
+					}
 
 				} else {
 					waypoints.Remove (waypoints [0]);

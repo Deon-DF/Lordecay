@@ -7,7 +7,9 @@ using UnityEngine.UI;
 
 public class GlobalData {
 
+	// Menu system
 	public static bool paused = false;
+	public static bool inventoryON = false;
 
 	public static Grid grid;
 
@@ -52,7 +54,8 @@ public class GlobalData {
 		Item.Type.None,				// item type
 		"Empty", 					// name
 		Item.AttackType.None, 		// attack type
-		0,							// damage
+		0,							// mindamage
+		0,							// maxdamage
 		false,						// is AOE
 		0f,							// weight
 		0,							// cost
@@ -66,11 +69,11 @@ public class GlobalData {
 
 	// standard empty equipment (nothing equipped)
 
-	public static Item punch = new Item (Item.Type.Weapon, "Bare hands", Item.AttackType.Melee, 10, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
-	public static Item empty_offhand = new Item (Item.Type.Offhand, "Empty offhand", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
-	public static Item naked_head = new Item (Item.Type.Helmet, "Naked head", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
-	public static Item naked_body = new Item (Item.Type.Bodywear, "Naked body", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
-	public static Item naked_legs = new Item (Item.Type.Pants, "Naked legs", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
-	public static Item naked_feet = new Item (Item.Type.Boots, "Naked feet", Item.AttackType.None, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item punch = new Item (Item.Type.Weapon, "Bare hands", Item.AttackType.Melee, 3, 5, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item empty_offhand = new Item (Item.Type.Offhand, "Empty offhand", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_head = new Item (Item.Type.Helmet, "Naked head", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_body = new Item (Item.Type.Bodyarmor, "Naked body", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_legs = new Item (Item.Type.Pants, "Naked legs", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item naked_feet = new Item (Item.Type.Boots, "Naked feet", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
 
 }

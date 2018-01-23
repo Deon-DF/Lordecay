@@ -5,14 +5,16 @@ using UnityEngine.UI;
 
 public class Item {
 
-	public enum Type {None, Weapon, Offhand, Bodywear, Helmet, Pants, Boots, Consumable, Other}
+	public enum Type {None, Weapon, Offhand, Bodyarmor, Helmet, Pants, Boots, Consumable, Other}
 	public enum Effect {None, Healing, StatusEffect, Lootbox}
 	public enum AttackType {None, Melee, Single, Cone}
 
 	public string name;
 	public Type type = Type.None;
 	public AttackType attack = AttackType.None;
-	public int damage = 0;
+	public int mindamage = 0;
+	public int maxdamage = 0;
+	public float stunfactor = 0f;
 	public bool isAOE;
 
 	public float weight = 0.1f;
@@ -24,6 +26,13 @@ public class Item {
 	public Effect effect = Item.Effect.None;
 	public int quantity = 1;
 	public int effectvalue = 0;
+
+	/*
+	public void randomBonus (Item item) {
+		if (item.type = Type.Weapon) {
+			int chance = Random.Range (0, 100);
+		}
+	}*/
 
 	public void Use (Player player, int index) {
 		Item item = player.inventory [index];
@@ -41,11 +50,12 @@ public class Item {
 		}
 	}
 
-	public Item (Type itemType, string Name, AttackType AttackType, int Damage, bool AOE, float Weight, int Cost, int Protection, bool Equippable, bool Questitem, string Sprite, Effect itemEffect, int Quantity) {
+	public Item (Type itemType, string Name, AttackType AttackType, int minDamage, int maxDamage, bool AOE, float Weight, int Cost, int Protection, bool Equippable, bool Questitem, string Sprite, Effect itemEffect, int Quantity) {
 		name = Name;
 		type = itemType;
 		attack = AttackType;
-		damage = Damage;
+		mindamage = minDamage;
+		maxdamage = maxDamage;
 		isAOE = AOE;
 		weight = Weight;
 		cost = Cost;
@@ -58,11 +68,12 @@ public class Item {
 	}
 
 	// Weapons
-	public Item (Type itemType, string Name, AttackType AttackType, int Damage, bool AOE, float Weight, int Cost, bool Questitem, string Sprite, Effect itemEffect) {
+	public Item (Type itemType, string Name, AttackType AttackType, int minDamage, int maxDamage, bool AOE, float Weight, int Cost, bool Questitem, string Sprite, Effect itemEffect) {
 		type = itemType;
 		name = Name;
 		attack = AttackType;
-		damage = Damage;
+		mindamage = minDamage;
+		maxdamage = maxDamage;
 		isAOE = AOE;
 		weight = Weight;
 		cost = Cost;
@@ -128,7 +139,7 @@ public class Item {
 			switch (ItemName) {
 			case "Army helmet":
 				type = Type.Helmet;
-				name = "Army helmet";
+				name = "Army Helmet";
 				weight = 1f;
 				cost = 20;
 				protection = 2;
@@ -143,10 +154,10 @@ public class Item {
 
 		// Bodyarmor
 
-		if (itemtype == Type.Bodywear) {
+		if (itemtype == Type.Bodyarmor) {
 			switch (ItemName) {
 			case "Kevlar vest":
-				type = Type.Bodywear;
+				type = Type.Bodyarmor;
 				name = "Kevlar Vest";
 				weight = 4f;
 				cost = 40;
@@ -166,7 +177,7 @@ public class Item {
 			switch (ItemName) {
 			case "Camo pants":
 				type = Type.Pants;
-				name = "Camo pants";
+				name = "Camo Pants";
 				weight = 2f;
 				cost = 15;
 				protection = 2;
@@ -185,7 +196,7 @@ public class Item {
 			switch (ItemName) {
 			case "Leather boots":
 				type = Type.Boots;
-				name = "Leather boots";
+				name = "Leather Boots";
 				weight = 2f;
 				cost = 25;
 				protection = 2;
@@ -204,7 +215,7 @@ public class Item {
 			switch (ItemName) {
 			case "Riot shield":
 				type = Type.Offhand;
-				name = "Riot shield";
+				name = "Riot Shield";
 				weight = 5f;
 				cost = 50;
 				protection = 5;
@@ -224,10 +235,12 @@ public class Item {
 			case "Baseball bat":
 				type = Type.Weapon;
 				attack = AttackType.Melee;
-				name = "Baseball bat";
+				name = "Baseball Bat";
 				weight = 1f;
 				cost = 10;
-				damage = 30;
+				mindamage = 15;
+				maxdamage = 30;
+				stunfactor = 0.4f;
 				isAOE = true;
 				itemsprite = "Sprites/UI/Items/baseballBat";
 				isEquippable = true;
@@ -239,7 +252,9 @@ public class Item {
 				name = "Sword";
 				weight = 1f;
 				cost = 20;
-				damage = 50;
+				mindamage = 25;
+				maxdamage = 40;
+				stunfactor = 0.2f;
 				isAOE = false;
 				itemsprite = "Sprites/UI/Items/sword";
 				isEquippable = true;

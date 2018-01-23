@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/dev_map.unity
+- path: Assets/_Scenes/Slums.unity
   isLoaded: 1
   isActive: 1

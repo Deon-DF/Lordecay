@@ -9,7 +9,7 @@ public class GUI : MonoBehaviour {
 
 	public GameObject equipmentBox;
 	public GameObject equipmentSlotHelmet;
-	public GameObject equipmentSlotBodywear;
+	public GameObject equipmentSlotbodyarmor;
 	public GameObject equipmentSlotPants;
 	public GameObject equipmentSlotBoots;
 	public GameObject equipmentSlotWeapon;
@@ -220,7 +220,7 @@ public class GUI : MonoBehaviour {
 
 		equipmentBox = GameObject.Find ("EquipmentBox");
 		equipmentSlotHelmet = equipmentBox.transform.Find ("EquipmentSlotHelmet").gameObject;
-		equipmentSlotBodywear = equipmentBox.transform.Find ("EquipmentSlotBodywear").gameObject;
+		equipmentSlotbodyarmor = equipmentBox.transform.Find ("EquipmentSlotBodyarmor").gameObject;
 		equipmentSlotPants = equipmentBox.transform.Find ("EquipmentSlotPants").gameObject;
 		equipmentSlotBoots = equipmentBox.transform.Find ("EquipmentSlotBoots").gameObject;
 		equipmentSlotWeapon = equipmentBox.transform.Find ("EquipmentSlotWeapon").gameObject;

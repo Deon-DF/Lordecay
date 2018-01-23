@@ -57,6 +57,7 @@ public class InventoryTooltip : MonoBehaviour {
 	}
 
 	void Start () {
+		image.enabled = false;
 	}
 
 	void Update () {
@@ -93,9 +94,9 @@ public class InventoryTooltip : MonoBehaviour {
 						currentItem = player.helmet;
 					}
 					break;
-				case "bodywear":
-					if (player.bodywear != GlobalData.naked_body) {
-						currentItem = player.bodywear;
+				case "bodyarmor":
+					if (player.bodyarmor != GlobalData.naked_body) {
+						currentItem = player.bodyarmor;
 					}
 					break;
 				case "pants":
@@ -129,10 +130,10 @@ public class InventoryTooltip : MonoBehaviour {
 			}
 			icon.sprite = Resources.Load <Sprite> (currentItem.itemsprite);
 			if (currentItem.type == Item.Type.Weapon) {
-				description.text = "Damage: " + currentItem.damage;
+				description.text = "Damage: " + currentItem.mindamage + "-" + currentItem.maxdamage;
 				description.text += "\nWeight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Helmet
-			          || currentItem.type == Item.Type.Bodywear
+			          || currentItem.type == Item.Type.Bodyarmor
 			          || currentItem.type == Item.Type.Pants
 			          || currentItem.type == Item.Type.Boots
 			          || currentItem.type == Item.Type.Offhand) {

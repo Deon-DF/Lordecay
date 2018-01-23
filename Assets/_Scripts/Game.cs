@@ -40,10 +40,15 @@ public class Game : MonoBehaviour {
 			monster.aggroRememberCounter -= Time.deltaTime; // if monster did not refresh aggro on player, count down the aggro timer
 		}
 		if (monster.isAggressive) {
-			monster.TargetPlayer(player, lineOfSightMask, grid);  // ~(mask1|mask2) means NOT mask1+mask2; we dont want the targeting code to think that players/enemies block line of sight of each other
+			monster.TargetPlayer (player, lineOfSightMask, grid);  // ~(mask1|mask2) means NOT mask1+mask2; we dont want the targeting code to think that players/enemies block line of sight of each other
 		} else {
 			monster.Roam ();
 			monster.isPathFinding = false;
+		}
+		if (monster.isStunned) {
+			if (monster.stunCooldown <= 0) {
+				monster.isStunned = false;
+			}
 		}
 	}
 
@@ -106,7 +111,10 @@ public class Game : MonoBehaviour {
 	void UpdateUI (Player player, GUI gui) {
 
 		if (!GlobalData.worldmap) {
-			if (GlobalData.paused) {
+			weaponText.text = player.weapon.name + ", damage: " + player.weapon.mindamage + "-" + player.weapon.maxdamage;
+			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / 100, 1, 1);
+
+			if (GlobalData.inventoryON) {
 				gui.inventoryBG.SetActive (true);
 				gui.inventoryBox.SetActive (true);
 				gui.inventoryTooltip.SetActive (true);
@@ -120,10 +128,8 @@ public class Game : MonoBehaviour {
 				gui.groundBox.SetActive (false);
 			}
 
-			weaponText.text = player.weapon.name + ", damage: " + player.weapon.damage;
-			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / 100, 1, 1);
 
-			if (GlobalData.paused) {
+			if (GlobalData.inventoryON) {
 
 				// Handle drawing of inventory slots
 				int numInventoryItems = player.inventory.Count;
@@ -192,11 +198,11 @@ public class Game : MonoBehaviour {
 				} else {
 					gui.equipmentSlotHelmet.SetActive (false);
 				}
-				if (player.bodywear != GlobalData.naked_body) {
-					gui.equipmentSlotBodywear.SetActive (true);
-					gui.equipmentSlotBodywear.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.bodywear.itemsprite);
+				if (player.bodyarmor != GlobalData.naked_body) {
+					gui.equipmentSlotbodyarmor.SetActive (true);
+					gui.equipmentSlotbodyarmor.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.bodyarmor.itemsprite);
 				} else {
-					gui.equipmentSlotBodywear.SetActive (false);
+					gui.equipmentSlotbodyarmor.SetActive (false);
 				}
 				if (player.pants != GlobalData.naked_legs) {
 					gui.equipmentSlotPants.SetActive (true);
