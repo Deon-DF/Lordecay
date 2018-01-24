@@ -32,6 +32,7 @@ public class Player : MonoBehaviour {
 	private float attackCooldownCounter;
 	private float attackDuration = 0.2f;
 	private bool isAttacking = false;
+	private bool isAiming = false;
 
 	public bool madeLoudSound = false;
 	private float madeLoudSoundDuration = 1f;
@@ -42,8 +43,7 @@ public class Player : MonoBehaviour {
 
 	// Animation
 	private Animator animator;
-	private bool playerMoving;
-	private bool playerAttacking;
+	private bool isMoving;
 	private Vector2 lastMove;
 	private static bool playerExists = false;
 	private SpriteRenderer pSpriteRenderer;
@@ -361,7 +361,7 @@ public class Player : MonoBehaviour {
 
 	public void KeyboardControls ()
 	{
-		if (Input.GetKey (KeyCode.LeftShift) && playerMoving) {
+		if (Input.GetKey (KeyCode.LeftShift) && isMoving) {
 			Stamina -= moveStaminaDrain * Time.deltaTime;
 			if (Stamina > 0) {
 				moveSprintModifier = 1.5f;
@@ -370,7 +370,7 @@ public class Player : MonoBehaviour {
 			}
 		} else {
 			if (Stamina < MaxStamina) {
-				if (playerMoving) {
+				if (isMoving) {
 					Stamina += moveStaminaRecovery * Time.deltaTime;					
 				} else {
 					Stamina += staminaRecovery * Time.deltaTime;
@@ -380,8 +380,9 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void MouseControls() {
-		if (Input.GetKeyDown (KeyCode.Mouse0)) {
+	public void MouseControls ()
+	{
+		if (Input.GetKeyDown (KeyCode.Mouse0) && Input.GetKey(KeyCode.Mouse1)) {
 			if (attackCooldownCounter < 0) {
 				Vector2 mousePosition = new Vector2 (Input.mousePosition.x / Screen.width * aspectRatioX, Input.mousePosition.y / Screen.height * aspectRatioY);
 				Vector2 centerPosition = new Vector2 (8.0f, 4.5f);
@@ -403,9 +404,15 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.Mouse1)) {
+		/* if (Input.GetKeyDown (KeyCode.Mouse1)) {
 			madeLoudSound = true;
 			madeLoudSoundCounter = madeLoudSoundDuration;
+		} */
+
+		if (Input.GetKey (KeyCode.Mouse1)) {
+			isAiming = true;
+		} else {
+			isAiming = false;
 		}
 	}
 
@@ -434,16 +441,16 @@ public class Player : MonoBehaviour {
 	}*/
 
 	public void MovementControls () {
-		playerMoving = false;
+		isMoving = false;
 		Vector2 dirX = new Vector2 (0f, 0f);
 		Vector2 dirY = new Vector2 (0f, 0f);
 
-		if (!isAttacking) {
+		if (!isAttacking && !isAiming) {
 			if (Input.GetAxisRaw ("Horizontal") > 0.5f || Input.GetAxisRaw ("Horizontal") < -0.5f) {
 				//transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f, 0f));
 				// We use physics velocity for movement to avoid "jerky bump" into colliders
 				dirX = new Vector2 (Input.GetAxisRaw ("Horizontal"), 0f);
-				playerMoving = true;
+				isMoving = true;
 				lastMove = new Vector2 (Input.GetAxisRaw ("Horizontal"), 0f);
 			}
 
@@ -451,7 +458,7 @@ public class Player : MonoBehaviour {
 				//transform.Translate(new Vector3(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime, 0f));
 				// We use physics velocity for movement to avoid "jerky bump" into colliders
 				dirY = new Vector2 (0f, Input.GetAxisRaw ("Vertical"));
-				playerMoving = true;
+				isMoving = true;
 				lastMove = new Vector2 (0f, Input.GetAxisRaw ("Vertical"));
 			}
 			/*
@@ -468,9 +475,34 @@ public class Player : MonoBehaviour {
 			pRigidbody.velocity = new Vector2 (0f, 0f); // Do not move while attacking
 		}
 
+		if (isAiming) {
+			Vector2 mousePosition = new Vector2 (Input.mousePosition.x / Screen.width * aspectRatioX, Input.mousePosition.y / Screen.height * aspectRatioY);
+			Vector2 centerPosition = new Vector2 (8.0f, 4.5f);
+			//Quaternion direction = Quaternion.LookRotation (Vector3.forward, centerPosition - mousePosition);
+			if (Mathf.Abs(mousePosition.x - centerPosition.x) > Mathf.Abs(mousePosition.y - centerPosition.y)) {
+				Debug.Log (Mathf.Abs(mousePosition.x - centerPosition.x) + " is greater than " + Mathf.Abs(mousePosition.y - centerPosition.y));
+				if (mousePosition.x > centerPosition.x) {
+					lastMove.x = 1;
+					lastMove.y = 0;
+				} else {
+					lastMove.x = -1;
+					lastMove.y = 0;
+				}
+			} else {
+				Debug.Log (Mathf.Abs(mousePosition.x - centerPosition.x) + " is less than " + Mathf.Abs(mousePosition.y - centerPosition.y));
+				if (mousePosition.y > centerPosition.y) {
+					lastMove.x = 0;
+					lastMove.y = 1;
+				} else {
+					lastMove.x = 0;
+					lastMove.y = -1;
+				}
+			}
+		}
+
 		animator.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
 		animator.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
-		animator.SetBool("IsMoving", playerMoving);
+		animator.SetBool("IsMoving", isMoving);
 		animator.SetFloat("LastMoveX", lastMove.x);
 		animator.SetFloat("LastMoveY", lastMove.y);
 

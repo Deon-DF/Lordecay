@@ -20,9 +20,7 @@ public class Game : MonoBehaviour {
 	GameObject healthbar;
 	GameObject staminabar;
 
-	Text WeaponText;
-
-	// Inventory UI
+	Image WeaponUI;
 
 
 	// masks for layers
@@ -111,7 +109,7 @@ public class Game : MonoBehaviour {
 	void UpdateUI (Player player, GUI gui) {
 
 		if (!GlobalData.worldmap) {
-			WeaponText.text = player.Weapon.name;
+			WeaponUI.sprite = Resources.Load<Sprite>(player.Weapon.itemsprite);
 			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / player.MaxHealth, 1, 1);
 			staminabar.transform.localScale = new Vector3 (player.Stamina * 1.0f / player.MaxStamina, 1, 1);
 
@@ -238,7 +236,7 @@ public class Game : MonoBehaviour {
 			healthbar = GameObject.Find ("Healthbar");
 			staminabar = GameObject.Find ("Staminabar");
 //		staminabar = GameObject.Find ("Staminabar");
-			WeaponText = GameObject.Find ("WeaponText").GetComponent<Text> ();
+			WeaponUI = GameObject.Find ("WeaponUI").GetComponent<Image> ();
 
 			// Load resources and variables
 			passable_tile = Resources.Load ("Prefabs/UI/passable_tile") as GameObject;

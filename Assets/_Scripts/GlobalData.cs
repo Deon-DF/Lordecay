@@ -69,7 +69,7 @@ public class GlobalData {
 
 	// standard empty equipment (nothing equipped)
 
-	public static Item punch = new Item (Item.Type.Weapon, "Bare hands", Item.AttackType.Melee, 3, 5, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
+	public static Item punch = new Item (Item.Type.Weapon, "Bare hands", Item.AttackType.Melee, 3, 5, false, 0f, 0, 0, false, false, "Sprites/UI/Items/fist", Item.Effect.None, 1);
 	public static Item empty_offhand = new Item (Item.Type.Offhand, "Empty offhand", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
 	public static Item naked_head = new Item (Item.Type.Helmet, "Naked head", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
 	public static Item naked_body = new Item (Item.Type.Bodyarmor, "Naked body", Item.AttackType.None, 0, 0, false, 0f, 0, 0, false, false, "Sprites/Characters/Blob", Item.Effect.None, 1);
