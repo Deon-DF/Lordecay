@@ -64,7 +64,6 @@ public class Game : MonoBehaviour {
 
 			// TODO Test inventory stuff, must be removed/hidden
 			player.testFreeStuff (); // Gives controls to get free items
-			player.listInventory ();  //<- for debug purposes
 		} 
 	}
 
@@ -137,9 +136,15 @@ public class Game : MonoBehaviour {
 
 				gui.bluntDamageText.GetComponent<Text> ().text = player.Weapon.bluntMinDamage + "-" + player.Weapon.bluntMaxDamage;
 				gui.pierceDamageText.GetComponent<Text> ().text = player.PierceMinDamage + "-" + player.PierceMaxDamage;
+				gui.fireDamageText.GetComponent<Text> ().text = player.FireMinDamage + "-" + player.FireMaxDamage;
+				gui.coldDamageText.GetComponent<Text> ().text = player.ColdMinDamage + "-" + player.ColdMaxDamage;
+				gui.acidDamageText.GetComponent<Text> ().text = player.AcidMinDamage + "-" + player.AcidMaxDamage;
 
 				gui.bluntArmorText.GetComponent<Text> ().text = player.BluntArmor.ToString();
 				gui.pierceArmorText.GetComponent<Text> ().text = player.PierceArmor.ToString();
+				gui.fireArmorText.GetComponent<Text> ().text = player.FireArmor.ToString();
+				gui.coldArmorText.GetComponent<Text> ().text = player.ColdArmor.ToString();
+				gui.acidArmorText.GetComponent<Text> ().text = player.AcidArmor.ToString();
 
 				// Ground slots //
 				// Assign item images to ground slots with items

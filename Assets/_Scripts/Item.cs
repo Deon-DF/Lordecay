@@ -13,10 +13,21 @@ public class Item {
 	public Type type = Type.None;
 	public AttackType attack = AttackType.None;
 
-	public int pierceMinDamage = 0;
-	public int pierceMaxDamage = 0;
+	// blunt damage
 	public int bluntMinDamage = 0;
 	public int bluntMaxDamage = 0;
+	// pierce damage
+	public int pierceMinDamage = 0;
+	public int pierceMaxDamage = 0;
+	// fire damage
+	public int fireMinDamage = 0;
+	public int fireMaxDamage = 0;
+	// cold damage
+	public int coldMinDamage = 0;
+	public int coldMaxDamage = 0;
+	// acid damage
+	public int acidMinDamage = 0;
+	public int acidMaxDamage = 0;
 
 	public float stunfactor = 0f;
 	public bool isAOE;
@@ -24,8 +35,11 @@ public class Item {
 	public float weight = 0.1f;
 	public int cost = 0;
 
-	public int pierceArmor = 0;
 	public int bluntArmor = 0;
+	public int pierceArmor = 0;
+	public int fireArmor = 0;
+	public int coldArmor = 0;
+	public int acidArmor = 0;
 
 	public bool isEquippable = false;
 	public bool isQuestItem = false;
@@ -153,6 +167,7 @@ public class Item {
 				cost = 20;
 				bluntArmor = 3;
 				pierceArmor = 3;
+				fireArmor = 1;
 				itemsprite = "Sprites/UI/Items/armyHelmet";
 				isEquippable = true;
 				color = new Color(0.47f, 0.59f, 0.27f);
@@ -194,6 +209,8 @@ public class Item {
 				cost = 15;
 				bluntArmor = 1;
 				pierceArmor = 1;
+				fireArmor = 1;
+				coldArmor = 1;
 				itemsprite = "Sprites/UI/Items/camoPants";
 				isEquippable = true;
 				break;
@@ -214,6 +231,9 @@ public class Item {
 				cost = 25;
 				pierceArmor = 2;
 				bluntArmor = 2;
+				fireArmor = 1;
+				coldArmor = 1;
+				acidArmor = 1;
 				itemsprite = "Sprites/UI/Items/leatherBoots";
 				isEquippable = true;
 				break;
@@ -234,6 +254,8 @@ public class Item {
 				cost = 50;
 				bluntArmor = 5;
 				pierceArmor = 5;
+				fireArmor = 2;
+				acidArmor = 2;
 				itemsprite = "Sprites/UI/Items/riotShield";
 				isEquippable = true;
 				break;

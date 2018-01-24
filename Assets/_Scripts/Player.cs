@@ -18,8 +18,21 @@ public class Player : MonoBehaviour {
 	int pierceMinDamage = 0;
 	int pierceMaxDamage = 0;
 
+	int fireMinDamage = 0;
+	int fireMaxDamage = 0;
+
+	int coldMinDamage = 0;
+	int coldMaxDamage = 0;
+
+	int acidMinDamage = 0;
+	int acidMaxDamage = 0;
+
 	int bluntArmor = 0;
 	int pierceArmor = 0;
+	int fireArmor = 0;
+	int coldArmor = 0;
+	int acidArmor = 0;
+
 	float moveSpeed = 4;
 	float moveWeightModifier = 1;
 	float moveSprintModifier = 1;
@@ -151,7 +164,18 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	// Protection and resistances
+	IEnumerator registerPlayerHit() {
+		Image oImage = overlay.GetComponent<Image> ();
+		Color c = Color.red;
+		c.a = 0.2f;
+		oImage.color = c;
+		overlay.SetActive (true);
+		yield return new WaitForSeconds (attackDuration);
+		overlay.SetActive (false);
+		oImage.color = Color.white;
+	}
+
+// ARMOR TYPES - PUBLIC
 
 	public int BluntArmor {
 		get {
@@ -181,18 +205,50 @@ public class Player : MonoBehaviour {
 
 	}
 
-	IEnumerator registerPlayerHit() {
-		Image oImage = overlay.GetComponent<Image> ();
-		Color c = Color.red;
-		c.a = 0.2f;
-		oImage.color = c;
-		overlay.SetActive (true);
-		yield return new WaitForSeconds (attackDuration);
-		overlay.SetActive (false);
-		oImage.color = Color.white;
+	public int FireArmor {
+		get {
+			return fireArmor;
+		}
+
+		set {
+			if (value < 0) {
+				value = 0;
+			}
+			fireArmor = value;
+		}
+
 	}
 
-// Damage system
+	public int ColdArmor {
+		get {
+			return coldArmor;
+		}
+
+		set {
+			if (value < 0) {
+				value = 0;
+			}
+			coldArmor = value;
+		}
+	}
+
+	public int AcidArmor {
+		get {
+			return acidArmor;
+		}
+
+		set {
+			if (value < 0) {
+				value = 0;
+			}
+			acidArmor = value;
+		}
+
+	}
+
+// ARMOR TYPES END
+
+// DAMAGE TYPES - PUBLIC
 
 	public int BluntMinDamage {
 		get {
@@ -229,12 +285,72 @@ public class Player : MonoBehaviour {
 			pierceMaxDamage = value;
 		}
 	}
+	public int FireMinDamage {
+		get {
+			return fireMinDamage;
+		}
+		set {
+			fireMinDamage = value;
+		}
+	}
+
+	public int FireMaxDamage {
+		get {
+			return fireMaxDamage;
+		}
+		set {
+			fireMaxDamage = value;
+		}
+	}
+
+	public int ColdMinDamage {
+		get {
+			return coldMinDamage;
+		}
+		set {
+			coldMinDamage = value;
+		}
+	}
+
+	public int ColdMaxDamage {
+		get {
+			return coldMaxDamage;
+		}
+		set {
+			coldMaxDamage = value;
+		}
+	}
+
+	public int AcidMinDamage {
+		get {
+			return acidMinDamage;
+		}
+		set {
+			acidMinDamage = value;
+		}
+	}
+
+	public int AcidMaxDamage {
+		get {
+			return acidMaxDamage;
+		}
+		set {
+			acidMaxDamage = value;
+		}
+	}
+// DAMAGE TYPES END
 
 	void SetDamageValues (Item equipitem) {
-			BluntMinDamage = equipitem.bluntMinDamage;
-			BluntMaxDamage = equipitem.bluntMaxDamage;
-			PierceMinDamage = equipitem.pierceMinDamage;
-			PierceMaxDamage = equipitem.pierceMaxDamage;
+		BluntMinDamage = equipitem.bluntMinDamage;
+		BluntMaxDamage = equipitem.bluntMaxDamage;
+		PierceMinDamage = equipitem.pierceMinDamage;
+		PierceMaxDamage = equipitem.pierceMaxDamage;
+		FireMinDamage = equipitem.fireMinDamage;
+		FireMaxDamage = equipitem.fireMaxDamage;
+		ColdMinDamage = equipitem.coldMinDamage;
+		ColdMaxDamage = equipitem.coldMaxDamage;
+		AcidMinDamage = equipitem.acidMinDamage;
+		AcidMaxDamage = equipitem.acidMaxDamage;
 	}
 
 // GUI
@@ -345,19 +461,6 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void listInventory () {
-		if (Input.GetKeyDown (KeyCode.K)) {
-			if (inventory.Count > 0) {
-				for (int i = 0; i < inventory.Count; i++) {
-					Debug.Log ("Inventory object in slot " + i + ": " + inventory [i].name);
-				}
-			} else {
-				Debug.Log ("Inventory is empty");
-			}
-			Debug.Log ("Protection value is: " + BluntArmor + " blunt, " + PierceArmor + " pierce.");
-		}
-	}
-
 
 	public void KeyboardControls ()
 	{
@@ -397,6 +500,9 @@ public class Player : MonoBehaviour {
 				sweep.TTL = 0.1f;
 				sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
 				sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
+				sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
+				sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
+				sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
 				sweep.stunfactor = Weapon.stunfactor;
 				sweep.isAOE = Weapon.isAOE;
 				attackCooldownCounter = attackCooldown;
@@ -609,6 +715,9 @@ public class Player : MonoBehaviour {
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + helmet.name);
 			BluntArmor -= helmet.bluntArmor;
 			PierceArmor -= helmet.pierceArmor;
+			FireArmor -= helmet.fireArmor;
+			ColdArmor -= helmet.coldArmor;
+			AcidArmor -= helmet.acidArmor;
 			helmet = GlobalData.naked_head;
 			break;
 		case "bodyarmor":
@@ -616,6 +725,9 @@ public class Player : MonoBehaviour {
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + bodyarmor.name);
 			BluntArmor -= bodyarmor.bluntArmor;
 			PierceArmor -= bodyarmor.pierceArmor;
+			FireArmor -= bodyarmor.fireArmor;
+			ColdArmor -= bodyarmor.coldArmor;
+			AcidArmor -= bodyarmor.acidArmor;
 			bodyarmor = GlobalData.naked_body;
 			break;
 		case "pants":
@@ -623,6 +735,9 @@ public class Player : MonoBehaviour {
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + pants.name);
 			BluntArmor -= pants.bluntArmor;
 			PierceArmor -= pants.pierceArmor;
+			FireArmor -= pants.fireArmor;
+			ColdArmor -= pants.coldArmor;
+			AcidArmor -= pants.acidArmor;
 			pants = GlobalData.naked_legs;
 			break;
 		case "boots":
@@ -630,6 +745,9 @@ public class Player : MonoBehaviour {
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + boots.name);
 			BluntArmor -= boots.bluntArmor;
 			PierceArmor -= boots.pierceArmor;
+			FireArmor -= boots.fireArmor;
+			ColdArmor -= boots.coldArmor;
+			AcidArmor -= boots.acidArmor;
 			boots = GlobalData.naked_feet;
 			break;
 		case "Weapon":
@@ -637,6 +755,9 @@ public class Player : MonoBehaviour {
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + Weapon.name);
 			BluntArmor -= Weapon.bluntArmor;
 			PierceArmor -= Weapon.pierceArmor;
+			FireArmor -= Weapon.fireArmor;
+			ColdArmor -= Weapon.coldArmor;
+			AcidArmor -= Weapon.acidArmor;
 			Weapon = GlobalData.punch;
 			break;
 		case "offhand":
@@ -644,6 +765,9 @@ public class Player : MonoBehaviour {
 			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + offhand.name);
 			BluntArmor -= offhand.bluntArmor;
 			PierceArmor -= offhand.pierceArmor;
+			FireArmor -= offhand.fireArmor;
+			ColdArmor -= offhand.coldArmor;
+			AcidArmor -= offhand.acidArmor;
 			offhand = GlobalData.empty_offhand;
 			break;
 		}
@@ -657,6 +781,9 @@ public class Player : MonoBehaviour {
 
 			BluntArmor += equipitem.bluntArmor;
 			PierceArmor += equipitem.pierceArmor;
+			FireArmor += equipitem.fireArmor;
+			ColdArmor += equipitem.coldArmor;
+			AcidArmor += equipitem.acidArmor;
 
 
 			if (inventory [index].type == Item.Type.Weapon) {

@@ -9,8 +9,15 @@ public class GUI : MonoBehaviour {
 
 	public GameObject bluntDamageText;
 	public GameObject pierceDamageText;
+	public GameObject fireDamageText;
+	public GameObject coldDamageText;
+	public GameObject acidDamageText;
+
 	public GameObject bluntArmorText;
 	public GameObject pierceArmorText;
+	public GameObject fireArmorText;
+	public GameObject coldArmorText;
+	public GameObject acidArmorText;
 
 	public GameObject equipmentBox;
 	public GameObject equipmentSlotHelmet;
@@ -225,9 +232,15 @@ public class GUI : MonoBehaviour {
 
 		bluntDamageText = GameObject.Find("Blunt damage");
 		pierceDamageText = GameObject.Find("Pierce damage");
+		fireDamageText = GameObject.Find("Fire damage");
+		coldDamageText = GameObject.Find("Cold damage");
+		acidDamageText = GameObject.Find("Acid damage");
 
 		bluntArmorText = GameObject.Find ("Blunt armor");
 		pierceArmorText = GameObject.Find ("Pierce armor");
+		fireArmorText = GameObject.Find ("Fire armor");
+		coldArmorText = GameObject.Find ("Cold armor");
+		acidArmorText = GameObject.Find ("Acid armor");
 
 		equipmentBox = GameObject.Find ("EquipmentBox");
 		equipmentSlotHelmet = equipmentBox.transform.Find ("EquipmentSlotHelmet").gameObject;

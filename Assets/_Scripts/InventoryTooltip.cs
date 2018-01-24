@@ -12,8 +12,10 @@ public class InventoryTooltip : MonoBehaviour {
 
 	Text nametext;
 	Text description;
+	Text description2;
 	Text effect;
 	Text cost;
+	Text weight;
 	Image image;
 	Image icon;
 
@@ -51,8 +53,10 @@ public class InventoryTooltip : MonoBehaviour {
 		image = this.GetComponent <Image> ();
 		nametext = this.transform.Find ("Name").gameObject.GetComponent <Text> ();
 		description = this.transform.Find ("Description").gameObject.GetComponent <Text> ();
+		description2 = this.transform.Find ("Description2").gameObject.GetComponent <Text> ();
 		effect = this.transform.Find ("Effect").gameObject.GetComponent <Text> ();
 		cost = this.transform.Find ("Cost").gameObject.GetComponent <Text> ();
+		weight = this.transform.Find ("Weight").gameObject.GetComponent <Text> ();
 		icon = this.transform.Find ("Sprite").gameObject.GetComponent <Image> ();
 	}
 
@@ -69,8 +73,10 @@ public class InventoryTooltip : MonoBehaviour {
 		if (!isActive) {
 			nametext.text = "";
 			description.text = "";
+			description2.text = "";
 			effect.text = "";
 			cost.text = "";
+			weight.text = "";
 			icon.sprite = Resources.Load <Sprite> ("Sprites/UI/nothing_empty");
 		} else {
 			if (slotindex != -1 && slotindex != -2) {
@@ -130,28 +136,48 @@ public class InventoryTooltip : MonoBehaviour {
 			}
 			icon.sprite = Resources.Load <Sprite> (currentItem.itemsprite);
 			if (currentItem.type == Item.Type.Weapon) {
-				description.text = "Damage: ";
+				description.text = "";
+				description2.text = "";
 				if (currentItem.bluntMaxDamage > 0) {
-					description.text += "\nBlunt " + currentItem.bluntMinDamage + "-" + currentItem.bluntMaxDamage;
+					description.text += "\nBlunt damage " + currentItem.bluntMinDamage + "-" + currentItem.bluntMaxDamage;
 				}
 				if (currentItem.pierceMaxDamage > 0) {
-					description.text += "\nPierce " + currentItem.pierceMinDamage + "-" + currentItem.pierceMaxDamage;
+					description.text += "\nPierce damage " + currentItem.pierceMinDamage + "-" + currentItem.pierceMaxDamage;
+				}
+				if (currentItem.fireMaxDamage > 0) {
+					description2.text += "\nBurn damage " + currentItem.fireMinDamage + "-" + currentItem.fireMaxDamage;
+				}
+				if (currentItem.coldMaxDamage > 0) {
+					description2.text += "\nFrost damage " + currentItem.coldMinDamage + "-" + currentItem.coldMaxDamage;
+				}
+				if (currentItem.acidMaxDamage > 0) {
+					description2.text += "\nCorrosive damage " + currentItem.acidMinDamage + "-" + currentItem.acidMaxDamage;
 				}
 
-				description.text += "\nWeight: " + currentItem.weight;
+				weight.text = "\nWeight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Helmet
 			          || currentItem.type == Item.Type.Bodyarmor
 			          || currentItem.type == Item.Type.Pants
 			          || currentItem.type == Item.Type.Boots
 			          || currentItem.type == Item.Type.Offhand) {
-				description.text = "Protection: ";
+				description.text = "";
+				description2.text = "";
 				if (currentItem.bluntArmor > 0){
-					description.text += "\nBlunt " + currentItem.bluntArmor;
+					description.text += "\nBlunt resist " + currentItem.bluntArmor;
 				}
 				if (currentItem.pierceArmor > 0){
-					description.text += "\nPierce " + currentItem.pierceArmor;
+					description.text += "\nPierce resist " + currentItem.pierceArmor;
 				}
-				description.text += "\nWeight: " + currentItem.weight;
+				if (currentItem.fireArmor > 0){
+					description2.text += "\nBurn resist " + currentItem.fireArmor;
+				}
+				if (currentItem.coldArmor > 0){
+					description2.text += "\nFrost resist " + currentItem.coldArmor;
+				}
+				if (currentItem.acidArmor > 0){
+					description2.text += "\nCorrosive resist " + currentItem.acidArmor;
+				}
+				weight.text = "\nWeight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Consumable) {
 				description.text = "Uses left: " + currentItem.quantity;
 				if (currentItem.effect == Item.Effect.Healing) {

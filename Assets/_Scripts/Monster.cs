@@ -10,6 +10,9 @@ public class Monster : MonoBehaviour {
 	int health = 100;
 	public int bluntArmor = 0;
 	public int pierceArmor = 0;
+	public int fireArmor = 0;
+	public int coldArmor = 0;
+	public int acidArmor = 0;
 
 
 	// Attack capability
@@ -18,6 +21,12 @@ public class Monster : MonoBehaviour {
 	public int bluntMaxDamage = 0;
 	public int pierceMinDamage = 0;
 	public int pierceMaxDamage = 0;
+	public int fireMinDamage = 0;
+	public int fireMaxDamage = 0;
+	public int coldMinDamage = 0;
+	public int coldMaxDamage = 0;
+	public int acidMinDamage = 0;
+	public int acidMaxDamage = 0;
 	public float attackCooldown = 2f;
 	public float attackDistance = 0.7f;
 	public float aggroDistance = 5f;

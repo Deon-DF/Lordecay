@@ -10,6 +10,9 @@ public class AttackArc : MonoBehaviour {
 	public float TTL;
 	public int bluntDamage = 0;
 	public int pierceDamage = 0;
+	public int fireDamage = 0;
+	public int coldDamage = 0;
+	public int acidDamage = 0;
 	public float stunfactor = 0f;
 	public string origin;
 	public bool isAOE = false;
@@ -24,7 +27,11 @@ public class AttackArc : MonoBehaviour {
 					this.enemiesHit++;
 					if (this.enemiesHit == 1 || isAOE) {
 						Monster enemy = collider.transform.parent.gameObject.GetComponent <Monster> ();
-						int effectiveDMG = ((pierceDamage - enemy.pierceArmor) + (bluntDamage - enemy.bluntArmor));
+						int effectiveDMG = ((pierceDamage - enemy.pierceArmor) +
+											(bluntDamage - enemy.bluntArmor) + 
+											(fireDamage - enemy.fireArmor) +
+											(coldDamage - enemy.coldArmor) + 
+											(acidDamage - enemy.acidArmor));
 						if (effectiveDMG > 0) {
 							enemy.isStunned = true;
 							enemy.stunCooldown = stunfactor;
@@ -41,7 +48,11 @@ public class AttackArc : MonoBehaviour {
 			case "enemy":
 				if (collider.tag == "PlayerHitbox") {
 					Player player = collider.transform.parent.gameObject.GetComponent <Player> ();
-					int effectiveDMG = ((bluntDamage - player.BluntArmor) + (pierceDamage - player.PierceArmor));
+					int effectiveDMG = ((bluntDamage - player.BluntArmor) +
+										(pierceDamage - player.PierceArmor) +
+										(fireDamage - player.FireArmor) +
+										(coldDamage - player.ColdArmor) +
+										(acidDamage - player.AcidArmor));
 					if (effectiveDMG > 0) {
 						GlobalData.Gamelog += (Environment.NewLine + "You were hit for " + effectiveDMG + " damage.");
 						//Debug.Log ("You were hit for " + effectiveDMG + " damage.");
