@@ -349,9 +349,9 @@ public class Game : MonoBehaviour {
 				EnemyActions (enemy, player);
 				enemy.CoolDown ();
 				if (!Physics2D.Linecast (player.transform.position, enemy.transform.position, lineOfSightMask)) {
-					enemy.isVisibleToPlayer = true;
+					enemy.isVisibleToPlayers = true;
 				} else {
-					enemy.isVisibleToPlayer = false;
+					enemy.isVisibleToPlayers = false;
 				}
 			} else {
 				enemy.eRigidBody.velocity = new Vector2 (0f, 0f);

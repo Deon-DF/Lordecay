@@ -8,10 +8,14 @@ public class Item {
 	public enum Type {None, Weapon, Offhand, Bodyarmor, Helmet, Pants, Boots, Consumable, Other}
 	public enum Effect {None, Healing, StatusEffect, Lootbox}
 	public enum AttackType {None, Melee, RangedSingle, RangedCone}
+	public enum SpriteType {None, Bat, Sword, Pistol, Shotgun, Uzi, Machinegun}
+
+	public bool isLoud = false;
 
 	public string name;
 	public Type type = Type.None;
 	public AttackType attacktype = AttackType.None;
+	public SpriteType spritetype = SpriteType.None;
 	public string attackrange = "long";
 	public float attackcooldown = 0f;
 
@@ -292,6 +296,7 @@ public class Item {
 
 			case "Sword":
 				type = Type.Weapon;
+				spritetype = SpriteType.Sword;
 				attacktype = AttackType.Melee;
 				attackcooldown = 0.3f;
 				attackrange = "long";
@@ -310,14 +315,17 @@ public class Item {
 
 			case "Pistol":
 				type = Type.Weapon;
+				spritetype = SpriteType.Pistol;
 				attacktype = AttackType.RangedSingle;
+				attackcooldown = 0.4f;
 				name = "Pistol";
 				weight = 0.5f;
 				cost = 100;
 				pierceMinDamage = 25;
 				pierceMaxDamage = 50;
-				stunfactor = 1f;
+				stunfactor = 0.5f;
 				isAOE = false;
+				isLoud = true;
 				itemsprite = "Sprites/UI/Items/pistol";
 				isEquippable = true;
 				break;

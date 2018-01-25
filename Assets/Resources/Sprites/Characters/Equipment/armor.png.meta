@@ -1,21 +1,25 @@
 fileFormatVersion: 2
 guid: 12b0b9cc9c563274f81d0b43a7a3adce
-timeCreated: 1516716858
+timeCreated: 1516908280
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: armor_0
-    21300002: armor_1
-    21300004: armor_2
-    21300006: armor_3
-    21300008: armor_4
-    21300010: armor_5
-    21300012: armor_6
-    21300014: armor_7
-    21300016: armor_8
-    21300018: armor_9
-    21300020: armor_10
-    21300022: armor_11
+    21300000: Down
+    21300002: Down1
+    21300004: Down2
+    21300006: AimDown
+    21300008: Up
+    21300010: Up1
+    21300012: Up2
+    21300014: AimUp
+    21300016: Right
+    21300018: Right1
+    21300020: Right2
+    21300022: AimRight
+    21300024: Left
+    21300026: Left1
+    21300028: Left2
+    21300030: AimLeft
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -90,7 +94,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: armor_0
+      name: Down
       rect:
         serializedVersion: 2
         x: 0
@@ -103,7 +107,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_1
+      name: Down1
       rect:
         serializedVersion: 2
         x: 64
@@ -116,7 +120,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_2
+      name: Down2
       rect:
         serializedVersion: 2
         x: 128
@@ -129,7 +133,20 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_3
+      name: AimDown
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Up
       rect:
         serializedVersion: 2
         x: 0
@@ -142,7 +159,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_4
+      name: Up1
       rect:
         serializedVersion: 2
         x: 64
@@ -155,7 +172,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_5
+      name: Up2
       rect:
         serializedVersion: 2
         x: 128
@@ -168,7 +185,20 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_6
+      name: AimUp
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Right
       rect:
         serializedVersion: 2
         x: 0
@@ -181,7 +211,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_7
+      name: Right1
       rect:
         serializedVersion: 2
         x: 64
@@ -194,7 +224,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_8
+      name: Right2
       rect:
         serializedVersion: 2
         x: 128
@@ -207,7 +237,20 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_9
+      name: AimRight
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 64
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Left
       rect:
         serializedVersion: 2
         x: 0
@@ -220,7 +263,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_10
+      name: Left1
       rect:
         serializedVersion: 2
         x: 64
@@ -233,10 +276,23 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: armor_11
+      name: Left2
       rect:
         serializedVersion: 2
         x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AimLeft
+      rect:
+        serializedVersion: 2
+        x: 192
         y: 0
         width: 64
         height: 64

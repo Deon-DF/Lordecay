@@ -1,25 +1,25 @@
 fileFormatVersion: 2
 guid: e7ffca741f216474e89c4df8146ac4d1
-timeCreated: 1515973801
+timeCreated: 1516900853
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Down
     21300002: Down1
     21300004: Down2
-    21300006: character_3
+    21300006: AimDown
     21300008: Up
     21300010: Up1
     21300012: Up2
-    21300014: character_7
+    21300014: AimUp
     21300016: Right
     21300018: Right1
     21300020: Right2
-    21300022: character_11
+    21300022: AimRight
     21300024: Left
     21300026: Left1
     21300028: Left2
-    21300030: character_15
+    21300030: AimLeft
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -133,15 +133,15 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: character_3
+      name: AimDown
       rect:
         serializedVersion: 2
         x: 192
         y: 192
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -185,15 +185,15 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: character_7
+      name: AimUp
       rect:
         serializedVersion: 2
         x: 192
         y: 128
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -237,15 +237,15 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: character_11
+      name: AimRight
       rect:
         serializedVersion: 2
         x: 192
         y: 64
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -289,15 +289,15 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: character_15
+      name: AimLeft
       rect:
         serializedVersion: 2
         x: 192
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

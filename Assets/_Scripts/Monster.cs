@@ -34,7 +34,7 @@ public class Monster : MonoBehaviour {
 	public float hearingDistance = 10f;
 	public float aggroRememberTime = 5f;
 	public bool isAggressive;
-	public bool isVisibleToPlayer;
+	public bool isVisibleToPlayers;
 
 	public float aggroRememberCounter = 0;
 	private float attackCooldownCounter = 0;
@@ -115,7 +115,7 @@ public class Monster : MonoBehaviour {
 	void DrawRelative ()
 	{
 		eSpriteRenderer.sortingOrder = Mathf.RoundToInt (-transform.position.y * 100);
-		if (isVisibleToPlayer) {
+		if (isVisibleToPlayers) {
 			eSpriteRenderer.enabled = true;
 		} else {
 			eSpriteRenderer.enabled = false;

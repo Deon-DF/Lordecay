@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
+	
+	// masks for layers
+	int playerMask;
+	int enemyMask; 
+	int lineOfSightMask;
 
 	// Player stats
 
@@ -70,6 +75,9 @@ public class Player : MonoBehaviour {
 	private SpriteRenderer armorSpriteRenderer;
 	private SpriteRenderer pantsSpriteRenderer;
 	private SpriteRenderer bootsSpriteRenderer;
+
+	private SpriteRenderer swordSpriteRenderer;
+	private SpriteRenderer pistolSpriteRenderer;
 
 	// World
 
@@ -421,6 +429,22 @@ public class Player : MonoBehaviour {
 		} else {
 			bootsSpriteRenderer.enabled = false;
 		}
+
+		// Draw weapons
+
+		if (weapon.spritetype == Item.SpriteType.Sword) {
+			swordSpriteRenderer.enabled = true;
+			swordSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+		} else {
+			swordSpriteRenderer.enabled = false;
+		}
+
+		if (weapon.spritetype == Item.SpriteType.Pistol) {
+			pistolSpriteRenderer.enabled = true;
+			pistolSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+		} else {
+			pistolSpriteRenderer.enabled = false;
+		}
 	}
 
 	public bool IsPathChecking {
@@ -553,6 +577,11 @@ public class Player : MonoBehaviour {
 					attackCooldownCounter = weapon.attackcooldown;
 					isAttacking = true;
 
+					if (weapon.isLoud) {
+						madeLoudSound = true;
+						madeLoudSoundCounter = madeLoudSoundDuration;
+					}
+
 				} else if (weapon.attacktype == Item.AttackType.RangedSingle){ 
 					Vector2 mousePosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 					Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint (mousePosition);
@@ -560,19 +589,31 @@ public class Player : MonoBehaviour {
 					Vector3 targetPosition = new Vector3 (mouseInWorld.x, mouseInWorld.y, 0f);
 					AttackArc sweep;
 
-					sweep = Instantiate (player_attack_shot, targetPosition, Quaternion.identity);
+					if (!Physics2D.Linecast (transform.position, targetPosition, lineOfSightMask)) {
 
-					sweep.origin = "player";
-					sweep.TTL = 0.2f;
-					sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
-					sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
-					sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
-					sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
-					sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
-					sweep.stunfactor = Weapon.stunfactor;
-					sweep.isAOE = Weapon.isAOE;
-					attackCooldownCounter = weapon.attackcooldown;
-					isAttacking = true;
+					
+						sweep = Instantiate (player_attack_shot, targetPosition, Quaternion.identity);
+
+						sweep.origin = "player";
+						sweep.TTL = 0.2f;
+						sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
+						sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
+						sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
+						sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
+						sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
+						sweep.stunfactor = Weapon.stunfactor;
+						sweep.isAOE = Weapon.isAOE;
+						attackCooldownCounter = weapon.attackcooldown;
+						isAttacking = true;
+
+						if (weapon.isLoud) {
+							madeLoudSound = true;
+							madeLoudSoundCounter = madeLoudSoundDuration;
+						}
+					} else {
+						Debug.Log ("Cannot shoot outside of line of sight!");
+						DrawLine(transform.position, targetPosition, Color.red, 0.1f);
+					}
 				}
 			}
 		}
@@ -587,6 +628,23 @@ public class Player : MonoBehaviour {
 		} else {
 			isAiming = false;
 		}
+	}
+
+	void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 1f)
+	{
+		GameObject myLine = new GameObject();
+		myLine.transform.position = start;
+		myLine.AddComponent<LineRenderer>();
+		LineRenderer lr = myLine.GetComponent<LineRenderer>();
+		lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+		lr.SetColors(color, color);
+		lr.SetWidth(0.1f, 0.1f);
+		lr.SetPosition(0, start);
+		lr.SetPosition(1, end);
+		lr.startWidth = 0.02f;
+		lr.endWidth = 0.02f;
+		lr.sortingLayerName = "LineRenderer";
+		GameObject.Destroy(myLine, duration);
 	}
 
 /*	public void ClickToPath (Grid grid) {
@@ -678,6 +736,7 @@ public class Player : MonoBehaviour {
 		animator.SetBool("IsMoving", isMoving);
 		animator.SetFloat("LastMoveX", lastMove.x);
 		animator.SetFloat("LastMoveY", lastMove.y);
+		animator.SetBool("IsAiming", isAiming);
 
 	}
 
@@ -1085,6 +1144,10 @@ public class Player : MonoBehaviour {
 
 		maxstamina = 100 + (toughness - 5) * GlobalData.staminaPerToughness;
 		stamina = maxstamina;
+
+		playerMask = 1 << LayerMask.NameToLayer ("Player"); // enemies dont block visibility of other enemies, and player collider should not block the visibility of the player,
+		enemyMask = 1 << LayerMask.NameToLayer ("Enemy");   // so we "revert" these two masks with ~ to skip them from check in line of sight check.
+		lineOfSightMask = ~(playerMask | enemyMask);
 	}
 
 	void Start () {
@@ -1121,6 +1184,8 @@ public class Player : MonoBehaviour {
 		armorSpriteRenderer = transform.Find("Armor").gameObject.GetComponent <SpriteRenderer> ();
 		pantsSpriteRenderer = transform.Find("Pants").gameObject.GetComponent <SpriteRenderer> ();
 		bootsSpriteRenderer = transform.Find("Boots").gameObject.GetComponent <SpriteRenderer> ();
+		pistolSpriteRenderer = transform.Find("Pistol").gameObject.GetComponent <SpriteRenderer> ();
+		swordSpriteRenderer = transform.Find("Sword").gameObject.GetComponent <SpriteRenderer> ();
 
 		// Do not destroy player after ot was created, do not create new players
 		if (!playerExists) {
