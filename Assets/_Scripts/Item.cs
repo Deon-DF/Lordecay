@@ -7,11 +7,13 @@ public class Item {
 
 	public enum Type {None, Weapon, Offhand, Bodyarmor, Helmet, Pants, Boots, Consumable, Other}
 	public enum Effect {None, Healing, StatusEffect, Lootbox}
-	public enum AttackType {None, Melee, Single, Cone}
+	public enum AttackType {None, Melee, RangedSingle, RangedCone}
 
 	public string name;
 	public Type type = Type.None;
-	public AttackType attack = AttackType.None;
+	public AttackType attacktype = AttackType.None;
+	public string attackrange = "long";
+	public float attackcooldown = 0f;
 
 	// blunt damage
 	public int bluntMinDamage = 0;
@@ -72,11 +74,11 @@ public class Item {
 			player.inventory.Remove (item);
 		}
 	}
-
+	/*
 	public Item (Type itemType, string Name, AttackType AttackType, int minDamage, int maxDamage, bool AOE, float Weight, int Cost, int Protection, bool Equippable, bool Questitem, string Sprite, Effect itemEffect, int Quantity) {
 		name = Name;
 		type = itemType;
-		attack = AttackType;
+		attacktype = AttackType;
 		bluntMinDamage = minDamage;
 		bluntMaxDamage = maxDamage;
 		isAOE = AOE;
@@ -88,13 +90,15 @@ public class Item {
 		itemsprite = Sprite;
 		effect = itemEffect;
 		quantity = Quantity;
-	}
+	}*/
 
 	// Weapons
-	public Item (Type itemType, string Name, AttackType AttackType, int minDamage, int maxDamage, bool AOE, float Weight, int Cost, bool Questitem, string Sprite, Effect itemEffect) {
+	public Item (Type itemType, string Name, AttackType AttackType, float attackCooldown, string attackRange, int minDamage, int maxDamage, bool AOE, float Weight, int Cost, bool Questitem, string Sprite, Effect itemEffect) {
 		type = itemType;
 		name = Name;
-		attack = AttackType;
+		attacktype = AttackType;
+		attackcooldown = attackCooldown;
+		attackrange = attackRange;
 		bluntMinDamage = minDamage;
 		bluntMaxDamage = maxDamage;
 		isAOE = AOE;
@@ -269,9 +273,12 @@ public class Item {
 
 		if (itemtype == Type.Weapon) {
 			switch (ItemName) {
+			// melee
 			case "Baseball bat":
 				type = Type.Weapon;
-				attack = AttackType.Melee;
+				attacktype = AttackType.Melee;
+				attackcooldown = 0.3f;
+				attackrange = "long";
 				name = "Baseball Bat";
 				weight = 1f;
 				cost = 10;
@@ -285,7 +292,9 @@ public class Item {
 
 			case "Sword":
 				type = Type.Weapon;
-				attack = AttackType.Melee;
+				attacktype = AttackType.Melee;
+				attackcooldown = 0.3f;
+				attackrange = "long";
 				name = "Sword";
 				weight = 1f;
 				cost = 20;
@@ -294,6 +303,22 @@ public class Item {
 				stunfactor = 0.2f;
 				isAOE = false;
 				itemsprite = "Sprites/UI/Items/sword";
+				isEquippable = true;
+				break;
+
+			// ranged
+
+			case "Pistol":
+				type = Type.Weapon;
+				attacktype = AttackType.RangedSingle;
+				name = "Pistol";
+				weight = 0.5f;
+				cost = 100;
+				pierceMinDamage = 25;
+				pierceMaxDamage = 50;
+				stunfactor = 1f;
+				isAOE = false;
+				itemsprite = "Sprites/UI/Items/pistol";
 				isEquippable = true;
 				break;
 			

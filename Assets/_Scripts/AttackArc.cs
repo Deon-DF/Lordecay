@@ -28,20 +28,27 @@ public class AttackArc : MonoBehaviour {
 					if (this.enemiesHit == 1 || isAOE) {
 						Monster enemy = collider.transform.parent.gameObject.GetComponent <Monster> ();
 						int effectiveDMG = ((pierceDamage - enemy.pierceArmor) +
-											(bluntDamage - enemy.bluntArmor) + 
-											(fireDamage - enemy.fireArmor) +
-											(coldDamage - enemy.coldArmor) + 
-											(acidDamage - enemy.acidArmor));
+						                    (bluntDamage - enemy.bluntArmor) +
+						                    (fireDamage - enemy.fireArmor) +
+						                    (coldDamage - enemy.coldArmor) +
+						                    (acidDamage - enemy.acidArmor));
 						if (effectiveDMG > 0) {
-							enemy.isStunned = true;
-							enemy.stunCooldown = stunfactor;
+							enemy.Stun (stunfactor);
+							GlobalData.Gamelog += (Environment.NewLine + "You have hit " + enemy.name + " for " + effectiveDMG + " damage.");
+							enemy.Health -= effectiveDMG;
 							//Quaternion direction = Quaternion.LookRotation (Vector3.forward, collider.transform.position - transform.position);
 							//collider.attachedRigidbody.velocity = direction * Vector3.one * 10000f;
-							GlobalData.Gamelog += (Environment.NewLine + "You have hit " + enemy.name + " for " + effectiveDMG + " damage.");
 							//Debug.Log ("You have hit " + enemy.name + " for " + effectiveDMG + "damage.");
-							enemy.Health -= effectiveDMG;
+						} else {
+							GlobalData.Gamelog += (Environment.NewLine + "Enemy armor absorbed the hit!");
+						}
+						if (!enemy.isAggressive) {
+							enemy.isAggressive = true;
+							enemy.aggroRememberCounter = enemy.aggroRememberTime;
 						}
 
+					} else {
+						Debug.Log ("Hit more than one enemy, ignoring others.");
 					}
 				}
 				break;
@@ -49,14 +56,16 @@ public class AttackArc : MonoBehaviour {
 				if (collider.tag == "PlayerHitbox") {
 					Player player = collider.transform.parent.gameObject.GetComponent <Player> ();
 					int effectiveDMG = ((bluntDamage - player.BluntArmor) +
-										(pierceDamage - player.PierceArmor) +
-										(fireDamage - player.FireArmor) +
-										(coldDamage - player.ColdArmor) +
-										(acidDamage - player.AcidArmor));
+					                    (pierceDamage - player.PierceArmor) +
+					                    (fireDamage - player.FireArmor) +
+					                    (coldDamage - player.ColdArmor) +
+					                    (acidDamage - player.AcidArmor));
 					if (effectiveDMG > 0) {
 						GlobalData.Gamelog += (Environment.NewLine + "You were hit for " + effectiveDMG + " damage.");
 						//Debug.Log ("You were hit for " + effectiveDMG + " damage.");
 						player.Health -= effectiveDMG;
+					} else {
+						GlobalData.Gamelog += (Environment.NewLine + "Your armor absorbed the hit!");
 					}
 				}
 				break;

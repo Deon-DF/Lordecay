@@ -43,11 +43,6 @@ public class Game : MonoBehaviour {
 			monster.Roam ();
 			monster.isPathFinding = false;
 		}
-		if (monster.isStunned) {
-			if (monster.stunCooldown <= 0) {
-				monster.isStunned = false;
-			}
-		}
 	}
 
 	public void HandleControls (Player player) {
@@ -107,6 +102,40 @@ public class Game : MonoBehaviour {
 
 	void UpdateUI (Player player, GUI gui) {
 
+		if (!GlobalData.worldmap && !GlobalData.inventoryON) {
+
+			gui.enemyNameUI.GetComponent<Text> ().text = GUI.enemyName;
+			gui.enemyStatusUI.GetComponent<Text> ().text = GUI.enemyStatus;
+
+			//Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
+			if (hit.collider != null) {
+				if (hit.collider.gameObject.tag == "EnemyHitbox") {
+					GameObject enemy = hit.collider.transform.parent.gameObject;
+					gui.enemyBox.SetActive (true);
+					GUI.enemyName = enemy.name;
+					Monster monster = enemy.GetComponent<Monster> ();
+
+					gui.enemyHealthBar.transform.localScale = new Vector3 (monster.Health * 1.0f / monster.maxhealth, 1, 1);
+					Debug.Log ("Health: " + monster.Health + " MaxHealth: " + monster.maxhealth + " Ratio: " + monster.Health * 1.0f / monster.maxhealth);
+
+					GUI.enemyStatus = "";
+					if (monster.isDisarmed) {
+						GUI.enemyStatus += "Disarmed";
+					}
+					if (monster.isRooted) {
+						GUI.enemyStatus += "Rooted";
+					}
+					if (monster.isStunned) {
+						GUI.enemyStatus += "Stunned";
+					}
+				} 
+			} else {
+				gui.enemyBox.SetActive (false);
+				GUI.enemyName = "";
+			}
+		}
+
 		if (!GlobalData.worldmap) {
 			WeaponUI.sprite = Resources.Load<Sprite>(player.Weapon.itemsprite);
 			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / player.MaxHealth, 1, 1);
@@ -133,6 +162,15 @@ public class Game : MonoBehaviour {
 				int numInventoryItems = player.inventory.Count;
 				Tile playerTile = player.GetPlayerTile (grid);
 				int numItemsOnGround = playerTile.groundItems.Count;
+
+				gui.strengthText.GetComponent<Text> ().text = player.strength.ToString();
+				gui.perceptionText.GetComponent<Text> ().text = player.perception.ToString();
+				gui.intelligenceText.GetComponent<Text> ().text = player.intelligence.ToString();
+				gui.toughnessText.GetComponent<Text> ().text = player.toughness.ToString();
+
+				gui.healthText.GetComponent<Text> ().text = player.Health + "/" + player.MaxHealth;
+				gui.sanityText.GetComponent<Text> ().text = player.Sanity + "/" + player.MaxSanity;
+				gui.staminaText.GetComponent<Text> ().text = Mathf.Round(player.Stamina) + "/" + player.MaxStamina;
 
 				gui.bluntDamageText.GetComponent<Text> ().text = player.Weapon.bluntMinDamage + "-" + player.Weapon.bluntMaxDamage;
 				gui.pierceDamageText.GetComponent<Text> ().text = player.PierceMinDamage + "-" + player.PierceMaxDamage;
@@ -303,7 +341,6 @@ public class Game : MonoBehaviour {
 		} else {
 			player.pRigidbody.velocity = new Vector2 (0f, 0f);
 		}
-
 
 		// Monster controls and behavior
 		Monster[] enemies = GameObject.FindObjectsOfType<Monster> ();

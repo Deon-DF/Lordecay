@@ -17,6 +17,7 @@ public class Monster : MonoBehaviour {
 
 	// Attack capability
 
+
 	public int bluntMinDamage = 0;
 	public int bluntMaxDamage = 0;
 	public int pierceMinDamage = 0;
@@ -28,7 +29,7 @@ public class Monster : MonoBehaviour {
 	public int acidMinDamage = 0;
 	public int acidMaxDamage = 0;
 	public float attackCooldown = 2f;
-	public float attackDistance = 0.7f;
+	public float attackDistance = 1f;
 	public float aggroDistance = 5f;
 	public float hearingDistance = 10f;
 	public float aggroRememberTime = 5f;
@@ -40,9 +41,15 @@ public class Monster : MonoBehaviour {
 
 	AttackArc monster_attack_arc;
 
-	// Movement
+	// effects
+	public bool isDisarmed = false;
+	public float disarmCooldown = 0f;
+	public bool isRooted = false;
+	public float rootCooldown = 0f;
 	public bool isStunned = false;
 	public float stunCooldown = 0f;
+
+	// Movement
 
 	public float moveSpeed;
 	public float roamCooldown;
@@ -103,7 +110,8 @@ public class Monster : MonoBehaviour {
 
 	}
 
-	// Drawing
+	// Drawing/UI
+
 	void DrawRelative ()
 	{
 		eSpriteRenderer.sortingOrder = Mathf.RoundToInt (-transform.position.y * 100);
@@ -114,15 +122,35 @@ public class Monster : MonoBehaviour {
 		}
 	}
 
+	/*
+	void OnMouseOver() {
+		Debug.Log (gameObject.name);
+		GUI.enemyName = gameObject.name;
+	}*/
+
+	// Effects
+
+	public void Disarm (float disarmDuration) {
+		isDisarmed = true;
+		disarmCooldown = disarmDuration;
+	}
+	public void Root (float rootDuration) {
+		isRooted = true;
+		rootCooldown = rootDuration;
+	}
+	public void Stun (float stunDuration) {
+		isStunned = true;
+		stunCooldown = stunDuration;
+	}
+
 	// Attacking
 
 	public void AttackPlayer (Player player) {
 		if (attackCooldownCounter < 0) {
-				Vector3 spawnPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
+				/*Vector3 spawnPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
 				Quaternion direction = Quaternion.LookRotation (Vector3.forward, transform.position - player.transform.position);
-				Vector3 offset = direction * (new Vector3 (0f, -0f, 0f));
-
-				AttackArc sweep = Instantiate (monster_attack_arc, spawnPosition - offset, direction);
+				Vector3 offset = direction * (new Vector3 (0f, 0.3f, 0f));*/
+				AttackArc sweep = Instantiate (monster_attack_arc, new Vector3 (player.transform.position.x, player.transform.position.y+0.5f, 0), Quaternion.identity);
 				sweep.origin = "enemy";
 				sweep.TTL = 0.2f;
 				sweep.pierceDamage = UnityEngine.Random.Range(pierceMinDamage, pierceMaxDamage + 1);
@@ -155,6 +183,10 @@ public class Monster : MonoBehaviour {
 	}
 
 	public void Die () {
+		GlobalData.Gamelog += (Environment.NewLine + name + " dies!");
+		GameObject.DestroyObject (this.gameObject);
+
+		// TODO: add corpse spawning (below is an example from a different game).
 		/*GameObject corpse = Instantiate (Resources.Load ("Prefabs/Creatures/Bloodspread"), enemy.transform.position, enemy.transform.rotation) as GameObject;
 		corpse.AddComponent<SpriteRenderer> ();
 		corpse.GetComponent<SpriteRenderer> ().sortingOrder = 5;
@@ -166,8 +198,6 @@ public class Monster : MonoBehaviour {
 		DropLoot (enemy);
 		StartCoroutine(bloodpool(enemy.transform.position, enemy.transform.rotation));*/
 		//GameSettings.enemiesKilled++;
-		GlobalData.Gamelog += (Environment.NewLine + name + " dies!");
-		GameObject.DestroyObject (this.gameObject);
 	}
 
 	void CheckLastDirection (Vector3 direction)
@@ -198,8 +228,9 @@ public class Monster : MonoBehaviour {
 
 	public void TargetPlayer (Player player, int layerMask, Grid grid)
 	{
-		if (Vector3.Distance (transform.position, player.transform.position) < attackDistance && !isStunned) {
+		if ((Vector3.Distance (transform.position, player.transform.position) < attackDistance) && !isStunned && !isDisarmed) {
 			// Stop and attack
+			//Debug.Log ("The distance is " + (Vector3.Distance (transform.position, player.transform.position)));
 			eRigidBody.velocity = new Vector2 (0f, 0f);
 			isPathFinding = false;
 			isMoving = false;
@@ -208,12 +239,13 @@ public class Monster : MonoBehaviour {
 		} else {
 			// Move towards player
 			// check if the direction is blocked
+			//Debug.Log ("The distance is still " + (Vector3.Distance (transform.position, player.transform.position)) + " which is less than " + attackDistance);
 			if (!Physics2D.Linecast (transform.position, player.transform.position, layerMask)) { // checking collision with any other object which is not in enemy_and_playerMask
 				lastKnownPlayerPosition = player.transform.position;
 				Quaternion direction = Quaternion.LookRotation (Vector3.forward, lastKnownPlayerPosition - transform.position);
 				CheckLastDirection(lastKnownPlayerPosition - transform.position);
 				moveDirection = direction * Vector3.up;
-				if (!isStunned) {
+				if (!isStunned && !isRooted) {
 					eRigidBody.velocity = moveDirection * moveSpeed;
 					isPathFinding = false;
 					isMoving = true;
@@ -248,7 +280,18 @@ public class Monster : MonoBehaviour {
 		} else {
 			roamCooldownCounter -= Time.deltaTime;
 		}
+		disarmCooldown -= Time.deltaTime;
+		rootCooldown -= Time.deltaTime;
 		stunCooldown -= Time.deltaTime;
+		if (disarmCooldown <= 0) {
+			isDisarmed = false;
+		}
+		if (rootCooldown <= 0) {
+			isRooted = false;
+		}
+		if (stunCooldown <= 0) {
+			isStunned = false;
+		}
 	}
 
 	// Moving
@@ -262,7 +305,7 @@ public class Monster : MonoBehaviour {
 					Quaternion direction = Quaternion.LookRotation (Vector3.forward, nextWaypoint - transform.position);
 					CheckLastDirection (nextWaypoint - transform.position);
 					moveDirection = direction * Vector3.up;
-					if (!isStunned) {
+					if (!isStunned && !isRooted) {
 						eRigidBody.velocity = moveDirection * moveSpeed;
 						isMoving = true;
 					} else {

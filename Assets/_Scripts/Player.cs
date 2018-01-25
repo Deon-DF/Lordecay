@@ -5,12 +5,20 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
-	// Stats
-	int maxhealth = 100;
-	int health = 100;
+	// Player stats
 
+	public int strength = 5;
+	public int perception = 5;
+	public int intelligence = 5;
+	public int toughness = 5;
+
+	// Depletable resources
+	int maxhealth = 100;
+	int health;
+	int maxsanity = 100;
+	int sanity;
 	float maxstamina = 100;
-	float stamina = 100;
+	float stamina;
 
 	int bluntMinDamage = 3;
 	int bluntMaxDamage = 5;
@@ -41,9 +49,7 @@ public class Player : MonoBehaviour {
 	float moveStaminaRecovery = 5;
 
 	// Attack
-	private float attackCooldown = 0.3f;
 	private float attackCooldownCounter;
-	private float attackDuration = 0.2f;
 	private bool isAttacking = false;
 	private bool isAiming = false;
 
@@ -75,7 +81,10 @@ public class Player : MonoBehaviour {
 	private bool isPathChecking = false;
 
 	GameObject overlay;
-	AttackArc player_attack_arc;
+	AttackArc player_attack_shot;
+	AttackArc player_attack_arc_short;
+	AttackArc player_attack_arc_medium;
+	AttackArc player_attack_arc_long;
 
 	// Inventory
 	public List<Item> inventory = new List<Item> ();
@@ -138,6 +147,32 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public int Sanity {
+		set {
+			float newsanity = value;
+			if (newsanity < sanity) {
+				sanity = Mathf.Max (value, 0);
+			} else {
+				sanity = Mathf.Min (value, maxsanity);
+			}
+		}
+
+		get {
+			return sanity;
+		}
+
+	}
+
+	public int MaxSanity {
+		set {
+			maxsanity = value;
+		}
+
+		get {
+			return maxsanity;
+		}
+	}
+
 	public float Stamina {
 		set {
 			float newstamina = value;
@@ -170,7 +205,7 @@ public class Player : MonoBehaviour {
 		c.a = 0.2f;
 		oImage.color = c;
 		overlay.SetActive (true);
-		yield return new WaitForSeconds (attackDuration);
+		yield return new WaitForSeconds (weapon.attackcooldown);
 		overlay.SetActive (false);
 		oImage.color = Color.white;
 	}
@@ -444,12 +479,13 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.H)) {
 			Item newItem = new Item(Item.Type.Weapon, "Baseball bat");// actually gives baseball bat
 			Item newItem2 = new Item(Item.Type.Weapon, "Sword");// actually gives sword
-			Item newItem3 = new Item(Item.Type.Offhand, "Riot shield");// actually gives riot shield
-			Item newItem4 = new Item(Item.Type.Helmet, "Army helmet");// actually gives army helmet
-			Item newItem5 = new Item(Item.Type.Bodyarmor, "Kevlar vest");// actually gives kevlar vest
-			Item newItem6 = new Item(Item.Type.Consumable, "MedKit");//GlobalData.MedKit;
-			Item newItem7 = new Item(Item.Type.Pants, "Camo pants");// actually gives camo pants
-			Item newItem8 = new Item(Item.Type.Boots, "Leather boots");// actually gives leather boots
+			Item newItem3 = new Item(Item.Type.Weapon, "Pistol");// actually gives pistol
+			Item newItem4 = new Item(Item.Type.Offhand, "Riot shield");// actually gives riot shield
+			Item newItem5 = new Item(Item.Type.Helmet, "Army helmet");// actually gives army helmet
+			Item newItem6 = new Item(Item.Type.Bodyarmor, "Kevlar vest");// actually gives kevlar vest
+			Item newItem7 = new Item(Item.Type.Consumable, "MedKit");//GlobalData.MedKit;
+			Item newItem8 = new Item(Item.Type.Pants, "Camo pants");// actually gives camo pants
+			Item newItem9 = new Item(Item.Type.Boots, "Leather boots");// actually gives leather boots
 			getItem (newItem);
 			getItem (newItem2);
 			getItem (newItem3);
@@ -458,6 +494,7 @@ public class Player : MonoBehaviour {
 			getItem (newItem6);
 			getItem (newItem7);
 			getItem (newItem8);
+			getItem (newItem9);
 		}
 	}
 
@@ -487,26 +524,56 @@ public class Player : MonoBehaviour {
 	{
 		if (Input.GetKeyDown (KeyCode.Mouse0) && Input.GetKey(KeyCode.Mouse1)) {
 			if (attackCooldownCounter < 0) {
-				Vector2 mousePosition = new Vector2 (Input.mousePosition.x / Screen.width * aspectRatioX, Input.mousePosition.y / Screen.height * aspectRatioY);
-				Vector2 centerPosition = new Vector2 (8.0f, 4.5f);
-				Vector3 spawnPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
-				Quaternion direction = Quaternion.LookRotation (Vector3.forward, centerPosition - mousePosition);
-				Vector3 offset = direction * (new Vector3 (0f, 0f, 0f));
-				//Debug.Log (mousePosition.x + " " + mousePosition.y); // checking mouse position at click
+				if (weapon.attacktype == Item.AttackType.Melee) {
+					Vector2 mousePosition = new Vector2 (Input.mousePosition.x / Screen.width * aspectRatioX, Input.mousePosition.y / Screen.height * aspectRatioY);
+					Vector2 centerPosition = new Vector2 (8.0f, 4.5f);
+					Vector3 spawnPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
+					Quaternion direction = Quaternion.LookRotation (Vector3.forward, centerPosition - mousePosition);
+					Vector3 offset = direction * (new Vector3 (0f, 0f, 0f));
+					//Debug.Log (mousePosition.x + " " + mousePosition.y); // checking mouse position at click
+					AttackArc sweep;
 
-				AttackArc sweep = Instantiate (player_attack_arc, spawnPosition - offset, direction);
+					if (weapon.attackrange == "short") {
+						sweep = Instantiate (player_attack_arc_short, spawnPosition - offset, direction);
+					} else if (weapon.attackrange == "medium") {
+						sweep = Instantiate (player_attack_arc_medium, spawnPosition - offset, direction);
+					} else {
+						sweep = Instantiate (player_attack_arc_long, spawnPosition - offset, direction);
+					}
 
-				sweep.origin = "player";
-				sweep.TTL = 0.1f;
-				sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
-				sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
-				sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
-				sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
-				sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
-				sweep.stunfactor = Weapon.stunfactor;
-				sweep.isAOE = Weapon.isAOE;
-				attackCooldownCounter = attackCooldown;
-				isAttacking = true;
+					sweep.origin = "player";
+					sweep.TTL = 0.2f;
+					sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
+					sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
+					sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
+					sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
+					sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
+					sweep.stunfactor = Weapon.stunfactor * (1 + (strength - 5)*GlobalData.stunfactorPerStrength);
+					sweep.isAOE = Weapon.isAOE;
+					attackCooldownCounter = weapon.attackcooldown;
+					isAttacking = true;
+
+				} else if (weapon.attacktype == Item.AttackType.RangedSingle){ 
+					Vector2 mousePosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
+					Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint (mousePosition);
+
+					Vector3 targetPosition = new Vector3 (mouseInWorld.x, mouseInWorld.y, 0f);
+					AttackArc sweep;
+
+					sweep = Instantiate (player_attack_shot, targetPosition, Quaternion.identity);
+
+					sweep.origin = "player";
+					sweep.TTL = 0.2f;
+					sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
+					sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
+					sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
+					sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
+					sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
+					sweep.stunfactor = Weapon.stunfactor;
+					sweep.isAOE = Weapon.isAOE;
+					attackCooldownCounter = weapon.attackcooldown;
+					isAttacking = true;
+				}
 			}
 		}
 
@@ -586,7 +653,7 @@ public class Player : MonoBehaviour {
 			Vector2 centerPosition = new Vector2 (8.0f, 4.5f);
 			//Quaternion direction = Quaternion.LookRotation (Vector3.forward, centerPosition - mousePosition);
 			if (Mathf.Abs(mousePosition.x - centerPosition.x) > Mathf.Abs(mousePosition.y - centerPosition.y)) {
-				Debug.Log (Mathf.Abs(mousePosition.x - centerPosition.x) + " is greater than " + Mathf.Abs(mousePosition.y - centerPosition.y));
+				//Debug.Log (Mathf.Abs(mousePosition.x - centerPosition.x) + " is greater than " + Mathf.Abs(mousePosition.y - centerPosition.y));
 				if (mousePosition.x > centerPosition.x) {
 					lastMove.x = 1;
 					lastMove.y = 0;
@@ -595,7 +662,7 @@ public class Player : MonoBehaviour {
 					lastMove.y = 0;
 				}
 			} else {
-				Debug.Log (Mathf.Abs(mousePosition.x - centerPosition.x) + " is less than " + Mathf.Abs(mousePosition.y - centerPosition.y));
+				//Debug.Log (Mathf.Abs(mousePosition.x - centerPosition.x) + " is less than " + Mathf.Abs(mousePosition.y - centerPosition.y));
 				if (mousePosition.y > centerPosition.y) {
 					lastMove.x = 0;
 					lastMove.y = 1;
@@ -1001,7 +1068,24 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	void RecalculateStatsInfluence() {
+		maxhealth = 100 + (toughness - 5) * GlobalData.healthPerToughness;
+		maxsanity = 100 + (intelligence - 5) * GlobalData.sanityPerIntelligence;
+		maxstamina = 100 + (toughness - 5) * GlobalData.staminaPerToughness;
+	}
+
 // Awake/Start/update functions
+
+	void Awake() {
+		maxhealth = 100 + (toughness - 5) * GlobalData.healthPerToughness;
+		health = maxhealth;
+
+		maxsanity = 100 + (intelligence - 5) * GlobalData.sanityPerIntelligence;
+		sanity = maxsanity;
+
+		maxstamina = 100 + (toughness - 5) * GlobalData.staminaPerToughness;
+		stamina = maxstamina;
+	}
 
 	void Start () {
 		// Inventory
@@ -1024,7 +1108,10 @@ public class Player : MonoBehaviour {
 //		waypoints = new List<Tile>();
 
 		// Attack arcs
-		player_attack_arc = Resources.Load<AttackArc> ("Prefabs/UI/player-attack-arc");
+		player_attack_shot = Resources.Load<AttackArc> ("Prefabs/UI/shot");
+		player_attack_arc_short = Resources.Load<AttackArc> ("Prefabs/UI/player-attack-arc-short");
+		player_attack_arc_medium = Resources.Load<AttackArc> ("Prefabs/UI/player-attack-arc-medium");
+		player_attack_arc_long = Resources.Load<AttackArc> ("Prefabs/UI/player-attack-arc-long");
 
 		// Animation/physics
 		animator = GetComponent<Animator>();

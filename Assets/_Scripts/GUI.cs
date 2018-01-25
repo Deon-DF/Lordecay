@@ -7,6 +7,17 @@ public class GUI : MonoBehaviour {
 	public GameObject inventoryBG;
 	public GameObject inventoryTooltip;
 
+	// Stats
+
+	public GameObject strengthText;
+	public GameObject perceptionText;
+	public GameObject intelligenceText;
+	public GameObject toughnessText;
+
+	public GameObject healthText;
+	public GameObject sanityText;
+	public GameObject staminaText;
+
 	public GameObject bluntDamageText;
 	public GameObject pierceDamageText;
 	public GameObject fireDamageText;
@@ -18,6 +29,8 @@ public class GUI : MonoBehaviour {
 	public GameObject fireArmorText;
 	public GameObject coldArmorText;
 	public GameObject acidArmorText;
+
+	// Inventory GUI
 
 	public GameObject equipmentBox;
 	public GameObject equipmentSlotHelmet;
@@ -88,6 +101,15 @@ public class GUI : MonoBehaviour {
 	public GameObject groundSlot3;
 	public GameObject groundSlot4;
 	public GameObject groundSlot5;
+
+	// Enemy stats and health
+
+	public GameObject enemyBox;
+	public GameObject enemyNameUI;
+	public GameObject enemyStatusUI;
+	public GameObject enemyHealthBar;
+	public static string enemyName = "";
+	public static string enemyStatus = "";
 
 
 	public GameObject GetGroundSlotByIndex (int index) {
@@ -227,8 +249,25 @@ public class GUI : MonoBehaviour {
 	void Awake () {
 
 		// Find UI elements
+
+		enemyBox = GameObject.Find ("EnemyGUI").gameObject;
+		enemyNameUI = enemyBox.transform.Find("EnemyName").gameObject;
+		enemyStatusUI = enemyBox.transform.Find("EnemyStatus").gameObject;
+		enemyHealthBar = enemyBox.transform.Find("EnemyHealthBar").gameObject;
+
+		//enemyBox.SetActive (false);
+
 		inventoryBG = GameObject.Find ("InventoryBackground").gameObject;
 		inventoryTooltip = GameObject.Find ("InventoryTooltip").gameObject;
+
+		strengthText = GameObject.Find("StrengthText");
+		perceptionText = GameObject.Find("PerceptionText");
+		intelligenceText = GameObject.Find("IntelligenceText");
+		toughnessText = GameObject.Find("ToughnessText");
+
+		healthText = GameObject.Find ("HealthText");
+		sanityText = GameObject.Find ("SanityText");
+		staminaText = GameObject.Find ("StaminaText");
 
 		bluntDamageText = GameObject.Find("Blunt damage");
 		pierceDamageText = GameObject.Find("Pierce damage");
