@@ -1,21 +1,21 @@
 fileFormatVersion: 2
 guid: f89ef00088836e3408e79bd4420720d8
-timeCreated: 1516655455
+timeCreated: 1516914585
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: boots_brown_0
-    21300002: boots_brown_1
-    21300004: boots_brown_2
-    21300006: boots_brown_3
-    21300008: boots_brown_4
-    21300010: boots_brown_5
-    21300012: boots_brown_6
-    21300014: boots_brown_7
-    21300016: boots_brown_8
-    21300018: boots_brown_9
-    21300020: boots_brown_10
-    21300022: boots_brown_11
+    21300000: Down
+    21300002: Down1
+    21300004: Down2
+    21300006: Up
+    21300008: Up1
+    21300010: Up2
+    21300012: Right
+    21300014: Right1
+    21300016: Right2
+    21300018: Left
+    21300020: Left1
+    21300022: Left2
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -90,7 +90,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boots_brown_0
+      name: Down
       rect:
         serializedVersion: 2
         x: 0
@@ -103,7 +103,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_1
+      name: Down1
       rect:
         serializedVersion: 2
         x: 64
@@ -116,7 +116,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_2
+      name: Down2
       rect:
         serializedVersion: 2
         x: 128
@@ -129,7 +129,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_3
+      name: Up
       rect:
         serializedVersion: 2
         x: 0
@@ -142,7 +142,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_4
+      name: Up1
       rect:
         serializedVersion: 2
         x: 64
@@ -155,7 +155,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_5
+      name: Up2
       rect:
         serializedVersion: 2
         x: 128
@@ -168,7 +168,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_6
+      name: Right
       rect:
         serializedVersion: 2
         x: 0
@@ -181,7 +181,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_7
+      name: Right1
       rect:
         serializedVersion: 2
         x: 64
@@ -194,7 +194,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_8
+      name: Right2
       rect:
         serializedVersion: 2
         x: 128
@@ -207,7 +207,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_9
+      name: Left
       rect:
         serializedVersion: 2
         x: 0
@@ -220,7 +220,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_10
+      name: Left1
       rect:
         serializedVersion: 2
         x: 64
@@ -233,7 +233,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: boots_brown_11
+      name: Left2
       rect:
         serializedVersion: 2
         x: 128

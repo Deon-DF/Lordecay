@@ -96,32 +96,37 @@ public class InventoryTooltip : MonoBehaviour {
 			} else {
 				switch (slotName) {
 				case "helmet":
-					if (player.helmet != GlobalData.naked_head) {
+					if (player.helmet != GlobalData.no_helmet) {
 						currentItem = player.helmet;
 					}
 					break;
 				case "bodyarmor":
-					if (player.bodyarmor != GlobalData.naked_body) {
+					if (player.bodyarmor != GlobalData.no_armor) {
 						currentItem = player.bodyarmor;
 					}
 					break;
+				case "clothing":
+					if (player.clothing != GlobalData.no_clothing) {
+						currentItem = player.clothing;
+					}
+					break;
 				case "pants":
-					if (player.pants != GlobalData.naked_legs) {
+					if (player.pants != GlobalData.no_boots) {
 						currentItem = player.pants;
 					}
 					break;
 				case "boots":
-					if (player.boots != GlobalData.naked_feet) {
+					if (player.boots != GlobalData.no_boots) {
 						currentItem = player.boots;
 					}
 					break;
 				case "weapon":
-					if (player.Weapon != GlobalData.punch) {
+					if (player.Weapon != GlobalData.no_weapon) {
 						currentItem = player.Weapon;
 					}
 					break;
 				case "offhand":
-					if (player.offhand != GlobalData.empty_offhand) {
+					if (player.offhand != GlobalData.no_offhand) {
 						currentItem = player.offhand;
 					}
 					break;
@@ -156,7 +161,8 @@ public class InventoryTooltip : MonoBehaviour {
 
 				weight.text = "\nWeight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Helmet
-			          || currentItem.type == Item.Type.Bodyarmor
+					  || currentItem.type == Item.Type.Bodyarmor
+			          || currentItem.type == Item.Type.Clothing
 			          || currentItem.type == Item.Type.Pants
 			          || currentItem.type == Item.Type.Boots
 			          || currentItem.type == Item.Type.Offhand) {

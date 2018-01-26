@@ -45,8 +45,9 @@ public class GlobalData {
 	// Player stats influence
 
 	public static int healthPerToughness = 20;
-	public static int staminaPerToughness = 20;
+	public static int accuracyPerPerception = 10;
 	public static int sanityPerIntelligence = 20;
+	public static int staminaPerToughness = 20;
 
 	public static float stunfactorPerStrength = 0.2f;
 
@@ -77,11 +78,12 @@ public class GlobalData {
 
 	// standard empty equipment (nothing equipped)
 
-	public static Item punch = new Item (Item.Type.Weapon, "Bare hands", Item.AttackType.Melee, 0.1f, "short",3, 5, false, 0f, 0, false, "Sprites/UI/Items/fist", Item.Effect.None);
-	public static Item empty_offhand = new Item (Item.Type.Offhand, "Empty offhand", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
-	public static Item naked_head = new Item (Item.Type.Helmet, "Naked head", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
-	public static Item naked_body = new Item (Item.Type.Bodyarmor, "Naked body", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
-	public static Item naked_legs = new Item (Item.Type.Pants, "Naked legs", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
-	public static Item naked_feet = new Item (Item.Type.Boots, "Naked feet", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
+	public static Item no_weapon = new Item (Item.Type.Weapon, "Bare hands", Item.AttackType.Melee, 0.1f, "short",3, 5, false, 0f, 0, false, "Sprites/UI/Items/fist", Item.Effect.None);
+	public static Item no_offhand = new Item (Item.Type.Offhand, "Empty offhand", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
+	public static Item no_helmet = new Item (Item.Type.Helmet, "Naked head", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
+	public static Item no_armor = new Item (Item.Type.Bodyarmor, "No armor", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
+	public static Item no_clothing = new Item (Item.Type.Clothing, "Naked body", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
+	public static Item no_pants = new Item (Item.Type.Pants, "Naked legs", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
+	public static Item no_boots = new Item (Item.Type.Boots, "Naked feet", 0, 0, 0, false, "Sprites/Characters/Blob", Item.Effect.None);
 
 }

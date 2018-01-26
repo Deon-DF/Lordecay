@@ -17,6 +17,7 @@ public class GUI : MonoBehaviour {
 	public GameObject healthText;
 	public GameObject sanityText;
 	public GameObject staminaText;
+	public GameObject accuracyText;
 
 	public GameObject bluntDamageText;
 	public GameObject pierceDamageText;
@@ -34,7 +35,8 @@ public class GUI : MonoBehaviour {
 
 	public GameObject equipmentBox;
 	public GameObject equipmentSlotHelmet;
-	public GameObject equipmentSlotbodyarmor;
+	public GameObject equipmentSlotBodyarmor;
+	public GameObject equipmentSlotClothing;
 	public GameObject equipmentSlotPants;
 	public GameObject equipmentSlotBoots;
 	public GameObject equipmentSlotWeapon;
@@ -282,6 +284,7 @@ public class GUI : MonoBehaviour {
 		healthText = GameObject.Find ("HealthText");
 		sanityText = GameObject.Find ("SanityText");
 		staminaText = GameObject.Find ("StaminaText");
+		accuracyText = GameObject.Find ("AccuracyText");
 
 		bluntDamageText = GameObject.Find("Blunt damage");
 		pierceDamageText = GameObject.Find("Pierce damage");
@@ -297,7 +300,8 @@ public class GUI : MonoBehaviour {
 
 		equipmentBox = GameObject.Find ("EquipmentBox");
 		equipmentSlotHelmet = equipmentBox.transform.Find ("EquipmentSlotHelmet").gameObject;
-		equipmentSlotbodyarmor = equipmentBox.transform.Find ("EquipmentSlotBodyarmor").gameObject;
+		equipmentSlotBodyarmor = equipmentBox.transform.Find ("EquipmentSlotBodyarmor").gameObject;
+		equipmentSlotClothing = equipmentBox.transform.Find ("EquipmentSlotClothing").gameObject;
 		equipmentSlotPants = equipmentBox.transform.Find ("EquipmentSlotPants").gameObject;
 		equipmentSlotBoots = equipmentBox.transform.Find ("EquipmentSlotBoots").gameObject;
 		equipmentSlotWeapon = equipmentBox.transform.Find ("EquipmentSlotWeapon").gameObject;

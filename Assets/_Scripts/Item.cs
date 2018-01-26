@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class Item {
 
-	public enum Type {None, Weapon, Offhand, Bodyarmor, Helmet, Pants, Boots, Consumable, Other}
+	public enum Type {None, Weapon, Offhand, Bodyarmor, Clothing, Helmet, Pants, Boots, Consumable, Other}
 	public enum Effect {None, Healing, StatusEffect, Lootbox}
 	public enum AttackType {None, Melee, RangedSingle, RangedCone}
 	public enum SpriteType {None, Bat, Sword, Pistol, Shotgun, Uzi, Machinegun}
 
 	public bool isLoud = false;
+	public float soundFactor = 1f;
+	public float soundDuration = 0.1f;
 
 	public string name;
 	public Type type = Type.None;
@@ -206,6 +208,28 @@ public class Item {
 			}
 		}
 
+		// Clothing
+
+		if (itemtype == Type.Clothing) {
+			switch (ItemName) {
+			case "Shirt":
+				type = Type.Clothing;
+				name = "Shirt";
+				weight = 0.5f;
+				cost = 10;
+				bluntArmor = 1;
+				pierceArmor = 1;
+				fireArmor = 1;
+				coldArmor = 1;
+				itemsprite = "Sprites/UI/Items/shirt";
+				isEquippable = true;
+				break;
+
+			default: 
+				break;
+			}
+		}
+
 		// Pants
 
 		if (itemtype == Type.Pants) {
@@ -326,6 +350,7 @@ public class Item {
 				stunfactor = 0.5f;
 				isAOE = false;
 				isLoud = true;
+				soundFactor = 1f;
 				itemsprite = "Sprites/UI/Items/pistol";
 				isEquippable = true;
 				break;

@@ -171,6 +171,7 @@ public class Game : MonoBehaviour {
 				gui.healthText.GetComponent<Text> ().text = player.Health + "/" + player.MaxHealth;
 				gui.sanityText.GetComponent<Text> ().text = player.Sanity + "/" + player.MaxSanity;
 				gui.staminaText.GetComponent<Text> ().text = Mathf.Round(player.Stamina) + "/" + player.MaxStamina;
+				gui.accuracyText.GetComponent<Text> ().text = player.accuracy + "%";
 
 				gui.bluntDamageText.GetComponent<Text> ().text = player.Weapon.bluntMinDamage + "-" + player.Weapon.bluntMaxDamage;
 				gui.pierceDamageText.GetComponent<Text> ().text = player.PierceMinDamage + "-" + player.PierceMaxDamage;
@@ -228,37 +229,43 @@ public class Game : MonoBehaviour {
 				}
 
 				// Handle drawing of equipment slots
-				if (player.Weapon != GlobalData.punch) {
+				if (player.Weapon != GlobalData.no_weapon) {
 					gui.equipmentSlotWeapon.SetActive (true);
 					gui.equipmentSlotWeapon.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.Weapon.itemsprite);
 				} else {
 					gui.equipmentSlotWeapon.SetActive (false);
 				}
-				if (player.offhand != GlobalData.empty_offhand) {
+				if (player.offhand != GlobalData.no_offhand) {
 					gui.equipmentSlotOffhand.SetActive (true);
 					gui.equipmentSlotOffhand.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.offhand.itemsprite);
 				} else {
 					gui.equipmentSlotOffhand.SetActive (false);
 				}
-				if (player.helmet != GlobalData.naked_head) {
+				if (player.helmet != GlobalData.no_helmet) {
 					gui.equipmentSlotHelmet.SetActive (true);
 					gui.equipmentSlotHelmet.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.helmet.itemsprite);
 				} else {
 					gui.equipmentSlotHelmet.SetActive (false);
 				}
-				if (player.bodyarmor != GlobalData.naked_body) {
-					gui.equipmentSlotbodyarmor.SetActive (true);
-					gui.equipmentSlotbodyarmor.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.bodyarmor.itemsprite);
+				if (player.bodyarmor != GlobalData.no_armor) {
+					gui.equipmentSlotBodyarmor.SetActive (true);
+					gui.equipmentSlotBodyarmor.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.bodyarmor.itemsprite);
 				} else {
-					gui.equipmentSlotbodyarmor.SetActive (false);
+					gui.equipmentSlotBodyarmor.SetActive (false);
 				}
-				if (player.pants != GlobalData.naked_legs) {
+				if (player.clothing != GlobalData.no_clothing) {
+					gui.equipmentSlotClothing.SetActive (true);
+					gui.equipmentSlotClothing.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.clothing.itemsprite);
+				} else {
+					gui.equipmentSlotClothing.SetActive (false);
+				}
+				if (player.pants != GlobalData.no_pants) {
 					gui.equipmentSlotPants.SetActive (true);
 					gui.equipmentSlotPants.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.pants.itemsprite);
 				} else {
 					gui.equipmentSlotPants.SetActive (false);
 				}
-				if (player.boots != GlobalData.naked_feet) {
+				if (player.boots != GlobalData.no_boots) {
 					gui.equipmentSlotBoots.SetActive (true);
 					gui.equipmentSlotBoots.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.boots.itemsprite);
 				} else {

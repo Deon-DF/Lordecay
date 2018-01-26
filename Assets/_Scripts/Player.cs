@@ -12,10 +12,12 @@ public class Player : MonoBehaviour {
 
 	// Player stats
 
-	public int strength = 5;
-	public int perception = 5;
-	public int intelligence = 5;
-	public int toughness = 5;
+	public int strength = 2;
+	public int perception = 2;
+	public int intelligence = 2;
+	public int toughness = 2;
+
+	public int accuracy = 100;
 
 	// Depletable resources
 	int maxhealth = 100;
@@ -59,7 +61,8 @@ public class Player : MonoBehaviour {
 	private bool isAiming = false;
 
 	public bool madeLoudSound = false;
-	private float madeLoudSoundDuration = 1f;
+	public float soundFactor = 1f;
+	private float loudSoundDuration = 1f;
 	private float madeLoudSoundCounter;
 
 	// Physics
@@ -97,12 +100,13 @@ public class Player : MonoBehaviour {
 	// Inventory
 	public List<Item> inventory = new List<Item> ();
 
-	Item weapon = GlobalData.punch;
-	public Item offhand = GlobalData.empty_offhand;
-	public Item helmet = GlobalData.naked_head;
-	public Item bodyarmor = GlobalData.naked_body;
-	public Item pants = GlobalData.naked_legs;
-	public Item boots = GlobalData.naked_feet;
+	Item weapon = GlobalData.no_weapon;
+	public Item offhand = GlobalData.no_offhand;
+	public Item helmet = GlobalData.no_helmet;
+	public Item bodyarmor = GlobalData.no_armor;
+	public Item clothing = GlobalData.no_clothing;
+	public Item pants = GlobalData.no_pants;
+	public Item boots = GlobalData.no_boots;
 
 	public Item Weapon {
 		get {
@@ -401,7 +405,7 @@ public class Player : MonoBehaviour {
 	void DrawRelative () {
 		pSpriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
 
-		if (helmet != GlobalData.naked_head) {
+		if (helmet != GlobalData.no_helmet) {
 			helmetSpriteRenderer.enabled = true;
 			helmetSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
 			helmetSpriteRenderer.color = helmet.color;
@@ -409,21 +413,21 @@ public class Player : MonoBehaviour {
 			helmetSpriteRenderer.enabled = false;
 		}
 
-		if (bodyarmor != GlobalData.naked_body) {
+		if (bodyarmor != GlobalData.no_armor) {
 			armorSpriteRenderer.enabled = true;
 			armorSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
 		} else {
 			armorSpriteRenderer.enabled = false;
 		}
 
-		if (pants != GlobalData.naked_legs) {
+		if (pants != GlobalData.no_pants) {
 			pantsSpriteRenderer.enabled = true;
 			pantsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
 		} else {
 			pantsSpriteRenderer.enabled = false;
 		}
 
-		if (boots != GlobalData.naked_feet) {
+		if (boots != GlobalData.no_boots) {
 			bootsSpriteRenderer.enabled = true;
 			bootsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
 		} else {
@@ -510,6 +514,7 @@ public class Player : MonoBehaviour {
 			Item newItem7 = new Item(Item.Type.Consumable, "MedKit");//GlobalData.MedKit;
 			Item newItem8 = new Item(Item.Type.Pants, "Camo pants");// actually gives camo pants
 			Item newItem9 = new Item(Item.Type.Boots, "Leather boots");// actually gives leather boots
+			Item newItem10 = new Item(Item.Type.Clothing, "Shirt");// actually gives shirt
 			getItem (newItem);
 			getItem (newItem2);
 			getItem (newItem3);
@@ -519,6 +524,7 @@ public class Player : MonoBehaviour {
 			getItem (newItem7);
 			getItem (newItem8);
 			getItem (newItem9);
+			getItem (newItem10);
 		}
 	}
 
@@ -546,7 +552,7 @@ public class Player : MonoBehaviour {
 
 	public void MouseControls ()
 	{
-		if (Input.GetKeyDown (KeyCode.Mouse0) && Input.GetKey(KeyCode.Mouse1)) {
+		if (Input.GetKeyDown (KeyCode.Mouse0) && Input.GetKey (KeyCode.Mouse1)) {
 			if (attackCooldownCounter < 0) {
 				if (weapon.attacktype == Item.AttackType.Melee) {
 					Vector2 mousePosition = new Vector2 (Input.mousePosition.x / Screen.width * aspectRatioX, Input.mousePosition.y / Screen.height * aspectRatioY);
@@ -572,17 +578,18 @@ public class Player : MonoBehaviour {
 					sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
 					sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
 					sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
-					sweep.stunfactor = Weapon.stunfactor * (1 + (strength - 5)*GlobalData.stunfactorPerStrength);
+					sweep.stunfactor = Weapon.stunfactor * (1 + (strength - 5) * GlobalData.stunfactorPerStrength);
 					sweep.isAOE = Weapon.isAOE;
 					attackCooldownCounter = weapon.attackcooldown;
 					isAttacking = true;
 
 					if (weapon.isLoud) {
 						madeLoudSound = true;
-						madeLoudSoundCounter = madeLoudSoundDuration;
+						madeLoudSoundCounter = weapon.soundDuration;
+						soundFactor = weapon.soundFactor;
 					}
 
-				} else if (weapon.attacktype == Item.AttackType.RangedSingle){ 
+				} else if (weapon.attacktype == Item.AttackType.RangedSingle) { 
 					Vector2 mousePosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 					Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint (mousePosition);
 
@@ -591,9 +598,17 @@ public class Player : MonoBehaviour {
 
 					if (!Physics2D.Linecast (transform.position, targetPosition, lineOfSightMask)) {
 
+						float accuracyFactor = (100 - accuracy) * 2.0f / 100;
+						Vector3 offset;
+						if (accuracyFactor > 0) {
+							offset = new Vector3 (Random.Range (-accuracyFactor, accuracyFactor), Random.Range (-accuracyFactor, accuracyFactor), 0);
+						} else {
+							offset = new Vector3 (0,0,0);
+						}
 					
-						sweep = Instantiate (player_attack_shot, targetPosition, Quaternion.identity);
+						sweep = Instantiate (player_attack_shot, targetPosition + offset, Quaternion.identity);
 
+						Debug.Log("Aiming offset: " + offset + ", accuracy factor: " + accuracyFactor);
 						sweep.origin = "player";
 						sweep.TTL = 0.2f;
 						sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
@@ -608,7 +623,8 @@ public class Player : MonoBehaviour {
 
 						if (weapon.isLoud) {
 							madeLoudSound = true;
-							madeLoudSoundCounter = madeLoudSoundDuration;
+							madeLoudSoundCounter = weapon.soundDuration;
+							soundFactor = weapon.soundFactor;
 						}
 					} else {
 						Debug.Log ("Cannot shoot outside of line of sight!");
@@ -844,7 +860,7 @@ public class Player : MonoBehaviour {
 			FireArmor -= helmet.fireArmor;
 			ColdArmor -= helmet.coldArmor;
 			AcidArmor -= helmet.acidArmor;
-			helmet = GlobalData.naked_head;
+			helmet = GlobalData.no_helmet;
 			break;
 		case "bodyarmor":
 			DropItemOnGround (bodyarmor);
@@ -854,7 +870,17 @@ public class Player : MonoBehaviour {
 			FireArmor -= bodyarmor.fireArmor;
 			ColdArmor -= bodyarmor.coldArmor;
 			AcidArmor -= bodyarmor.acidArmor;
-			bodyarmor = GlobalData.naked_body;
+			bodyarmor = GlobalData.no_armor;
+			break;
+		case "clothing":
+			DropItemOnGround (clothing);
+			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + clothing.name);
+			BluntArmor -= clothing.bluntArmor;
+			PierceArmor -= clothing.pierceArmor;
+			FireArmor -= clothing.fireArmor;
+			ColdArmor -= clothing.coldArmor;
+			AcidArmor -= clothing.acidArmor;
+			clothing = GlobalData.no_clothing;
 			break;
 		case "pants":
 			DropItemOnGround (pants);
@@ -864,7 +890,7 @@ public class Player : MonoBehaviour {
 			FireArmor -= pants.fireArmor;
 			ColdArmor -= pants.coldArmor;
 			AcidArmor -= pants.acidArmor;
-			pants = GlobalData.naked_legs;
+			pants = GlobalData.no_pants;
 			break;
 		case "boots":
 			DropItemOnGround (boots);
@@ -874,7 +900,7 @@ public class Player : MonoBehaviour {
 			FireArmor -= boots.fireArmor;
 			ColdArmor -= boots.coldArmor;
 			AcidArmor -= boots.acidArmor;
-			boots = GlobalData.naked_feet;
+			boots = GlobalData.no_boots;
 			break;
 		case "Weapon":
 			DropItemOnGround (Weapon);
@@ -884,7 +910,7 @@ public class Player : MonoBehaviour {
 			FireArmor -= Weapon.fireArmor;
 			ColdArmor -= Weapon.coldArmor;
 			AcidArmor -= Weapon.acidArmor;
-			Weapon = GlobalData.punch;
+			Weapon = GlobalData.no_weapon;
 			break;
 		case "offhand":
 			DropItemOnGround (offhand);
@@ -894,7 +920,7 @@ public class Player : MonoBehaviour {
 			FireArmor -= offhand.fireArmor;
 			ColdArmor -= offhand.coldArmor;
 			AcidArmor -= offhand.acidArmor;
-			offhand = GlobalData.empty_offhand;
+			offhand = GlobalData.no_offhand;
 			break;
 		}
 	}
@@ -913,7 +939,7 @@ public class Player : MonoBehaviour {
 
 
 			if (inventory [index].type == Item.Type.Weapon) {
-				if (Weapon != GlobalData.punch) {
+				if (Weapon != GlobalData.no_weapon) {
 					if (UnequipItem (Weapon)) {
 						Weapon = inventory [index];
 						Debug.Log ("Equipped new Weapon: " + Weapon.name);
@@ -927,7 +953,7 @@ public class Player : MonoBehaviour {
 					inventory.Remove (inventory [index]);
 				}
 			} else if (inventory [index].type == Item.Type.Offhand) {
-				if (offhand != GlobalData.empty_offhand) {
+				if (offhand != GlobalData.no_offhand) {
 					if (UnequipItem (offhand)) {
 						offhand = inventory [index];
 						Debug.Log ("Equipped new offhand: " + offhand.name);
@@ -941,7 +967,7 @@ public class Player : MonoBehaviour {
 					inventory.Remove (inventory [index]);
 				}
 			} else if (inventory [index].type == Item.Type.Helmet) {
-				if (helmet != GlobalData.naked_head) {
+				if (helmet != GlobalData.no_helmet) {
 					if (UnequipItem (helmet)) {
 						helmet = inventory [index];
 						Debug.Log ("Equipped new helmet: " + helmet.name);
@@ -955,7 +981,7 @@ public class Player : MonoBehaviour {
 					inventory.Remove (inventory [index]);
 				}
 			} else if (inventory [index].type == Item.Type.Bodyarmor) {
-				if (bodyarmor != GlobalData.naked_body) {
+				if (bodyarmor != GlobalData.no_armor) {
 					if (UnequipItem (bodyarmor)) {
 						bodyarmor = inventory [index];
 						Debug.Log ("Equipped new bodyarmor: " + bodyarmor.name);
@@ -968,8 +994,22 @@ public class Player : MonoBehaviour {
 					Debug.Log ("Removing item " + inventory [index].name + " from inventory");
 					inventory.Remove (inventory [index]);
 				}
+			} else if (inventory [index].type == Item.Type.Clothing) {
+				if (clothing != GlobalData.no_clothing) {
+					if (UnequipItem (clothing)) {
+						clothing = inventory [index];
+						Debug.Log ("Equipped new clothing: " + clothing.name);
+						Debug.Log ("Removing item " + inventory [index].name + " from inventory");
+						inventory.Remove (inventory [index]);
+					}
+				} else {
+					clothing = inventory [index];
+					Debug.Log ("Equipped new clothing: " + clothing.name);
+					Debug.Log ("Removing item " + inventory [index].name + " from inventory");
+					inventory.Remove (inventory [index]);
+				}
 			} else if (inventory [index].type == Item.Type.Pants) {
-				if (pants != GlobalData.naked_legs) {
+				if (pants != GlobalData.no_pants) {
 					if (UnequipItem (pants)) {
 						pants = inventory [index];
 						Debug.Log ("Equipped new pants: " + pants.name);
@@ -983,7 +1023,7 @@ public class Player : MonoBehaviour {
 					inventory.Remove (inventory [index]);
 				}
 			} else if (inventory [index].type == Item.Type.Boots) {
-				if (boots != GlobalData.naked_feet) {
+				if (boots != GlobalData.no_boots) {
 					if (UnequipItem (boots)) {
 						boots = inventory [index];
 						Debug.Log ("Equipped new boots: " + boots.name);
@@ -997,7 +1037,7 @@ public class Player : MonoBehaviour {
 					inventory.Remove (inventory [index]);
 				}
 			} else {
-				Debug.LogError ("Attempted to equip an item marked as 'equippable' and yet it's none of the known equippable item types: Weapon, Offhand, Helmet, bodyarmor, Pants, Boots. Item name: " + inventory[index].name);
+				Debug.LogError ("Attempted to equip an item marked as 'equippable' and yet it's none of the known equippable item types: Weapon, Offhand, Helmet, Clothing, Bodyarmor, Pants, Boots. Item name: " + inventory[index].name);
 			}
 		} else {
 			Debug.Log ("Item " + inventory[index].name + " cannot be equipped due its nature.");
@@ -1021,31 +1061,38 @@ public class Player : MonoBehaviour {
 			inventory.Add(item);
 			BluntArmor -= item.bluntArmor;
 			PierceArmor -= item.pierceArmor;
+			FireArmor -= item.fireArmor;
+			ColdArmor -= item.coldArmor;
+			AcidArmor -= item.acidArmor;
 
 			if (item.type == Item.Type.Weapon) {
-				Weapon = GlobalData.punch;
+				Weapon = GlobalData.no_weapon;
 			}
 
 			if (item.type == Item.Type.Offhand) {
-				offhand = GlobalData.empty_offhand;
+				offhand = GlobalData.no_offhand;
 			}
 
 
 			if (item.type == Item.Type.Helmet) {
-				helmet = GlobalData.naked_head;
+				helmet = GlobalData.no_helmet;
 			}
 
 			if (item.type == Item.Type.Bodyarmor) {
-				bodyarmor = GlobalData.naked_body;
+				bodyarmor = GlobalData.no_armor;
+			}
+
+			if (item.type == Item.Type.Clothing) {
+				clothing = GlobalData.no_clothing;
 			}
 
 			if (item.type == Item.Type.Pants) {
-				pants = GlobalData.naked_legs;
+				pants = GlobalData.no_pants;
 			}
 
 
 			if (item.type == Item.Type.Boots) {
-				boots = GlobalData.naked_feet;
+				boots = GlobalData.no_boots;
 			}
 			success = true;
 		} else {
@@ -1067,6 +1114,9 @@ public class Player : MonoBehaviour {
 			case "bodyarmor":
 				item = bodyarmor;
 				break;
+			case "clothing":
+				item = clothing;
+				break;
 			case "pants":
 				item = pants;
 				break;
@@ -1082,39 +1132,45 @@ public class Player : MonoBehaviour {
 			}
 
 			if (item.type == Item.Type.Weapon) {
-				Weapon = GlobalData.punch;
+				Weapon = GlobalData.no_weapon;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
 				inventory.Add (item);
 			}
 
 			if (item.type == Item.Type.Offhand) {
-				offhand = GlobalData.empty_offhand;
+				offhand = GlobalData.no_offhand;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
 				inventory.Add (item);
 			}
 
 
 			if (item.type == Item.Type.Helmet) {
-				helmet = GlobalData.naked_head;
+				helmet = GlobalData.no_helmet;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
 				inventory.Add (item);
 			}
 
 			if (item.type == Item.Type.Bodyarmor) {
-				bodyarmor = GlobalData.naked_body;
+				bodyarmor = GlobalData.no_armor;
+				Debug.Log ("Unequipping and adding to inventory: " + item.name);
+				inventory.Add (item);
+			}
+
+			if (item.type == Item.Type.Clothing) {
+				clothing = GlobalData.no_clothing;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
 				inventory.Add (item);
 			}
 
 			if (item.type == Item.Type.Pants) {
-				pants = GlobalData.naked_legs;
+				pants = GlobalData.no_pants;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
 				inventory.Add (item);
 			}
 
 
 			if (item.type == Item.Type.Boots) {
-				boots = GlobalData.naked_feet;
+				boots = GlobalData.no_boots;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
 				inventory.Add (item);
 			}
@@ -1131,18 +1187,16 @@ public class Player : MonoBehaviour {
 		maxhealth = 100 + (toughness - 5) * GlobalData.healthPerToughness;
 		maxsanity = 100 + (intelligence - 5) * GlobalData.sanityPerIntelligence;
 		maxstamina = 100 + (toughness - 5) * GlobalData.staminaPerToughness;
+
+		accuracy = 100 + (perception - 10) * GlobalData.accuracyPerPerception;
 	}
 
 // Awake/Start/update functions
 
 	void Awake() {
-		maxhealth = 100 + (toughness - 5) * GlobalData.healthPerToughness;
+		RecalculateStatsInfluence();
 		health = maxhealth;
-
-		maxsanity = 100 + (intelligence - 5) * GlobalData.sanityPerIntelligence;
 		sanity = maxsanity;
-
-		maxstamina = 100 + (toughness - 5) * GlobalData.staminaPerToughness;
 		stamina = maxstamina;
 
 		playerMask = 1 << LayerMask.NameToLayer ("Player"); // enemies dont block visibility of other enemies, and player collider should not block the visibility of the player,

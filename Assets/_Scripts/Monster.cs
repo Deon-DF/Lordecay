@@ -161,16 +161,20 @@ public class Monster : MonoBehaviour {
 
 	public bool RefreshAggro (Player player, int layerMask)
 	{
-		if (Vector3.Distance (transform.position, player.transform.position) <= aggroDistance && !Physics2D.Linecast(transform.position, player.transform.position, layerMask)) {
+		if (Vector3.Distance (transform.position, player.transform.position) <= aggroDistance && !Physics2D.Linecast (transform.position, player.transform.position, layerMask)) {
 			if (isAggressive == false) {
 				isAggressive = true;
 			}
 			aggroRememberCounter = aggroRememberTime;
-		} else if (Vector3.Distance (transform.position, player.transform.position) < hearingDistance && player.madeLoudSound ) {
-			if (isAggressive == false) {
-				isAggressive = true;
+		} else if (player.madeLoudSound) {
+			{	
+				if (Vector3.Distance (transform.position, player.transform.position) < (hearingDistance*player.soundFactor)) {
+					if (isAggressive == false) {
+						isAggressive = true;
+					}
+					aggroRememberCounter = aggroRememberTime;			
+				}
 			}
-			aggroRememberCounter = aggroRememberTime;			
 		} else {
 			return false;
 		}

@@ -1,21 +1,21 @@
 fileFormatVersion: 2
 guid: 94e8cd3b5917abd4ba026c87e3b3c970
-timeCreated: 1516728654
+timeCreated: 1516914661
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: helmet_0
-    21300002: helmet_1
-    21300004: helmet_2
-    21300006: helmet_3
-    21300008: helmet_4
-    21300010: helmet_5
-    21300012: helmet_6
-    21300014: helmet_7
-    21300016: helmet_8
-    21300018: helmet_9
-    21300020: helmet_10
-    21300022: helmet_11
+    21300000: Down
+    21300002: Down1
+    21300004: Down2
+    21300006: Up
+    21300008: Up1
+    21300010: Up2
+    21300012: Right
+    21300014: Right1
+    21300016: Right2
+    21300018: Left
+    21300020: Left1
+    21300022: Left2
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -90,7 +90,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: helmet_0
+      name: Down
       rect:
         serializedVersion: 2
         x: 0
@@ -103,7 +103,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_1
+      name: Down1
       rect:
         serializedVersion: 2
         x: 64
@@ -116,7 +116,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_2
+      name: Down2
       rect:
         serializedVersion: 2
         x: 128
@@ -129,7 +129,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_3
+      name: Up
       rect:
         serializedVersion: 2
         x: 0
@@ -142,7 +142,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_4
+      name: Up1
       rect:
         serializedVersion: 2
         x: 64
@@ -155,7 +155,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_5
+      name: Up2
       rect:
         serializedVersion: 2
         x: 128
@@ -168,7 +168,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_6
+      name: Right
       rect:
         serializedVersion: 2
         x: 0
@@ -181,7 +181,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_7
+      name: Right1
       rect:
         serializedVersion: 2
         x: 64
@@ -194,7 +194,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_8
+      name: Right2
       rect:
         serializedVersion: 2
         x: 128
@@ -207,7 +207,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_9
+      name: Left
       rect:
         serializedVersion: 2
         x: 0
@@ -220,7 +220,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_10
+      name: Left1
       rect:
         serializedVersion: 2
         x: 64
@@ -233,7 +233,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: helmet_11
+      name: Left2
       rect:
         serializedVersion: 2
         x: 128
