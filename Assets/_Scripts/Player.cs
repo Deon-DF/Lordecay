@@ -75,6 +75,7 @@ public class Player : MonoBehaviour {
 	private static bool playerExists = false;
 	private SpriteRenderer pSpriteRenderer;
 	private SpriteRenderer helmetSpriteRenderer;
+	private SpriteRenderer clothingSpriteRenderer;
 	private SpriteRenderer armorSpriteRenderer;
 	private SpriteRenderer pantsSpriteRenderer;
 	private SpriteRenderer bootsSpriteRenderer;
@@ -413,9 +414,18 @@ public class Player : MonoBehaviour {
 			helmetSpriteRenderer.enabled = false;
 		}
 
+		if (clothing != GlobalData.no_clothing) {
+			clothingSpriteRenderer.enabled = true;
+			clothingSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
+			clothingSpriteRenderer.color = clothing.color;
+		} else {
+			clothingSpriteRenderer.enabled = false;
+		}
+
 		if (bodyarmor != GlobalData.no_armor) {
 			armorSpriteRenderer.enabled = true;
-			armorSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
+			armorSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
+			armorSpriteRenderer.color = bodyarmor.color;
 		} else {
 			armorSpriteRenderer.enabled = false;
 		}
@@ -423,6 +433,7 @@ public class Player : MonoBehaviour {
 		if (pants != GlobalData.no_pants) {
 			pantsSpriteRenderer.enabled = true;
 			pantsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
+			pantsSpriteRenderer.color = pants.color;
 		} else {
 			pantsSpriteRenderer.enabled = false;
 		}
@@ -430,6 +441,7 @@ public class Player : MonoBehaviour {
 		if (boots != GlobalData.no_boots) {
 			bootsSpriteRenderer.enabled = true;
 			bootsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
+			bootsSpriteRenderer.color = boots.color;
 		} else {
 			bootsSpriteRenderer.enabled = false;
 		}
@@ -439,6 +451,7 @@ public class Player : MonoBehaviour {
 		if (weapon.spritetype == Item.SpriteType.Sword) {
 			swordSpriteRenderer.enabled = true;
 			swordSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+			swordSpriteRenderer.color = weapon.color;
 		} else {
 			swordSpriteRenderer.enabled = false;
 		}
@@ -446,6 +459,7 @@ public class Player : MonoBehaviour {
 		if (weapon.spritetype == Item.SpriteType.Pistol) {
 			pistolSpriteRenderer.enabled = true;
 			pistolSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+			pistolSpriteRenderer.color = weapon.color;
 		} else {
 			pistolSpriteRenderer.enabled = false;
 		}
@@ -1235,6 +1249,7 @@ public class Player : MonoBehaviour {
 		pRigidbody = GetComponent<Rigidbody2D> ();
 		pSpriteRenderer = GetComponent<SpriteRenderer> ();
 		helmetSpriteRenderer = transform.Find("Helmet").gameObject.GetComponent <SpriteRenderer> ();
+		clothingSpriteRenderer = transform.Find("Shirt").gameObject.GetComponent <SpriteRenderer> ();
 		armorSpriteRenderer = transform.Find("Armor").gameObject.GetComponent <SpriteRenderer> ();
 		pantsSpriteRenderer = transform.Find("Pants").gameObject.GetComponent <SpriteRenderer> ();
 		bootsSpriteRenderer = transform.Find("Boots").gameObject.GetComponent <SpriteRenderer> ();

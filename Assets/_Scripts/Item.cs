@@ -201,6 +201,7 @@ public class Item {
 				pierceArmor = 5;
 				itemsprite = "Sprites/UI/Items/kevlarVest";
 				isEquippable = true;
+				color = new Color (0.3f, 0.3f, 0.3f);
 				break;
 
 			default: 
@@ -268,6 +269,7 @@ public class Item {
 				acidArmor = 1;
 				itemsprite = "Sprites/UI/Items/leatherBoots";
 				isEquippable = true;
+				color = new Color (0.47f, 0.31f, 0f);
 				break;
 
 			default: 
@@ -353,6 +355,7 @@ public class Item {
 				soundFactor = 1f;
 				itemsprite = "Sprites/UI/Items/pistol";
 				isEquippable = true;
+				color = new Color (0.3f, 0.3f, 0.3f);
 				break;
 			
 
