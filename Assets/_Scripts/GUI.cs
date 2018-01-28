@@ -35,12 +35,15 @@ public class GUI : MonoBehaviour {
 
 	public GameObject equipmentBox;
 	public GameObject equipmentSlotHelmet;
+	public GameObject equipmentSlotMask;
 	public GameObject equipmentSlotBodyarmor;
 	public GameObject equipmentSlotClothing;
 	public GameObject equipmentSlotPants;
 	public GameObject equipmentSlotBoots;
 	public GameObject equipmentSlotWeapon;
 	public GameObject equipmentSlotOffhand;
+
+	public GameObject removeAttachmentsButton;
 
 	public GameObject inventoryBox;
 	public GameObject inventorySlot1;
@@ -255,8 +258,8 @@ public class GUI : MonoBehaviour {
 		myLine.AddComponent<LineRenderer>();
 		LineRenderer lr = myLine.GetComponent<LineRenderer>();
 		lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
-		lr.SetColors(color, color);
-		lr.SetWidth(0.1f, 0.1f);
+		lr.startColor = color;
+		lr.startWidth = 0.1f;
 		lr.SetPosition(0, start);
 		lr.SetPosition(1, end);
 		GameObject.Destroy(myLine, duration);
@@ -300,12 +303,15 @@ public class GUI : MonoBehaviour {
 
 		equipmentBox = GameObject.Find ("EquipmentBox");
 		equipmentSlotHelmet = equipmentBox.transform.Find ("EquipmentSlotHelmet").gameObject;
+		equipmentSlotMask = equipmentBox.transform.Find ("EquipmentSlotMask").gameObject;
 		equipmentSlotBodyarmor = equipmentBox.transform.Find ("EquipmentSlotBodyarmor").gameObject;
 		equipmentSlotClothing = equipmentBox.transform.Find ("EquipmentSlotClothing").gameObject;
 		equipmentSlotPants = equipmentBox.transform.Find ("EquipmentSlotPants").gameObject;
 		equipmentSlotBoots = equipmentBox.transform.Find ("EquipmentSlotBoots").gameObject;
 		equipmentSlotWeapon = equipmentBox.transform.Find ("EquipmentSlotWeapon").gameObject;
 		equipmentSlotOffhand = equipmentBox.transform.Find ("EquipmentSlotOffhand").gameObject;
+
+		removeAttachmentsButton = equipmentBox.transform.Find ("RemoveAttachments").gameObject;
 
 
 		groundBox = GameObject.Find ("GroundBox");

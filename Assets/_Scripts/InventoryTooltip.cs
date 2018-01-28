@@ -64,7 +64,8 @@ public class InventoryTooltip : MonoBehaviour {
 		image.enabled = false;
 	}
 
-	void Update () {
+	void Update ()
+	{
 
 		if (!GlobalData.paused) {
 			HideInventoryTooltip ();
@@ -86,7 +87,7 @@ public class InventoryTooltip : MonoBehaviour {
 					HideInventoryTooltip ();
 				}
 			} else if (slotindex == -2) {
-				Tile currenttile = player.GetPlayerTile(GlobalData.grid);
+				Tile currenttile = player.GetPlayerTile (GlobalData.grid);
 
 				if ((groundindex + GlobalData.groundSlotOffset) < currenttile.groundItems.Count) {
 					currentItem = currenttile.groundItems [groundindex + GlobalData.groundSlotOffset];
@@ -100,6 +101,11 @@ public class InventoryTooltip : MonoBehaviour {
 						currentItem = player.helmet;
 					}
 					break;
+				case "mask":
+					if (player.mask != GlobalData.no_mask) {
+						currentItem = player.mask;
+					}
+					break;
 				case "bodyarmor":
 					if (player.bodyarmor != GlobalData.no_armor) {
 						currentItem = player.bodyarmor;
@@ -111,7 +117,7 @@ public class InventoryTooltip : MonoBehaviour {
 					}
 					break;
 				case "pants":
-					if (player.pants != GlobalData.no_boots) {
+					if (player.pants != GlobalData.no_pants) {
 						currentItem = player.pants;
 					}
 					break;
@@ -134,11 +140,16 @@ public class InventoryTooltip : MonoBehaviour {
 			}
 
 			nametext.text = currentItem.name;
+
+
 			if (currentItem.isAOE) {
 				effect.text = "Effect: " + "Area damage";
 			} else {
 				effect.text = "";
 			}
+
+
+
 			icon.sprite = Resources.Load <Sprite> (currentItem.itemsprite);
 			if (currentItem.type == Item.Type.Weapon) {
 				description.text = "";
@@ -150,17 +161,35 @@ public class InventoryTooltip : MonoBehaviour {
 					description.text += "\nPierce damage " + currentItem.pierceMinDamage + "-" + currentItem.pierceMaxDamage;
 				}
 				if (currentItem.fireMaxDamage > 0) {
-					description2.text += "\nBurn damage " + currentItem.fireMinDamage + "-" + currentItem.fireMaxDamage;
+					description.text += "\nBurn damage " + currentItem.fireMinDamage + "-" + currentItem.fireMaxDamage;
 				}
 				if (currentItem.coldMaxDamage > 0) {
-					description2.text += "\nFrost damage " + currentItem.coldMinDamage + "-" + currentItem.coldMaxDamage;
+					description.text += "\nFrost damage " + currentItem.coldMinDamage + "-" + currentItem.coldMaxDamage;
 				}
 				if (currentItem.acidMaxDamage > 0) {
-					description2.text += "\nCorrosive damage " + currentItem.acidMinDamage + "-" + currentItem.acidMaxDamage;
+					description.text += "\nCorrosive damage " + currentItem.acidMinDamage + "-" + currentItem.acidMaxDamage;
 				}
 
-				weight.text = "\nWeight: " + currentItem.weight;
+
+				if (currentItem.type == Item.Type.Weapon && currentItem.attachment1.type != Attachment.Type.None) {
+					description2.text += "\nAttachment: " + currentItem.attachment1.name;
+				} else {
+					description2.text += "\nAttachment: None, " + currentItem.attachment1_description;
+				}
+
+				if (currentItem.type == Item.Type.Weapon && currentItem.attachment2.type != Attachment.Type.None) {
+					description2.text += "\nAttachment: " + currentItem.attachment2.name;
+				} else {
+					description2.text += "\nAttachment: None, " + currentItem.attachment2_description;
+				}
+
+				if (currentItem.accuracyBonus > 0) {
+				description2.text += "\nAccuracy bonus " + currentItem.accuracyBonus + "%";
+				}
+
+				weight.text = "Weight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Helmet
+					  || currentItem.type == Item.Type.Mask
 					  || currentItem.type == Item.Type.Bodyarmor
 			          || currentItem.type == Item.Type.Clothing
 			          || currentItem.type == Item.Type.Pants
@@ -174,6 +203,11 @@ public class InventoryTooltip : MonoBehaviour {
 				if (currentItem.pierceArmor > 0){
 					description.text += "\nPierce resist " + currentItem.pierceArmor;
 				}
+
+				if (currentItem.movespeedBonus > 0) {
+				description.text += "\nMovespeed bonus " + currentItem.movespeedBonus*100 + "%";
+				}
+
 				if (currentItem.fireArmor > 0){
 					description2.text += "\nBurn resist " + currentItem.fireArmor;
 				}
@@ -183,13 +217,27 @@ public class InventoryTooltip : MonoBehaviour {
 				if (currentItem.acidArmor > 0){
 					description2.text += "\nCorrosive resist " + currentItem.acidArmor;
 				}
-				weight.text = "\nWeight: " + currentItem.weight;
+
+				weight.text = "Weight: " + currentItem.weight;
 			} else if (currentItem.type == Item.Type.Consumable) {
 				description.text = "Uses left: " + currentItem.quantity;
+				description2.text = "";
 				if (currentItem.effect == Item.Effect.Healing) {
 					effect.text = "Effect: Heals for ";
 					effect.text += currentItem.effectvalue + "HP";
 				}
+				weight.text = "Weight: " + currentItem.weight;
+			} else if (currentItem.type == Item.Type.WeaponAttachment) {
+				description.text = currentItem.customdescription;
+				description2.text = "";
+
+				weight.text = "Weight: " + currentItem.weight;
+			} else {
+				description.text = "";
+				description2.text = "";
+
+				weight.text = "Weight: " + currentItem.weight;
+
 			}
 			cost.text = "Cost: " + currentItem.cost;
 		}

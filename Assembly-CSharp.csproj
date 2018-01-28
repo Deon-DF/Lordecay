@@ -76,6 +76,7 @@
      <Compile Include="Assets\_Scripts\InventoryTooltip.cs" />
      <Compile Include="Assets\_Scripts\Item.cs" />
      <Compile Include="Assets\_Scripts\LoadNewArea.cs" />
+     <Compile Include="Assets\_Scripts\MapGen.cs" />
      <Compile Include="Assets\_Scripts\MapWalker.cs" />
      <Compile Include="Assets\_Scripts\Monster.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />

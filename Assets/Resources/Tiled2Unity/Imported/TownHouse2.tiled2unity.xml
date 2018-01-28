@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--Tiled2Unity generated xml data-->
 <!--Do not modify by hand-->
-<!--Last exported: 28/01/2018 03:54:11-->
+<!--Last exported: 28/01/2018 21:46:31-->
 <Tiled2Unity version="1.0.13.2">
   <AssignMaterial mesh="TownHouse2_mesh_0001" material="terrain" />
   <AssignMaterial mesh="TownHouse2_mesh_0002" material="terrain" />
@@ -39,14 +39,14 @@
         </PolygonCollider2D>
       </GameObject>
     </GameObject>
-    <GameObject name="Furniture" x="0" y="0" z="0">
+    <GameObject name="Furniture" x="0" y="0" z="0" layer="Furniture">
       <TileLayer offsetX="0" offsetY="0" />
       <GameObject name="Furniture" x="0" y="0" mesh="TownHouse2_mesh_0005" sortingLayerName="Furniture" sortingOrder="4" opacity="1" />
       <GameObject name="Collision">
         <PolygonCollider2D>
           <Path>6,-11 4,-11 4,-12.25 6,-12.25</Path>
           <Path>16.5,-15 16.5,-12 16,-12 16,-15</Path>
-          <Path>4,-17 6,-17 6,-16 4,-16</Path>
+          <Path>6,-16 4,-16 4,-17.15625 6,-17.15625</Path>
           <Path>4,-20 6,-20 6,-19 4,-19</Path>
         </PolygonCollider2D>
       </GameObject>

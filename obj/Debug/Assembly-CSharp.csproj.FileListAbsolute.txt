@@ -122,8 +122,6 @@ D:\Work\Github\Lordecay\Temp\bin\Debug\UnityEngine.HoloLens.xml
 D:\Work\Github\Lordecay\Temp\bin\Debug\UnityEngine.VR.xml
 D:\Work\Github\Lordecay\obj\Debug\Assembly-CSharp.dll
 D:\Work\Github\Lordecay\obj\Debug\Assembly-CSharp.pdb
-D:\Work\Github\Loredecay\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
-D:\Work\Github\Loredecay\obj\Debug\Assembly-CSharp.dll
 D:\Work\Github\Loredecay\Temp\bin\Debug\Assembly-CSharp.dll
 D:\Work\Github\Loredecay\Temp\bin\Debug\Assembly-CSharp.pdb
 D:\Work\Github\Loredecay\Temp\bin\Debug\nunit.framework.dll
@@ -152,4 +150,5 @@ D:\Work\Github\Loredecay\Temp\bin\Debug\nunit.framework.xml
 D:\Work\Github\Loredecay\Temp\bin\Debug\UnityEngine.Analytics.xml
 D:\Work\Github\Loredecay\Temp\bin\Debug\UnityEngine.HoloLens.xml
 D:\Work\Github\Loredecay\Temp\bin\Debug\UnityEngine.VR.xml
+D:\Work\Github\Loredecay\obj\Debug\Assembly-CSharp.dll
 D:\Work\Github\Loredecay\obj\Debug\Assembly-CSharp.pdb

@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour {
 	
 	// masks for layers
-	int playerMask;
 	int enemyMask; 
+	int furnitureMask; 
+	int playerMask;
 	int lineOfSightMask;
 
 	// Player stats
@@ -17,7 +18,12 @@ public class Player : MonoBehaviour {
 	public int intelligence = 2;
 	public int toughness = 2;
 
-	public int accuracy = 100;
+	int accuracy = 100;
+
+	// Equipment effect
+
+	int equipmentAccuracyModifier = 0;
+	float equipmentMovespeedModifier = 0; // Calculated in speed, the total movespeed is multiplied by (1 + this modifier), so this is in percent.
 
 	// Depletable resources
 	int maxhealth = 100;
@@ -49,6 +55,7 @@ public class Player : MonoBehaviour {
 	int acidArmor = 0;
 
 	float moveSpeed = 4;
+
 	float moveWeightModifier = 1;
 	float moveSprintModifier = 1;
 	float moveStaminaDrain = 20;
@@ -62,7 +69,6 @@ public class Player : MonoBehaviour {
 
 	public bool madeLoudSound = false;
 	public float soundFactor = 1f;
-	private float loudSoundDuration = 1f;
 	private float madeLoudSoundCounter;
 
 	// Physics
@@ -75,11 +81,13 @@ public class Player : MonoBehaviour {
 	private static bool playerExists = false;
 	private SpriteRenderer pSpriteRenderer;
 	private SpriteRenderer helmetSpriteRenderer;
+	private SpriteRenderer maskSpriteRenderer;
 	private SpriteRenderer clothingSpriteRenderer;
 	private SpriteRenderer armorSpriteRenderer;
 	private SpriteRenderer pantsSpriteRenderer;
 	private SpriteRenderer bootsSpriteRenderer;
 
+	private SpriteRenderer clubSpriteRenderer;
 	private SpriteRenderer swordSpriteRenderer;
 	private SpriteRenderer pistolSpriteRenderer;
 
@@ -104,6 +112,7 @@ public class Player : MonoBehaviour {
 	Item weapon = GlobalData.no_weapon;
 	public Item offhand = GlobalData.no_offhand;
 	public Item helmet = GlobalData.no_helmet;
+	public Item mask = GlobalData.no_mask;
 	public Item bodyarmor = GlobalData.no_armor;
 	public Item clothing = GlobalData.no_clothing;
 	public Item pants = GlobalData.no_pants;
@@ -119,12 +128,21 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public int Accuracy {
+		set {
+			accuracy = value;
+		}
+		get {
+			return accuracy + equipmentAccuracyModifier;
+		}
+	}
+
 	public float MoveSpeed {
 		set {
 			moveSpeed = value;
 		}
 		get {
-			return moveSpeed * moveWeightModifier * moveSprintModifier;
+			return moveSpeed * moveWeightModifier * moveSprintModifier * (1 + equipmentMovespeedModifier);
 		}
 	}
 
@@ -406,15 +424,23 @@ public class Player : MonoBehaviour {
 	void DrawRelative () {
 		pSpriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
 
-		if (helmet != GlobalData.no_helmet) {
+		if (helmet.subtype == Item.SubType.Casque) {
 			helmetSpriteRenderer.enabled = true;
-			helmetSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
+			helmetSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
 			helmetSpriteRenderer.color = helmet.color;
 		} else {
 			helmetSpriteRenderer.enabled = false;
 		}
 
-		if (clothing != GlobalData.no_clothing) {
+		if (mask.subtype == Item.SubType.Gasmask) {
+			maskSpriteRenderer.enabled = true;
+			maskSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+			maskSpriteRenderer.color = mask.color;
+		} else {
+			maskSpriteRenderer.enabled = false;
+		}
+	
+		if (clothing.subtype == Item.SubType.Shirt) {
 			clothingSpriteRenderer.enabled = true;
 			clothingSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
 			clothingSpriteRenderer.color = clothing.color;
@@ -422,7 +448,7 @@ public class Player : MonoBehaviour {
 			clothingSpriteRenderer.enabled = false;
 		}
 
-		if (bodyarmor != GlobalData.no_armor) {
+		if (bodyarmor.subtype == Item.SubType.Armorvest) {
 			armorSpriteRenderer.enabled = true;
 			armorSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
 			armorSpriteRenderer.color = bodyarmor.color;
@@ -430,7 +456,7 @@ public class Player : MonoBehaviour {
 			armorSpriteRenderer.enabled = false;
 		}
 
-		if (pants != GlobalData.no_pants) {
+		if (pants.subtype == Item.SubType.Trousers) {
 			pantsSpriteRenderer.enabled = true;
 			pantsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
 			pantsSpriteRenderer.color = pants.color;
@@ -438,7 +464,7 @@ public class Player : MonoBehaviour {
 			pantsSpriteRenderer.enabled = false;
 		}
 
-		if (boots != GlobalData.no_boots) {
+		if (boots.subtype == Item.SubType.Boots) {
 			bootsSpriteRenderer.enabled = true;
 			bootsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
 			bootsSpriteRenderer.color = boots.color;
@@ -448,17 +474,33 @@ public class Player : MonoBehaviour {
 
 		// Draw weapons
 
-		if (weapon.spritetype == Item.SpriteType.Sword) {
+		if (weapon.subtype == Item.SubType.Sword) {
 			swordSpriteRenderer.enabled = true;
-			swordSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+			swordSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 10;
 			swordSpriteRenderer.color = weapon.color;
 		} else {
 			swordSpriteRenderer.enabled = false;
 		}
 
-		if (weapon.spritetype == Item.SpriteType.Pistol) {
+		if (weapon.subtype == Item.SubType.Club) {
+			clubSpriteRenderer.enabled = true;
+			if (lastMove.x >= 0) {
+				clubSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 10;
+			} else {
+				clubSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder;
+			}
+			clubSpriteRenderer.color = weapon.color;
+		} else {
+			clubSpriteRenderer.enabled = false;
+		}
+
+		if (weapon.subtype == Item.SubType.Pistol) {
 			pistolSpriteRenderer.enabled = true;
-			pistolSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+			if (lastMove.x >= 0) {
+				pistolSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 10;
+			} else {
+				pistolSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder;
+			}
 			pistolSpriteRenderer.color = weapon.color;
 		} else {
 			pistolSpriteRenderer.enabled = false;
@@ -515,7 +557,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	// TODO remove/hide the below function which currently serve to give items for free, for testing purposes
+	// TODO remove/hide the below function which currently serves to give items for free, for testing purposes
 
 	public void testFreeStuff () { 
 		if (Input.GetKeyDown (KeyCode.H)) {
@@ -529,6 +571,9 @@ public class Player : MonoBehaviour {
 			Item newItem8 = new Item(Item.Type.Pants, "Camo pants");// actually gives camo pants
 			Item newItem9 = new Item(Item.Type.Boots, "Leather boots");// actually gives leather boots
 			Item newItem10 = new Item(Item.Type.Clothing, "Shirt");// actually gives shirt
+			Item newItem11 = new Item(Item.Type.WeaponAttachment, "Red Dot");
+			Item newItem12 = new Item(Item.Type.WeaponAttachment, "Custom Grip");
+			Item newItem13 = new Item(Item.Type.Mask, "Gas Mask");// actually gives army helmet
 			getItem (newItem);
 			getItem (newItem2);
 			getItem (newItem3);
@@ -539,6 +584,9 @@ public class Player : MonoBehaviour {
 			getItem (newItem8);
 			getItem (newItem9);
 			getItem (newItem10);
+			getItem (newItem11);
+			getItem (newItem12);
+			getItem (newItem13);
 		}
 	}
 
@@ -612,7 +660,7 @@ public class Player : MonoBehaviour {
 
 					if (!Physics2D.Linecast (transform.position, targetPosition, lineOfSightMask)) {
 
-						float accuracyFactor = (100 - accuracy) * 2.0f / 100;
+						float accuracyFactor = (100 - Accuracy) * 2.0f / 100;
 						Vector3 offset;
 						if (accuracyFactor > 0) {
 							offset = new Vector3 (Random.Range (-accuracyFactor, accuracyFactor), Random.Range (-accuracyFactor, accuracyFactor), 0);
@@ -622,7 +670,6 @@ public class Player : MonoBehaviour {
 					
 						sweep = Instantiate (player_attack_shot, targetPosition + offset, Quaternion.identity);
 
-						Debug.Log("Aiming offset: " + offset + ", accuracy factor: " + accuracyFactor);
 						sweep.origin = "player";
 						sweep.TTL = 0.2f;
 						sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
@@ -648,11 +695,6 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		/* if (Input.GetKeyDown (KeyCode.Mouse1)) {
-			madeLoudSound = true;
-			madeLoudSoundCounter = madeLoudSoundDuration;
-		} */
-
 		if (Input.GetKey (KeyCode.Mouse1)) {
 			isAiming = true;
 		} else {
@@ -667,8 +709,8 @@ public class Player : MonoBehaviour {
 		myLine.AddComponent<LineRenderer>();
 		LineRenderer lr = myLine.GetComponent<LineRenderer>();
 		lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
-		lr.SetColors(color, color);
-		lr.SetWidth(0.1f, 0.1f);
+		lr.startColor = color;
+		lr.startWidth = 0.1f;
 		lr.SetPosition(0, start);
 		lr.SetPosition(1, end);
 		lr.startWidth = 0.02f;
@@ -677,31 +719,8 @@ public class Player : MonoBehaviour {
 		GameObject.Destroy(myLine, duration);
 	}
 
-/*	public void ClickToPath (Grid grid) {
-
-		if (Input.GetKeyDown (KeyCode.Mouse1)) {
-			Vector2 mousePosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
-			Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint (mousePosition);
-			//Debug.Log (mouseInWorld.x + " and " + mouseInWorld.y);
-
-			int playerX = (int)Mathf.Floor (transform.position.x);
-			int playerY = (int)Mathf.Floor (transform.position.y);
-
-			int mouseX = (int)Mathf.Floor (mouseInWorld.x);
-			int mouseY = (int)Mathf.Floor (mouseInWorld.y);
-
-			AStar astar = new AStar ();
-			waypoints = astar.FindPath(grid.GetTileAt(playerX, playerY), grid.GetTileAt(mouseX, mouseY), grid, false);
-			//waypoints.Remove (waypoints [0]);
-
-		}
-	}
-	public void MovePlayerToPosition (Vector3 position) {
-			Quaternion direction = Quaternion.LookRotation (Vector3.forward, position - transform.position);
-			pRigidbody.velocity = direction * Vector3.up * moveSpeed;
-	}*/
-
-	public void MovementControls () {
+	public void MovementControls ()
+	{
 		isMoving = false;
 		Vector2 dirX = new Vector2 (0f, 0f);
 		Vector2 dirY = new Vector2 (0f, 0f);
@@ -722,14 +741,6 @@ public class Player : MonoBehaviour {
 				isMoving = true;
 				lastMove = new Vector2 (0f, Input.GetAxisRaw ("Vertical"));
 			}
-			/*
-			if (Input.GetAxisRaw ("Horizontal") < 0.5f && Input.GetAxisRaw ("Horizontal") > -0.5) {
-				pRigidbody.velocity = new Vector2 (0f, pRigidbody.velocity.y);
-			}
-
-			if (Input.GetAxisRaw ("Vertical") < 0.5f && Input.GetAxisRaw ("Vertical") > -0.5) {
-				pRigidbody.velocity = new Vector2 (pRigidbody.velocity.x, 0f);
-			}*/
 
 			pRigidbody.velocity = (dirX + dirY).normalized * MoveSpeed;
 		} else {
@@ -739,8 +750,7 @@ public class Player : MonoBehaviour {
 		if (isAiming) {
 			Vector2 mousePosition = new Vector2 (Input.mousePosition.x / Screen.width * aspectRatioX, Input.mousePosition.y / Screen.height * aspectRatioY);
 			Vector2 centerPosition = new Vector2 (8.0f, 4.5f);
-			//Quaternion direction = Quaternion.LookRotation (Vector3.forward, centerPosition - mousePosition);
-			if (Mathf.Abs(mousePosition.x - centerPosition.x) > Mathf.Abs(mousePosition.y - centerPosition.y)) {
+			if (Mathf.Abs (mousePosition.x - centerPosition.x) > Mathf.Abs (mousePosition.y - centerPosition.y)) {
 				//Debug.Log (Mathf.Abs(mousePosition.x - centerPosition.x) + " is greater than " + Mathf.Abs(mousePosition.y - centerPosition.y));
 				if (mousePosition.x > centerPosition.x) {
 					lastMove.x = 1;
@@ -761,13 +771,17 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		animator.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
-		animator.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
-		animator.SetBool("IsMoving", isMoving);
-		animator.SetFloat("LastMoveX", lastMove.x);
-		animator.SetFloat("LastMoveY", lastMove.y);
-		animator.SetBool("IsAiming", isAiming);
+		animator.SetFloat ("MoveX", Input.GetAxisRaw ("Horizontal"));
+		animator.SetFloat ("MoveY", Input.GetAxisRaw ("Vertical"));
+		animator.SetBool ("IsMoving", isMoving);
+		animator.SetFloat ("LastMoveX", lastMove.x);
+		animator.SetFloat ("LastMoveY", lastMove.y);
+		animator.SetBool ("IsAiming", isAiming);
 
+		if (weapon.attacktype == Item.AttackType.Melee) {
+			animator.SetBool ("IsAttacking", isAttacking);
+		}
+			
 	}
 
 	public void PauseControls () {
@@ -783,10 +797,35 @@ public class Player : MonoBehaviour {
 		int x = (int)Mathf.Floor (transform.position.x);
 		int y = (int)Mathf.Floor (transform.position.y);
 
-		return grid.GetTileAt (x, y);		
+		return grid.GetTileAt (x, y);
 	}
 
 // Inventory section //
+
+	// add equipment bonuses
+
+	void addItemStats (Item item) {
+		equipmentAccuracyModifier += item.accuracyBonus;
+		equipmentMovespeedModifier += item.movespeedBonus;
+		BluntArmor += item.bluntArmor;
+		PierceArmor += item.pierceArmor;
+		FireArmor += item.fireArmor;
+		ColdArmor += item.coldArmor;
+		AcidArmor += item.acidArmor;
+	}
+
+	// remove equipment bonuses
+
+	void removeItemStats (Item item) {
+		equipmentAccuracyModifier -= item.accuracyBonus;
+		equipmentMovespeedModifier -= item.movespeedBonus;
+		BluntArmor -= item.bluntArmor;
+		PierceArmor -= item.pierceArmor;
+		FireArmor -= item.fireArmor;
+		ColdArmor -= item.coldArmor;
+		AcidArmor -= item.acidArmor;
+	}
+
 
 	// Equipment buttons, remove an item from equipment and put it into inventory
 	public void EquipmentButtonClicked (string slotname) {
@@ -794,14 +833,80 @@ public class Player : MonoBehaviour {
 		UnequipItemBySlotname (slotname);
 	}
 
+
 	// Inventory buttons, remove an item from inventory and put it on (in equipment slots)
-	public void InventoryButtonClicked (int index) {
+	public void InventoryButtonClicked (int index)
+	{
 		//Debug.Log ("Interacting with an index " + index);
 		if (inventory [index].type == Item.Type.Consumable) {
-			inventory [index].Use(this, index);
+			inventory [index].Use (this, index);
+		} else if (inventory [index].type == Item.Type.WeaponAttachment) {
+			HandleWeaponAttachment(inventory [index]);
 		} else {
 			equipItemByIndex (index);
 		}
+	}
+
+	void HandleWeaponAttachment (Item item)
+	{
+		if (Weapon != GlobalData.no_weapon) {
+			if (Weapon.attachment1_types.Contains (item.attachmenttype)) {
+				
+				if (Weapon.attachment1.type == Attachment.Type.None) {
+					// recalculating item stats by removing them before adding attachment, and then adding them back
+					removeItemStats (Weapon);
+					Weapon.AddAttachment1 (new Attachment (item.attachmenttype, item.name));
+					addItemStats (Weapon);
+					inventory.Remove (item);
+				} else {
+					// recalculating item stats by removing them before adding attachment, and then adding them back
+					removeItemStats (Weapon);
+					ReturnAttachment (Weapon.attachment1);
+					Weapon.RemoveAttachmentByIndex (1);
+					Weapon.AddAttachment1 (new Attachment (item.attachmenttype, item.name));
+					addItemStats (Weapon);
+					inventory.Remove (item);
+				}
+			}
+
+			if (Weapon.attachment2_types.Contains (item.attachmenttype)) {
+				
+				if (Weapon.attachment2.type == Attachment.Type.None) {
+					// recalculating item stats by removing them before adding attachment, and then adding them back
+					removeItemStats (Weapon);
+					Weapon.AddAttachment2 (new Attachment (item.attachmenttype, item.name));
+					addItemStats (Weapon);
+					inventory.Remove (item);
+				} else {
+					// recalculating item stats by removing them before adding attachment, and then adding them back
+					removeItemStats (Weapon);
+					ReturnAttachment (Weapon.attachment2);
+					Weapon.RemoveAttachmentByIndex (2);
+					Weapon.AddAttachment2 (new Attachment (item.attachmenttype, item.name));
+					addItemStats (Weapon);
+					inventory.Remove (item);
+				}
+			}
+		}
+	}
+
+	public void equippedWeaponRemoveMods () {
+		removeItemStats(Weapon);
+		ReturnAttachment (Weapon.attachment1);
+		ReturnAttachment (Weapon.attachment2);
+		Weapon.RemoveAllAttachments();
+		addItemStats(Weapon);
+	}
+
+	public void ReturnAttachment (Attachment attachment) {
+		if (attachment.type == Attachment.Type.MeleeBluntSurface  ||
+			attachment.type == Attachment.Type.MeleeEdgeSurface  ||
+			attachment.type == Attachment.Type.MeleeHandle  ||
+			attachment.type == Attachment.Type.RangedHandle ||
+			attachment.type == Attachment.Type.RangedScope) {
+
+			getItem(new Item (Item.Type.WeaponAttachment, attachment.name));
+			}
 	}
 
 	// Red cross button next to equipment/inventory slots, drops an item onto the ground
@@ -864,79 +969,57 @@ public class Player : MonoBehaviour {
 
 	public void dropItemBySlotname (string slotname) {
 
-		switch (slotname) {
+		Item currentItem;
 
+		currentItem = Weapon;
+
+		switch (slotname) {
 		case "helmet": 
-			DropItemOnGround (helmet);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + helmet.name);
-			BluntArmor -= helmet.bluntArmor;
-			PierceArmor -= helmet.pierceArmor;
-			FireArmor -= helmet.fireArmor;
-			ColdArmor -= helmet.coldArmor;
-			AcidArmor -= helmet.acidArmor;
+			currentItem = helmet;
 			helmet = GlobalData.no_helmet;
 			break;
+		case "mask": 
+			currentItem = mask;
+			mask = GlobalData.no_mask;
+			break;
 		case "bodyarmor":
-			DropItemOnGround (bodyarmor);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + bodyarmor.name);
-			BluntArmor -= bodyarmor.bluntArmor;
-			PierceArmor -= bodyarmor.pierceArmor;
-			FireArmor -= bodyarmor.fireArmor;
-			ColdArmor -= bodyarmor.coldArmor;
-			AcidArmor -= bodyarmor.acidArmor;
+			currentItem = bodyarmor;
 			bodyarmor = GlobalData.no_armor;
 			break;
 		case "clothing":
-			DropItemOnGround (clothing);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + clothing.name);
-			BluntArmor -= clothing.bluntArmor;
-			PierceArmor -= clothing.pierceArmor;
-			FireArmor -= clothing.fireArmor;
-			ColdArmor -= clothing.coldArmor;
-			AcidArmor -= clothing.acidArmor;
+			currentItem = clothing;
 			clothing = GlobalData.no_clothing;
 			break;
 		case "pants":
-			DropItemOnGround (pants);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + pants.name);
-			BluntArmor -= pants.bluntArmor;
-			PierceArmor -= pants.pierceArmor;
-			FireArmor -= pants.fireArmor;
-			ColdArmor -= pants.coldArmor;
-			AcidArmor -= pants.acidArmor;
+			currentItem = pants;
 			pants = GlobalData.no_pants;
 			break;
 		case "boots":
-			DropItemOnGround (boots);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + boots.name);
-			BluntArmor -= boots.bluntArmor;
-			PierceArmor -= boots.pierceArmor;
-			FireArmor -= boots.fireArmor;
-			ColdArmor -= boots.coldArmor;
-			AcidArmor -= boots.acidArmor;
+			currentItem = boots;
 			boots = GlobalData.no_boots;
 			break;
-		case "Weapon":
-			DropItemOnGround (Weapon);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + Weapon.name);
-			BluntArmor -= Weapon.bluntArmor;
-			PierceArmor -= Weapon.pierceArmor;
-			FireArmor -= Weapon.fireArmor;
-			ColdArmor -= Weapon.coldArmor;
-			AcidArmor -= Weapon.acidArmor;
+		case "weapon":
+			currentItem = Weapon;
 			Weapon = GlobalData.no_weapon;
 			break;
 		case "offhand":
-			DropItemOnGround (offhand);
-			Debug.Log ("Dropping item from equipment slot: " + slotname + ", item name: " + offhand.name);
-			BluntArmor -= offhand.bluntArmor;
-			PierceArmor -= offhand.pierceArmor;
-			FireArmor -= offhand.fireArmor;
-			ColdArmor -= offhand.coldArmor;
-			AcidArmor -= offhand.acidArmor;
+			currentItem = offhand;
 			offhand = GlobalData.no_offhand;
 			break;
+
+		default:
+			break;
 		}
+
+		DropItemOnGround(currentItem);
+		equipmentAccuracyModifier -= currentItem.accuracyBonus;
+		equipmentMovespeedModifier -= currentItem.movespeedBonus;
+		BluntArmor -= currentItem.bluntArmor;
+		PierceArmor -= currentItem.pierceArmor;
+		FireArmor -= currentItem.fireArmor;
+		ColdArmor -= currentItem.coldArmor;
+		AcidArmor -= currentItem.acidArmor;
+
 	}
 
 	void equipItemByIndex (int index) {
@@ -945,12 +1028,8 @@ public class Player : MonoBehaviour {
 
 			Item equipitem = inventory[index];
 
-			BluntArmor += equipitem.bluntArmor;
-			PierceArmor += equipitem.pierceArmor;
-			FireArmor += equipitem.fireArmor;
-			ColdArmor += equipitem.coldArmor;
-			AcidArmor += equipitem.acidArmor;
-
+			// Adding item stats to player because of equipping
+			addItemStats(equipitem);
 
 			if (inventory [index].type == Item.Type.Weapon) {
 				if (Weapon != GlobalData.no_weapon) {
@@ -991,6 +1070,20 @@ public class Player : MonoBehaviour {
 				} else {
 					helmet = inventory [index];
 					Debug.Log ("Equipped new helmet: " + helmet.name);
+					Debug.Log ("Removing item " + inventory [index].name + " from inventory");
+					inventory.Remove (inventory [index]);
+				}
+			} else if (inventory [index].type == Item.Type.Mask) {
+				if (mask != GlobalData.no_mask) {
+					if (UnequipItem (mask)) {
+						mask = inventory [index];
+						Debug.Log ("Equipped new mask: " + helmet.name);
+						Debug.Log ("Removing item " + inventory [index].name + " from inventory");
+						inventory.Remove (inventory [index]);
+					}
+				} else {
+					mask = inventory [index];
+					Debug.Log ("Equipped new mask: " + mask.name);
 					Debug.Log ("Removing item " + inventory [index].name + " from inventory");
 					inventory.Remove (inventory [index]);
 				}
@@ -1051,7 +1144,7 @@ public class Player : MonoBehaviour {
 					inventory.Remove (inventory [index]);
 				}
 			} else {
-				Debug.LogError ("Attempted to equip an item marked as 'equippable' and yet it's none of the known equippable item types: Weapon, Offhand, Helmet, Clothing, Bodyarmor, Pants, Boots. Item name: " + inventory[index].name);
+				Debug.LogError ("Attempted to equip an item marked as 'equippable' and yet it's none of the known equippable item types: Weapon, Offhand, Helmet, Mask, Clothing, Bodyarmor, Pants, Boots. Item name: " + inventory[index].name);
 			}
 		} else {
 			Debug.Log ("Item " + inventory[index].name + " cannot be equipped due its nature.");
@@ -1073,11 +1166,9 @@ public class Player : MonoBehaviour {
 		if (inventory.Count < GlobalData.inventorySize) {
 			Debug.Log ("Unequipping and adding to inventory: " + item.name);
 			inventory.Add(item);
-			BluntArmor -= item.bluntArmor;
-			PierceArmor -= item.pierceArmor;
-			FireArmor -= item.fireArmor;
-			ColdArmor -= item.coldArmor;
-			AcidArmor -= item.acidArmor;
+
+			// Removing item stats because it's unequipped
+			removeItemStats(item);
 
 			if (item.type == Item.Type.Weapon) {
 				Weapon = GlobalData.no_weapon;
@@ -1087,9 +1178,12 @@ public class Player : MonoBehaviour {
 				offhand = GlobalData.no_offhand;
 			}
 
-
 			if (item.type == Item.Type.Helmet) {
 				helmet = GlobalData.no_helmet;
+			}
+
+			if (item.type == Item.Type.Mask) {
+				mask = GlobalData.no_mask;
 			}
 
 			if (item.type == Item.Type.Bodyarmor) {
@@ -1124,6 +1218,9 @@ public class Player : MonoBehaviour {
 			switch (slotname) {
 			case "helmet":
 				item = helmet;
+				break;
+			case "mask":
+				item = mask;
 				break;
 			case "bodyarmor":
 				item = bodyarmor;
@@ -1164,6 +1261,12 @@ public class Player : MonoBehaviour {
 				inventory.Add (item);
 			}
 
+			if (item.type == Item.Type.Mask) {
+				mask = GlobalData.no_mask;
+				Debug.Log ("Unequipping and adding to inventory: " + item.name);
+				inventory.Add (item);
+			}
+
 			if (item.type == Item.Type.Bodyarmor) {
 				bodyarmor = GlobalData.no_armor;
 				Debug.Log ("Unequipping and adding to inventory: " + item.name);
@@ -1190,8 +1293,8 @@ public class Player : MonoBehaviour {
 			}
 
 
-			BluntArmor -= item.bluntArmor;
-			PierceArmor -= item.pierceArmor;
+			// Removing item stats because it's unequipped
+			removeItemStats (item);
 		} else {
 			Debug.Log("Inventory is full, cannot unequip! Free up some inventory space first.");
 		}
@@ -1214,29 +1317,16 @@ public class Player : MonoBehaviour {
 		stamina = maxstamina;
 
 		playerMask = 1 << LayerMask.NameToLayer ("Player"); // enemies dont block visibility of other enemies, and player collider should not block the visibility of the player,
+		furnitureMask = 1 << LayerMask.NameToLayer ("Furniture"); // should be able to see/shoot through furniture
 		enemyMask = 1 << LayerMask.NameToLayer ("Enemy");   // so we "revert" these two masks with ~ to skip them from check in line of sight check.
-		lineOfSightMask = ~(playerMask | enemyMask);
+		lineOfSightMask = ~(playerMask | enemyMask | furnitureMask);
 	}
 
 	void Start () {
-		// Inventory
-		/*
-		for (int i = 0; i < 25; i++) {
-			Item emptyItem = GlobalData.nothing;
-			inventory.Add(emptyItem);
-			Debug.Log (emptyItem.name + " added to inventory to slot " + i);
-		}
-
-		for (int i = 0; i < 25; i++) {
-			Debug.Log ("Item in inventory slot " + i + ": " + inventory [i].name);
-		}*/
 
 		// GUI
 		overlay = GameObject.Find ("Hiteffect");
 		overlay.SetActive(false);
-
-		// Pathfinding
-//		waypoints = new List<Tile>();
 
 		// Attack arcs
 		player_attack_shot = Resources.Load<AttackArc> ("Prefabs/UI/shot");
@@ -1249,11 +1339,15 @@ public class Player : MonoBehaviour {
 		pRigidbody = GetComponent<Rigidbody2D> ();
 		pSpriteRenderer = GetComponent<SpriteRenderer> ();
 		helmetSpriteRenderer = transform.Find("Helmet").gameObject.GetComponent <SpriteRenderer> ();
+		maskSpriteRenderer = transform.Find ("Gasmask").gameObject.GetComponent <SpriteRenderer> ();
 		clothingSpriteRenderer = transform.Find("Shirt").gameObject.GetComponent <SpriteRenderer> ();
 		armorSpriteRenderer = transform.Find("Armor").gameObject.GetComponent <SpriteRenderer> ();
 		pantsSpriteRenderer = transform.Find("Pants").gameObject.GetComponent <SpriteRenderer> ();
 		bootsSpriteRenderer = transform.Find("Boots").gameObject.GetComponent <SpriteRenderer> ();
+
 		pistolSpriteRenderer = transform.Find("Pistol").gameObject.GetComponent <SpriteRenderer> ();
+
+		clubSpriteRenderer = transform.Find("Club").gameObject.GetComponent <SpriteRenderer> ();
 		swordSpriteRenderer = transform.Find("Sword").gameObject.GetComponent <SpriteRenderer> ();
 
 		// Do not destroy player after ot was created, do not create new players
@@ -1273,18 +1367,12 @@ public class Player : MonoBehaviour {
 		if (health <= 0) {
 			this.gameObject.SetActive(false);
 		}
-		/*
-		if (waypoints.Count > 0) {
-			nextWaypoint = new Vector3 (waypoints [0].X + 0.5f, waypoints[0].Y + 0.5f, 0f);
-			if (nextWaypoint != null) {
-				if (Vector3.Distance (transform.position, nextWaypoint) > 0.05) {
-					MovePlayerToPosition (nextWaypoint);
-				} else {
-					waypoints.Remove (waypoints [0]);
-					pRigidbody.velocity = new Vector2 (0f, 0f);
-				}
-			}
-		}*/
+
+		// check get tile at
+		if (Input.GetKeyDown(KeyCode.C)) {
+			Debug.Log(GetPlayerTile(grid));
+		}
+
 	}
 
 }

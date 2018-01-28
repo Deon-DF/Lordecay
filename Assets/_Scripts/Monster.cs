@@ -70,7 +70,7 @@ public class Monster : MonoBehaviour {
 	float lastMoveY;
 	public bool isMoving;
 
-	List<Tile> waypoints;
+	List<Tile> waypoints = new List<Tile> ();
 	Vector3 nextWaypoint;
 	public bool isPathFinding;
 
@@ -360,7 +360,6 @@ public class Monster : MonoBehaviour {
 		eRigidBody = GetComponent<Rigidbody2D> ();
 		eSpriteRenderer = GetComponent<SpriteRenderer> ();
 		monster_attack_arc = Resources.Load <AttackArc> ("Prefabs/UI/monster-attack-arc");
-		waypoints = new List<Tile> ();
 
 		attackCooldownCounter = attackCooldown;
 

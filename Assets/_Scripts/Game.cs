@@ -12,18 +12,6 @@ public class Game : MonoBehaviour {
 	GameObject passable_tile;
 	GameObject impassable_tile;
 
-	GameObject border;
-	GameObject citytile1;
-	GameObject citytile2;
-	GameObject citytile3;
-	GameObject citytile4;
-	GameObject citytile5;
-	GameObject citytile6;
-	GameObject citytile7;
-	GameObject citytile8;
-
-	List<GameObject> citytiles;
-
 	GameObject tiles_parent;
 	GUI gui;
 
@@ -38,19 +26,29 @@ public class Game : MonoBehaviour {
 
 	// masks for layers
 	int playerMask;
+	int furnitureMask;
 	int enemyMask; 
 	int lineOfSightMask;
+	int pathFindingMask;
 
 	// GameObject picker 
 
-	public GameObject PickRandomGameObject (List<GameObject> list) {
+	GameObject PickRandomGameObject (List<GameObject> list) {
 		int result = Random.Range(0, list.Count);
-		Debug.Log("random result: " + result);
 		return list[result];
 	}
 
 
 	// PLAYER CONTROLS AND ENEMY ACTIONS BEGIN
+
+	void CheckLocation (Monster monster) {
+		if ((monster.transform.position.x < 1) ||
+			(monster.transform.position.x > 99) ||
+			(monster.transform.position.y < 1) ||
+			(monster.transform.position.y > 99)) {
+				monster.transform.position = new Vector3 (1.5f, 1.5f, 0);
+			}
+	}
 
 	void EnemyActions (Monster monster, Player player) {
 		monster.FollowWaypoints ();
@@ -86,17 +84,18 @@ public class Game : MonoBehaviour {
 	// PLAYER CONTROLS AND ENEMY ACTIONS END
 	// PATHFINDING BEGIN
 
+	/*
 	Tile GetMonsterTile (Monster monster, Grid grid) {
 		int x = (int)Mathf.Floor (monster.transform.position.x);
 		int y = (int)Mathf.Floor (monster.transform.position.y);
 
 		return grid.GetTileAt (x, y);		
-	}
+	}*/
 
 	void PathfindingRedraw (Grid grid, Player player) {
 		for (int x = 0; x < grid.Width; x++) {
 			for (int y = 0; y < grid.Height; y++) {
-				if ((!Physics2D.Linecast (new Vector3 (x+0.5f, y+0.5f, 0f), new Vector3 (x + 0.6f, y+0.5f, 0f), lineOfSightMask))) {
+				if ((!Physics2D.Linecast (new Vector3 (x+0.5f, y+0.5f, 0f), new Vector3 (x + 0.6f, y+0.5f, 0f), pathFindingMask))) {
 					GameObject tile_go = Instantiate (passable_tile, new Vector3 (x, y, 0f), Quaternion.identity);
 					tile_go.name = "Tile_" + x + "_" + y;
 					tile_go.tag = "tile_go";
@@ -121,7 +120,8 @@ public class Game : MonoBehaviour {
 	// PATHFINDING END
 	// UI begin
 
-	void UpdateUI (Player player, GUI gui) {
+	void UpdateUI (Player player, GUI gui)
+	{
 
 		if (!GlobalData.worldmap && !GlobalData.inventoryON) {
 
@@ -129,32 +129,35 @@ public class Game : MonoBehaviour {
 			gui.enemyStatusUI.GetComponent<Text> ().text = GUI.enemyStatus;
 
 			//Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
-			if (hit.collider != null) {
-				if (hit.collider.gameObject.tag == "EnemyHitbox") {
-					GameObject enemy = hit.collider.transform.parent.gameObject;
-					gui.enemyBox.SetActive (true);
-					GUI.enemyName = enemy.name;
-					Monster monster = enemy.GetComponent<Monster> ();
+			if (!GlobalData.inventoryON) {
+				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
+				if (hit.collider != null) {
+					if (hit.collider.gameObject.tag == "EnemyHitbox") {
+						GameObject enemy = hit.collider.transform.parent.gameObject;
+						gui.enemyBox.SetActive (true);
+						GUI.enemyName = enemy.name;
+						Monster monster = enemy.GetComponent<Monster> ();
 
-					gui.enemyHealthBar.transform.localScale = new Vector3 (monster.Health * 1.0f / monster.maxhealth, 1, 1);
-					Debug.Log ("Health: " + monster.Health + " MaxHealth: " + monster.maxhealth + " Ratio: " + monster.Health * 1.0f / monster.maxhealth);
+						gui.enemyHealthBar.transform.localScale = new Vector3 (monster.Health * 1.0f / monster.maxhealth, 1, 1);
 
-					GUI.enemyStatus = "";
-					if (monster.isDisarmed) {
-						GUI.enemyStatus += "Disarmed";
-					}
-					if (monster.isRooted) {
-						GUI.enemyStatus += "Rooted";
-					}
-					if (monster.isStunned) {
-						GUI.enemyStatus += "Stunned";
-					}
-				} 
+						GUI.enemyStatus = "";
+						if (monster.isDisarmed) {
+							GUI.enemyStatus += "Disarmed";
+						}
+						if (monster.isRooted) {
+							GUI.enemyStatus += "Rooted";
+						}
+						if (monster.isStunned) {
+							GUI.enemyStatus += "Stunned";
+						}
+					} 
+				} else {
+					gui.enemyBox.SetActive (false);
+					GUI.enemyName = "";
+				}				
 			} else {
-				gui.enemyBox.SetActive (false);
-				GUI.enemyName = "";
-			}
+					gui.enemyBox.SetActive (false);
+					GUI.enemyName = "";}
 		}
 
 		if (!GlobalData.worldmap) {
@@ -192,7 +195,7 @@ public class Game : MonoBehaviour {
 				gui.healthText.GetComponent<Text> ().text = player.Health + "/" + player.MaxHealth;
 				gui.sanityText.GetComponent<Text> ().text = player.Sanity + "/" + player.MaxSanity;
 				gui.staminaText.GetComponent<Text> ().text = Mathf.Round(player.Stamina) + "/" + player.MaxStamina;
-				gui.accuracyText.GetComponent<Text> ().text = player.accuracy + "%";
+				gui.accuracyText.GetComponent<Text> ().text = player.Accuracy + "%";
 
 				gui.bluntDamageText.GetComponent<Text> ().text = player.Weapon.bluntMinDamage + "-" + player.Weapon.bluntMaxDamage;
 				gui.pierceDamageText.GetComponent<Text> ().text = player.PierceMinDamage + "-" + player.PierceMaxDamage;
@@ -249,6 +252,13 @@ public class Game : MonoBehaviour {
 					gui.GetSlotByIndex (i).SetActive (false);
 				}
 
+				// Remove attachments button
+				if (player.Weapon.attachment1.type != Attachment.Type.None || player.Weapon.attachment2.type != Attachment.Type.None) {
+					gui.removeAttachmentsButton.SetActive(true);
+				} else {
+					gui.removeAttachmentsButton.SetActive(false);
+				}
+
 				// Handle drawing of equipment slots
 				if (player.Weapon != GlobalData.no_weapon) {
 					gui.equipmentSlotWeapon.SetActive (true);
@@ -267,6 +277,12 @@ public class Game : MonoBehaviour {
 					gui.equipmentSlotHelmet.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.helmet.itemsprite);
 				} else {
 					gui.equipmentSlotHelmet.SetActive (false);
+				}
+				if (player.mask != GlobalData.no_mask) {
+					gui.equipmentSlotMask.SetActive (true);
+					gui.equipmentSlotMask.GetComponent <Image> ().sprite = Resources.Load <Sprite> (player.mask.itemsprite);
+				} else {
+					gui.equipmentSlotMask.SetActive (false);
 				}
 				if (player.bodyarmor != GlobalData.no_armor) {
 					gui.equipmentSlotBodyarmor.SetActive (true);
@@ -303,37 +319,6 @@ public class Game : MonoBehaviour {
 	{
 
 		// Create city map for Slums
-		if (SceneManager.GetActiveScene ().name == "Slums") {
-
-			border = Resources.Load ("Tiled2Unity/Prefabs/Border") as GameObject;
-			citytile1 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			citytile2 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			citytile3 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			citytile4 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			citytile5 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			citytile6 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			citytile7 = Resources.Load ("Tiled2Unity/Prefabs/Motel1") as GameObject;
-			citytile8 = Resources.Load ("Tiled2Unity/Prefabs/Cafe1") as GameObject;
-
-			citytiles = new List<GameObject> ();
-			if (citytile1 != null) {citytiles.Add (citytile1);}
-			if (citytile2 != null) {citytiles.Add (citytile2);}
-			if (citytile3 != null) {citytiles.Add (citytile3);}
-			if (citytile4 != null) {citytiles.Add (citytile4);}
-			if (citytile5 != null) {citytiles.Add (citytile5);}
-			if (citytile6 != null) {citytiles.Add (citytile6);}
-			if (citytile7 != null) {citytiles.Add (citytile7);}
-			if (citytile8 != null) {citytiles.Add (citytile8);}
-
-			GameObject mapborder = Instantiate (border, new Vector3 (0, 100, 0), Quaternion.identity);
-
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					GameObject tile1 = Instantiate (PickRandomGameObject (citytiles), new Vector3 (i * 25, (j + 1) * 25, 0), Quaternion.identity);
-				}
-			}
-		}
-
 
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
 		if (GlobalData.worldmap != true) {
@@ -347,15 +332,15 @@ public class Game : MonoBehaviour {
 			// Load resources and variables
 			passable_tile = Resources.Load ("Prefabs/UI/passable_tile") as GameObject;
 			impassable_tile = Resources.Load ("Prefabs/UI/impassable_tile") as GameObject;
-			//GlobalData.sprite_baseballBat = Resources.Load<Sprite> ("Sprites/Characters/Blob");
-			//GlobalData.sprite_riotShield = Resources.Load<Sprite> ("Sprites/Characters/Blob");
 
 			tiles_parent = GameObject.Find ("PathfindingTiles");
 
 
 			playerMask = 1 << LayerMask.NameToLayer ("Player"); // enemies dont block visibility of other enemies, and player collider should not block the visibility of the player,
+			furnitureMask = 1 << LayerMask.NameToLayer ("Furniture"); // should be able to see/shoot through furniture
 			enemyMask = 1 << LayerMask.NameToLayer ("Enemy");   // so we "revert" these two masks with ~ to skip them from check in line of sight check.
-			lineOfSightMask = ~(playerMask | enemyMask);
+			lineOfSightMask = ~(playerMask | enemyMask | furnitureMask);
+			pathFindingMask = ~(playerMask | enemyMask); // Furniture still blocks walking
 		}
 
 
@@ -394,13 +379,6 @@ public class Game : MonoBehaviour {
 	void Update ()
 	{
 
-
-		if (Input.GetKeyDown (KeyCode.R)) {
-			GameObject whatever = PickRandomGameObject(citytiles);
-			Debug.Log("Picked gameobject: " + whatever.name);
-		}
-
-
 		// UI stuff
 		UpdateUI(player, gui);
 		player.PauseControls ();
@@ -417,6 +395,7 @@ public class Game : MonoBehaviour {
 		Monster[] enemies = GameObject.FindObjectsOfType<Monster> ();
 		foreach (Monster enemy in enemies) {
 			if (!GlobalData.paused) {
+				CheckLocation(enemy);
 				EnemyActions (enemy, player);
 				enemy.CoolDown ();
 				if (!Physics2D.Linecast (player.transform.position, enemy.transform.position, lineOfSightMask)) {

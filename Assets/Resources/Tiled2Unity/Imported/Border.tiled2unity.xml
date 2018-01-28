@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--Tiled2Unity generated xml data-->
 <!--Do not modify by hand-->
-<!--Last exported: 28/01/2018 03:46:58-->
+<!--Last exported: 28/01/2018 16:34:51-->
 <Tiled2Unity version="1.0.13.2">
   <AssignMaterial mesh="Border_mesh_0001" material="terrain" />
   <Prefab name="Border" orientation="Orthogonal" staggerAxis="Y" staggerIndex="Odd" hexSideLength="0" numLayers="1" numTilesWide="100" numTilesHigh="100" tileWidth="64" tileHeight="64" exportScale="0.015625" mapWidthInPixels="6400" mapHeightInPixels="6400" backgroundColor="#808080">
     <GameObject name="Tile Layer 1" x="0" y="0" z="0">
       <TileLayer offsetX="0" offsetY="0" />
-      <GameObject name="terrain" x="0" y="0" mesh="Border_mesh_0001" sortingLayerName="Overlay" sortingOrder="0" opacity="1" />
+      <GameObject name="terrain" x="0" y="0" mesh="Border_mesh_0001" sortingLayerName="Walls" sortingOrder="0" opacity="1" />
       <GameObject name="Collision">
         <PolygonCollider2D>
           <Path>100,0 0,0 0,-100 100,-100</Path>
