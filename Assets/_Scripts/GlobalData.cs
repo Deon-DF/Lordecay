@@ -21,7 +21,7 @@ public class GlobalData {
 	public static float mapMovementSpeed = 0.5f;
 	public static string nextEntry;
 	public static float playerSpawnX = 20f;
-	public static float playerSpawnY = 96f;
+	public static float playerSpawnY = 98f;
 
 	// Game log
 

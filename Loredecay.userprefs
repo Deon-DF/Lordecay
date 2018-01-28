@@ -1,16 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\Game.cs">
     <Files>
       <File FileName="Assets\_Scripts\LoadNewArea.cs" Line="1" Column="1" />
       <File FileName="Assets\_Scripts\Monster.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\Item.cs" Line="345" Column="42" />
-      <File FileName="Assets\_Scripts\Player.cs" Line="1247" Column="23" />
-      <File FileName="Assets\_Scripts\GlobalData.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\Item.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\GlobalData.cs" Line="23" Column="41" />
       <File FileName="Assets\_Scripts\GUI.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\Game.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\Game.cs" Line="306" Column="45" />
       <File FileName="Assets\_Scripts\Astar.cs" Line="1" Column="1" />
       <File FileName="Assets\_Scripts\InventoryTooltip.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\Grid.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
