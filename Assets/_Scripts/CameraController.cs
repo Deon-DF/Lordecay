@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour {
 		if (!GlobalData.worldmap) {
 			target = GameObject.FindGameObjectWithTag ("Player");
 		} else {
-			target = GameObject.Find (GlobalData.nextEntry);
+			target = GameObject.Find ("MapWalker");
 		}
 	}
 	

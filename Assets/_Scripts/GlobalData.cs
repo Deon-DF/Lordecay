@@ -11,6 +11,8 @@ public class GlobalData {
 	public static bool paused = false;
 	public static bool inventoryON = false;
 
+	public static bool ontopOfMapMarker = false;
+
 	public static Grid grid;
 
 	public static bool debugmode = true;

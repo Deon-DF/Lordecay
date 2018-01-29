@@ -317,10 +317,8 @@ public class Game : MonoBehaviour {
 
 	void Awake ()
 	{
-
-		// Create city map for Slums
-
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
+
 		if (GlobalData.worldmap != true) {
 			gui = GameObject.Find ("GUI").GetComponent <GUI> ();
 

@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/Slums.unity
+- path: Assets/_Scenes/Safehouse.unity
   isLoaded: 1
   isActive: 1

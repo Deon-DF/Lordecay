@@ -4,19 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MapGen : MonoBehaviour {
-	GameObject border;
-	GameObject citytile1;
-	GameObject citytile2;
-	GameObject citytile3;
-	GameObject citytile4;
-	GameObject citytile5;
-	GameObject citytile6;
-	GameObject citytile7;
-	GameObject citytile8;
 
-	List<GameObject> citytiles;
-
-	// GameObject picker 
 
 	GameObject PickRandomGameObject (List<GameObject> list) {
 		int result = Random.Range(0, list.Count);
@@ -24,17 +12,26 @@ public class MapGen : MonoBehaviour {
 	}
 
 	void Awake () {
-		if (SceneManager.GetActiveScene ().name == "Slums") {
+		if (SceneManager.GetActiveScene ().name == "Safehouse") {
 
-			border = Resources.Load ("Tiled2Unity/Prefabs/Border") as GameObject;
-			citytile1 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			citytile2 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			citytile3 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			citytile4 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			citytile5 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			citytile6 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			citytile7 = Resources.Load ("Tiled2Unity/Prefabs/Motel1") as GameObject;
-			citytile8 = Resources.Load ("Tiled2Unity/Prefabs/Cafe1") as GameObject;
+			GameObject safehouse = Resources.Load ("Tiled2Unity/Prefabs/Safehouse") as GameObject;
+			GameObject maptile = Instantiate (safehouse, new Vector3 (0, 15, 0), Quaternion.identity);
+			maptile.name = "Safehouse";
+		}
+
+		if (SceneManager.GetActiveScene ().name == "Slums") {
+			
+			GameObject border = Resources.Load ("Tiled2Unity/Prefabs/Border") as GameObject;
+			GameObject citytile1 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
+			GameObject citytile2 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
+			GameObject citytile3 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
+			GameObject citytile4 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
+			GameObject citytile5 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
+			GameObject citytile6 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
+			GameObject citytile7 = Resources.Load ("Tiled2Unity/Prefabs/Motel1") as GameObject;
+			GameObject citytile8 = Resources.Load ("Tiled2Unity/Prefabs/Cafe1") as GameObject;
+
+			List<GameObject> citytiles;
 
 			citytiles = new List<GameObject> ();
 			if (citytile1 != null) {citytiles.Add (citytile1);}
@@ -53,6 +50,7 @@ public class MapGen : MonoBehaviour {
 					GameObject tile1 = Instantiate (PickRandomGameObject (citytiles), new Vector3 (i * 25, (j + 1) * 25, 0), Quaternion.identity);
 				}
 			}
+
 		}
 	}
 	// Use this for initialization

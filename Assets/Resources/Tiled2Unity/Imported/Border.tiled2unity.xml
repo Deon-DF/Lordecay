@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--Tiled2Unity generated xml data-->
 <!--Do not modify by hand-->
-<!--Last exported: 28/01/2018 16:34:51-->
+<!--Last exported: 1/29/2018 4:36:03 PM-->
 <Tiled2Unity version="1.0.13.2">
   <AssignMaterial mesh="Border_mesh_0001" material="terrain" />
   <Prefab name="Border" orientation="Orthogonal" staggerAxis="Y" staggerIndex="Odd" hexSideLength="0" numLayers="1" numTilesWide="100" numTilesHigh="100" tileWidth="64" tileHeight="64" exportScale="0.015625" mapWidthInPixels="6400" mapHeightInPixels="6400" backgroundColor="#808080">

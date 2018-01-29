@@ -82,6 +82,7 @@ public class Player : MonoBehaviour {
 	private SpriteRenderer pSpriteRenderer;
 	private SpriteRenderer helmetSpriteRenderer;
 	private SpriteRenderer maskSpriteRenderer;
+	private SpriteRenderer ragsSpriteRenderer;
 	private SpriteRenderer clothingSpriteRenderer;
 	private SpriteRenderer armorSpriteRenderer;
 	private SpriteRenderer pantsSpriteRenderer;
@@ -434,15 +435,23 @@ public class Player : MonoBehaviour {
 
 		if (mask.subtype == Item.SubType.Gasmask) {
 			maskSpriteRenderer.enabled = true;
-			maskSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
+			maskSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 4;
 			maskSpriteRenderer.color = mask.color;
 		} else {
 			maskSpriteRenderer.enabled = false;
 		}
-	
+
+		if (clothing.subtype == Item.SubType.Rags) {
+			ragsSpriteRenderer.enabled = true;
+			ragsSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
+			ragsSpriteRenderer.color = clothing.color;
+		} else {
+			ragsSpriteRenderer.enabled = false;
+		}
+
 		if (clothing.subtype == Item.SubType.Shirt) {
 			clothingSpriteRenderer.enabled = true;
-			clothingSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 1;
+			clothingSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
 			clothingSpriteRenderer.color = clothing.color;
 		} else {
 			clothingSpriteRenderer.enabled = false;
@@ -450,7 +459,7 @@ public class Player : MonoBehaviour {
 
 		if (bodyarmor.subtype == Item.SubType.Armorvest) {
 			armorSpriteRenderer.enabled = true;
-			armorSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 2;
+			armorSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 3;
 			armorSpriteRenderer.color = bodyarmor.color;
 		} else {
 			armorSpriteRenderer.enabled = false;
@@ -574,6 +583,7 @@ public class Player : MonoBehaviour {
 			Item newItem11 = new Item(Item.Type.WeaponAttachment, "Red Dot");
 			Item newItem12 = new Item(Item.Type.WeaponAttachment, "Custom Grip");
 			Item newItem13 = new Item(Item.Type.Mask, "Gas Mask");// actually gives army helmet
+			Item newItem14 = new Item(Item.Type.Clothing, "Rags");// actually gives shirt
 			getItem (newItem);
 			getItem (newItem2);
 			getItem (newItem3);
@@ -587,6 +597,7 @@ public class Player : MonoBehaviour {
 			getItem (newItem11);
 			getItem (newItem12);
 			getItem (newItem13);
+			getItem (newItem14);
 		}
 	}
 
@@ -1340,6 +1351,7 @@ public class Player : MonoBehaviour {
 		pSpriteRenderer = GetComponent<SpriteRenderer> ();
 		helmetSpriteRenderer = transform.Find("Helmet").gameObject.GetComponent <SpriteRenderer> ();
 		maskSpriteRenderer = transform.Find ("Gasmask").gameObject.GetComponent <SpriteRenderer> ();
+		ragsSpriteRenderer = transform.Find("Rags").gameObject.GetComponent <SpriteRenderer> ();
 		clothingSpriteRenderer = transform.Find("Shirt").gameObject.GetComponent <SpriteRenderer> ();
 		armorSpriteRenderer = transform.Find("Armor").gameObject.GetComponent <SpriteRenderer> ();
 		pantsSpriteRenderer = transform.Find("Pants").gameObject.GetComponent <SpriteRenderer> ();

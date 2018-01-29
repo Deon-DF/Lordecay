@@ -27,6 +27,10 @@ public class MapWalker : MonoBehaviour {
 		if (Vector3.Distance(transform.position, targetPosition) > 0.1f) {
 			transform.position = Vector3.MoveTowards (transform.position, targetPosition, GlobalData.mapMovementSpeed * Time.deltaTime);
 		}
+
+		if (Input.GetKeyDown (KeyCode.A)) {
+			Debug.Log ("Is on top of map marker: " + GlobalData.ontopOfMapMarker);
+		}
 	}
 
 	// Use this for initialization

@@ -101,7 +101,7 @@ public class Item {
 						Shield,										// offhand
 						Cap, Hat, Casque,							// headwear
 						Facemask, Gasmask,							// masks
-						Shirt,										// clothing
+						Rags, Shirt,										// clothing
 						Armorvest,									// bodyarmor
 						Trousers,									// Legwear
 						Boots,										// Footwear
@@ -490,14 +490,28 @@ public class Item {
 
 		if (itemtype == Type.Clothing) {
 			switch (ItemName) {
+
+			case "Rags":
+				type = Type.Clothing;
+				subtype = SubType.Rags;
+				name = "Rags";
+				weight = 0.5f;
+				cost = 1;
+				bluntArmor = 1;
+				pierceArmor = 1;
+				itemsprite = "Sprites/UI/Items/rags";
+				color = new Color (0.6f, 0.5f, 0f);
+				isEquippable = true;
+				break;
+			
 			case "Shirt":
 				type = Type.Clothing;
 				subtype = SubType.Shirt;
 				name = "Shirt";
 				weight = 0.5f;
 				cost = 10;
-				bluntArmor = 1;
-				pierceArmor = 1;
+				bluntArmor = 2;
+				pierceArmor = 2;
 				fireArmor = 1;
 				coldArmor = 1;
 				itemsprite = "Sprites/UI/Items/shirt";
