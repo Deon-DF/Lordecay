@@ -267,6 +267,8 @@ public class GUI : MonoBehaviour {
 
 	void Awake () {
 
+		DontDestroyOnLoad (transform.gameObject);
+
 		// Find UI elements
 
 		enemyBox = GameObject.Find ("EnemyGUI").gameObject;

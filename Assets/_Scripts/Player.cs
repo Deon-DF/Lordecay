@@ -795,11 +795,15 @@ public class Player : MonoBehaviour {
 			
 	}
 
-	public void PauseControls () {
+	public void PauseControls ()
+	{
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			GlobalData.paused = !GlobalData.paused;
-			GlobalData.inventoryON = !GlobalData.inventoryON;
-			GlobalData.groundSlotOffset = 0;
+
+			if (!GlobalData.worldmap) {
+				GlobalData.paused = !GlobalData.paused;
+				GlobalData.inventoryON = !GlobalData.inventoryON;
+				GlobalData.groundSlotOffset = 0;
+			}
 		}
 	}
 
