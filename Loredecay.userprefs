@@ -1,18 +1,26 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\MapAreaEntry.cs">
     <Files>
       <File FileName="Assets\_Scripts\Astar.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\Monster.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\GlobalData.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\Game.cs" Line="163" Column="3" />
-      <File FileName="Assets\_Scripts\GUI.cs" Line="270" Column="44" />
-      <File FileName="Assets\_Scripts\Player.cs" Line="806" Column="5" />
-      <File FileName="Assets\_Scripts\Item.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\GlobalData.cs" Line="26" Column="40" />
+      <File FileName="Assets\_Scripts\Game.cs" Line="20" Column="7" />
       <File FileName="Assets\_Scripts\InventoryTooltip.cs" Line="1" Column="1" />
       <File FileName="Assets\_Scripts\Grid.cs" Line="1" Column="1" />
       <File FileName="Assets\_Scripts\MapGen.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\AttackArc.cs" Line="31" Column="58" />
+      <File FileName="Assets\_Scripts\Monster.cs" Line="171" Column="111" />
+      <File FileName="Assets\_Scripts\Item.cs" Line="586" Column="21" />
+      <File FileName="Assets\_Scripts\Player.cs" Line="1384" Column="3" />
+      <File FileName="Assets\_Scripts\GUI.cs" Line="7" Column="40" />
+      <File FileName="Assets\_Scripts\MapWalker.cs" Line="20" Column="35" />
+      <File FileName="Assets\_Scripts\MapAreaEntry.cs" Line="15" Column="30" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

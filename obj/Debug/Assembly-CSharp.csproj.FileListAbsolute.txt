@@ -152,3 +152,4 @@ D:\Work\Github\Loredecay\Temp\bin\Debug\UnityEngine.HoloLens.xml
 D:\Work\Github\Loredecay\Temp\bin\Debug\UnityEngine.VR.xml
 D:\Work\Github\Loredecay\obj\Debug\Assembly-CSharp.dll
 D:\Work\Github\Loredecay\obj\Debug\Assembly-CSharp.pdb
+D:\Work\Github\Loredecay\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache

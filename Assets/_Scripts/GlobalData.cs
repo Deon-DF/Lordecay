@@ -22,8 +22,10 @@ public class GlobalData {
 	public static bool worldmap=false;
 	public static float mapMovementSpeed = 0.5f;
 	public static string nextEntry;
-	public static float playerSpawnX = 3f;
-	public static float playerSpawnY = 3f;
+	public static float playerSpawnX = 11.5f;
+	public static float playerSpawnY = 2.5f;
+
+	public static int alertLevelSlums = 0;
 
 	// Game log
 

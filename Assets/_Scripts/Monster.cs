@@ -31,7 +31,7 @@ public class Monster : MonoBehaviour {
 	public float attackCooldown = 2f;
 	public float attackDistance = 1f;
 	public float aggroDistance = 5f;
-	public float hearingDistance = 10f;
+	public float hearingFactor = 1f;
 	public float aggroRememberTime = 5f;
 	public bool isAggressive;
 	public bool isVisibleToPlayers;
@@ -168,7 +168,7 @@ public class Monster : MonoBehaviour {
 			aggroRememberCounter = aggroRememberTime;
 		} else if (player.madeLoudSound) {
 			{	
-				if (Vector3.Distance (transform.position, player.transform.position) < (hearingDistance*player.soundFactor)) {
+				if (Vector3.Distance (transform.position, player.transform.position) < (hearingFactor*player.soundDistance)) {
 					if (isAggressive == false) {
 						isAggressive = true;
 					}

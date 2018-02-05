@@ -17,7 +17,7 @@ public class MapWalker : MonoBehaviour {
 	}
 
 	void MouseControls () {
-		if (Input.GetKey (KeyCode.Mouse0)) {
+		if (Input.GetKey (KeyCode.Mouse1)) {
 			Vector2 mousePosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 			Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint (mousePosition);
 

@@ -38,16 +38,84 @@ public class Game : MonoBehaviour {
 		return list[result];
 	}
 
+	public int alertLevel = 0;
 
-	// PLAYER CONTROLS AND ENEMY ACTIONS BEGIN
+	// MONSTER SPAWNING AND ACTIONS
 
-	void CheckLocation (Monster monster) {
-		if ((monster.transform.position.x < 1) ||
-			(monster.transform.position.x > 99) ||
-			(monster.transform.position.y < 1) ||
-			(monster.transform.position.y > 99)) {
-				monster.transform.position = new Vector3 (1.5f, 1.5f, 0);
+	void IncreaseAlertLevel ()
+	{
+
+		if (SceneManager.GetActiveScene ().name == "Slums") {
+			GlobalData.alertLevelSlums += 1;
+			Debug.Log("Alert level in Slums is now " + GlobalData.alertLevelSlums);
+		}
+
+	}
+
+	void SpawnEnemies ()
+	{
+		List<GameObject> spawnZones;
+
+		spawnZones = new List<GameObject> (GameObject.FindGameObjectsWithTag ("SpawnZone"));
+
+		if (SceneManager.GetActiveScene ().name == "Slums") {
+			GameObject dhole = Resources.Load ("Prefabs/Creatures/Dhole") as GameObject;
+			GameObject ghoul = Resources.Load ("Prefabs/Creatures/Ghoul") as GameObject;
+
+			foreach (GameObject spawnZone in spawnZones) {
+				int random = Random.Range (0, 100);
+
+				if (spawnZone.name == "IndoorsMonsterSpawn") {
+					if (random <= GlobalData.alertLevelSlums * 10) {
+						GameObject monster1 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+						monster1.name = "Ghoul";
+						GameObject monster2 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+						monster2.name = "Ghoul";
+						int random2 = Random.Range (0, 2);
+						if (random2 == 0) {
+							GameObject monster3 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
+							monster3.name = "Dhole";
+						} else {
+							GameObject monster3 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+							monster3.name = "Ghoul";
+
+						}
+					} else if (random <= GlobalData.alertLevelSlums * 20) {
+						GameObject monster1 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+						monster1.name = "Ghoul";
+						GameObject monster2 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+						monster2.name = "Ghoul";
+					} else if (random <= GlobalData.alertLevelSlums * 30) {
+						GameObject monster1 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+						monster1.name = "Ghoul";
+					}
+				} else if (spawnZone.name == "OutdoorsMonsterSpawn") {
+					if (random <= GlobalData.alertLevelSlums * 10) {
+						GameObject monster1 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
+						monster1.name = "Dhole";
+						GameObject monster2 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
+						monster2.name = "Dhole";
+						int random2 = Random.Range (0, 2);
+						if (random2 == 0) {
+							GameObject monster3 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
+							monster3.name = "Dhole";
+						} else {
+							GameObject monster3 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+							monster3.name = "Ghoul";
+
+						}
+					} else if (random <= GlobalData.alertLevelSlums * 20) {
+						GameObject monster1 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
+						monster1.name = "Dhole";
+						GameObject monster2 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
+						monster2.name = "Dhole";
+					} else if (random <= GlobalData.alertLevelSlums * 30) {
+						GameObject monster1 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
+						monster1.name = "Dhole";
+					}
+				}
 			}
+		}
 	}
 
 	void EnemyActions (Monster monster, Player player) {
@@ -62,6 +130,18 @@ public class Game : MonoBehaviour {
 			monster.Roam ();
 			monster.isPathFinding = false;
 		}
+	}
+
+
+	// PLAYER CONTROLS
+
+	void CheckLocation (Monster monster) {
+		if ((monster.transform.position.x < 1) ||
+			(monster.transform.position.x > 99) ||
+			(monster.transform.position.y < 1) ||
+			(monster.transform.position.y > 99)) {
+				monster.transform.position = new Vector3 (1.5f, 1.5f, 0);
+			}
 	}
 
 	public void HandleControls (Player player) {
@@ -369,6 +449,11 @@ public class Game : MonoBehaviour {
 			grid = new Grid ();
 			GlobalData.grid = grid;
 			PathfindingRedraw (grid, player);
+		}
+
+		if (!GlobalData.worldmap) {
+			IncreaseAlertLevel();
+			SpawnEnemies();
 		}
 
 

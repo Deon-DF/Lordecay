@@ -68,7 +68,7 @@ public class Player : MonoBehaviour {
 	private bool isAiming = false;
 
 	public bool madeLoudSound = false;
-	public float soundFactor = 1f;
+	public float soundDistance = 1f;
 	private float madeLoudSoundCounter;
 
 	// Physics
@@ -659,7 +659,7 @@ public class Player : MonoBehaviour {
 					if (weapon.isLoud) {
 						madeLoudSound = true;
 						madeLoudSoundCounter = weapon.soundDuration;
-						soundFactor = weapon.soundFactor;
+						soundDistance = weapon.soundDistance;
 					}
 
 				} else if (weapon.attacktype == Item.AttackType.RangedSingle) { 
@@ -696,7 +696,7 @@ public class Player : MonoBehaviour {
 						if (weapon.isLoud) {
 							madeLoudSound = true;
 							madeLoudSoundCounter = weapon.soundDuration;
-							soundFactor = weapon.soundFactor;
+							soundDistance = weapon.soundDistance;
 						}
 					} else {
 						Debug.Log ("Cannot shoot outside of line of sight!");
@@ -1326,6 +1326,15 @@ public class Player : MonoBehaviour {
 // Awake/Start/update functions
 
 	void Awake() {
+
+		// Do not destroy player after ot was created, do not create new players
+		if (!playerExists) {
+			playerExists = true;
+			DontDestroyOnLoad (transform.gameObject);
+		} else {
+			Destroy (gameObject);
+		}
+
 		RecalculateStatsInfluence();
 		health = maxhealth;
 		sanity = maxsanity;
@@ -1366,19 +1375,21 @@ public class Player : MonoBehaviour {
 		clubSpriteRenderer = transform.Find("Club").gameObject.GetComponent <SpriteRenderer> ();
 		swordSpriteRenderer = transform.Find("Sword").gameObject.GetComponent <SpriteRenderer> ();
 
-		// Do not destroy player after ot was created, do not create new players
-		if (!playerExists) {
-			playerExists = true;
-			DontDestroyOnLoad (transform.gameObject);
-		} else {
-			Destroy (gameObject);
-		}
 
-		
+		// Start equipment
+
+		Item newItem = new Item(Item.Type.Weapon, "Heavy club");
+		Item newItem1 = new Item(Item.Type.Clothing, "Rags");// actually gives shirt
+		getItem (newItem);
+		getItem (newItem1);
+
 	}
 
 	void Update ()
 	{
+
+		RecalculateStatsInfluence();
+
 		DrawRelative ();
 		if (health <= 0) {
 			this.gameObject.SetActive(false);

@@ -110,7 +110,7 @@ public class Item {
 	public enum Effect {None, Healing, StatusEffect, Lootbox}
 
 	public bool isLoud = false;
-	public float soundFactor = 1f;
+	public float soundDistance = 1f;
 	public float soundDuration = 0.1f;
 
 	public string name;
@@ -600,6 +600,26 @@ public class Item {
 		if (itemtype == Type.Weapon) {
 			switch (ItemName) {
 			// melee
+			case "Heavy club":
+				type = Type.Weapon;
+				subtype = SubType.Club;
+				attacktype = AttackType.Melee;
+				attackcooldown = 0.5f;
+				attackrange = "long";
+				name = "Heavy club";
+				weight = 1f;
+				cost = 10;
+				bluntMinDamage = 25;
+				bluntMaxDamage = 30;
+				stunfactor = 0.5f;
+				isAOE = true;
+				isLoud = true;
+				soundDistance = 6f;
+				itemsprite = "Sprites/UI/Items/heavyClub";
+				color = new Color (0.9f, 0.7f, 0.31f);
+				isEquippable = true;
+				break;
+
 			case "Baseball bat":
 				type = Type.Weapon;
 				subtype = SubType.Club;
@@ -611,8 +631,10 @@ public class Item {
 				cost = 10;
 				bluntMinDamage = 15;
 				bluntMaxDamage = 30;
-				stunfactor = 0.4f;
-				isAOE = true;
+				stunfactor = 0.3f;
+				isAOE = false;
+				isLoud = true;
+				soundDistance = 5f;
 				itemsprite = "Sprites/UI/Items/baseballBat";
 				color = new Color (0.9f, 0.7f, 0.31f);
 				isEquippable = true;
@@ -629,8 +651,10 @@ public class Item {
 				cost = 20;
 				pierceMinDamage = 25;
 				pierceMaxDamage = 40;
-				stunfactor = 0.2f;
-				isAOE = false;
+				stunfactor = 0.1f;
+				isAOE = true;
+				isLoud = true;
+				soundDistance = 5f;
 				itemsprite = "Sprites/UI/Items/sword";
 				isEquippable = true;
 				break;
@@ -641,7 +665,7 @@ public class Item {
 				type = Type.Weapon;
 				subtype = SubType.Pistol;
 				attacktype = AttackType.RangedSingle;
-				attackcooldown = 0.4f;
+				attackcooldown = 0.3f;
 				name = "Pistol";
 				weight = 0.5f;
 				cost = 100;
@@ -650,7 +674,7 @@ public class Item {
 				stunfactor = 0.5f;
 				isAOE = false;
 				isLoud = true;
-				soundFactor = 1f;
+				soundDistance = 20f;
 				itemsprite = "Sprites/UI/Items/pistol";
 				isEquippable = true;
 				color = new Color (0.3f, 0.3f, 0.3f);

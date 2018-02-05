@@ -30,6 +30,7 @@ public class MapGen : MonoBehaviour {
 			GameObject citytile6 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
 			GameObject citytile7 = Resources.Load ("Tiled2Unity/Prefabs/Motel1") as GameObject;
 			GameObject citytile8 = Resources.Load ("Tiled2Unity/Prefabs/Cafe1") as GameObject;
+			GameObject citytile9 = Resources.Load ("Tiled2Unity/Prefabs/School1") as GameObject;
 
 			List<GameObject> citytiles;
 
@@ -42,6 +43,7 @@ public class MapGen : MonoBehaviour {
 			if (citytile6 != null) {citytiles.Add (citytile6);}
 			if (citytile7 != null) {citytiles.Add (citytile7);}
 			if (citytile8 != null) {citytiles.Add (citytile8);}
+			if (citytile8 != null) {citytiles.Add (citytile9);}
 
 			GameObject mapborder = Instantiate (border, new Vector3 (0, 100, 0), Quaternion.identity);
 

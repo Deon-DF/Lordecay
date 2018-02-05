@@ -27,19 +27,22 @@ public class AttackArc : MonoBehaviour {
 					this.enemiesHit++;
 					if (this.enemiesHit == 1 || isAOE) {
 						Monster enemy = collider.transform.parent.gameObject.GetComponent <Monster> ();
-						int effectiveDMG = ((pierceDamage - enemy.pierceArmor) +
-						                    (bluntDamage - enemy.bluntArmor) +
-						                    (fireDamage - enemy.fireArmor) +
-						                    (coldDamage - enemy.coldArmor) +
-						                    (acidDamage - enemy.acidArmor));
+						int effectiveDMG = (Mathf.Max(0, (pierceDamage - enemy.pierceArmor)) +
+											Mathf.Max(0, (bluntDamage - enemy.bluntArmor)) +
+											Mathf.Max(0, (fireDamage - enemy.fireArmor)) +
+											Mathf.Max(0, (coldDamage - enemy.coldArmor)) +
+											Mathf.Max(0, (acidDamage - enemy.acidArmor)));
 						if (effectiveDMG > 0) {
 							enemy.Stun (stunfactor);
+							Debug.Log ("Stunned enemy for " + stunfactor);
+							Debug.Log ("Rolled " + pierceDamage + " pierce damange and " + bluntDamage + " blunt damage, but pierce armor is " + enemy.pierceArmor + " and blunt armor is " + enemy.bluntArmor);
 							GlobalData.Gamelog += (Environment.NewLine + "You have hit " + enemy.name + " for " + effectiveDMG + " damage.");
 							enemy.Health -= effectiveDMG;
 							//Quaternion direction = Quaternion.LookRotation (Vector3.forward, collider.transform.position - transform.position);
 							//collider.attachedRigidbody.velocity = direction * Vector3.one * 10000f;
 							//Debug.Log ("You have hit " + enemy.name + " for " + effectiveDMG + "damage.");
 						} else {
+							Debug.Log ("Rolled " + pierceDamage + " pierce damange and " + bluntDamage + " blunt damage, but pierce armor is " + enemy.pierceArmor + " and blunt armor is " + enemy.bluntArmor);
 							GlobalData.Gamelog += (Environment.NewLine + "Enemy armor absorbed the hit!");
 						}
 						if (!enemy.isAggressive) {
@@ -55,16 +58,17 @@ public class AttackArc : MonoBehaviour {
 			case "enemy":
 				if (collider.tag == "PlayerHitbox") {
 					Player player = collider.transform.parent.gameObject.GetComponent <Player> ();
-					int effectiveDMG = ((bluntDamage - player.BluntArmor) +
-					                    (pierceDamage - player.PierceArmor) +
-					                    (fireDamage - player.FireArmor) +
-					                    (coldDamage - player.ColdArmor) +
-					                    (acidDamage - player.AcidArmor));
+					int effectiveDMG = (Mathf.Max(0, (bluntDamage - player.BluntArmor)) +
+										Mathf.Max(0, (pierceDamage - player.PierceArmor)) +
+										Mathf.Max(0, (fireDamage - player.FireArmor)) +
+										Mathf.Max(0, (coldDamage - player.ColdArmor)) +
+										Mathf.Max(0, (acidDamage - player.AcidArmor)));
 					if (effectiveDMG > 0) {
 						GlobalData.Gamelog += (Environment.NewLine + "You were hit for " + effectiveDMG + " damage.");
 						//Debug.Log ("You were hit for " + effectiveDMG + " damage.");
 						player.Health -= effectiveDMG;
-					} else {
+				} else {
+						Debug.Log ("Rolled " + pierceDamage + " pierce damange and " + bluntDamage + " blunt damage, but pierce armor is " + player.PierceArmor + " and blunt armor is " + player.BluntArmor);
 						GlobalData.Gamelog += (Environment.NewLine + "Your armor absorbed the hit!");
 					}
 				}

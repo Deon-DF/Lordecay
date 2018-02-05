@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GUI : MonoBehaviour {
 
+	private static bool guiExists = false;
+
 	public GameObject inventoryBG;
 	public GameObject inventoryTooltip;
 
@@ -267,7 +269,13 @@ public class GUI : MonoBehaviour {
 
 	void Awake () {
 
-		DontDestroyOnLoad (transform.gameObject);
+		// Do not destroy player after ot was created, do not create new players
+		if (!guiExists) {
+			guiExists = true;
+			DontDestroyOnLoad (transform.gameObject);
+		} else {
+			Destroy (gameObject);
+		}
 
 		// Find UI elements
 
