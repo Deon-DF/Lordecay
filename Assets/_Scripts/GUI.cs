@@ -115,7 +115,7 @@ public class GUI : MonoBehaviour {
 	public GameObject enemyNameUI;
 	public GameObject enemyStatusUI;
 	public GameObject enemyHealthBar;
-	public static string enemyName = "";
+	public static string enemyName = "Monster";
 	public static string enemyStatus = "";
 
 
@@ -279,9 +279,10 @@ public class GUI : MonoBehaviour {
 
 		// Find UI elements
 
+		enemyNameUI = GameObject.Find("EnemyName").gameObject;
+		enemyStatusUI = GameObject.Find("EnemyStatus").gameObject;
 		enemyBox = GameObject.Find ("EnemyGUI").gameObject;
-		enemyNameUI = enemyBox.transform.Find("EnemyName").gameObject;
-		enemyStatusUI = enemyBox.transform.Find("EnemyStatus").gameObject;
+
 		enemyHealthBar = enemyBox.transform.Find("EnemyHealthBar").gameObject;
 
 		//enemyBox.SetActive (false);

@@ -38,7 +38,6 @@ public class Game : MonoBehaviour {
 		return list[result];
 	}
 
-	public int alertLevel = 0;
 
 	// MONSTER SPAWNING AND ACTIONS
 
@@ -61,57 +60,86 @@ public class Game : MonoBehaviour {
 		if (SceneManager.GetActiveScene ().name == "Slums") {
 			GameObject dhole = Resources.Load ("Prefabs/Creatures/Dhole") as GameObject;
 			GameObject ghoul = Resources.Load ("Prefabs/Creatures/Ghoul") as GameObject;
+			GameObject husk = Resources.Load ("Prefabs/Creatures/Husk") as GameObject;
 
 			foreach (GameObject spawnZone in spawnZones) {
 				int random = Random.Range (0, 100);
 
 				if (spawnZone.name == "IndoorsMonsterSpawn") {
-					if (random <= GlobalData.alertLevelSlums * 10) {
+
+					// Random roll < alert level x 5 (5% for first entry)
+					if (random <= GlobalData.alertLevelSlums * 5) {
 						GameObject monster1 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
 						monster1.name = "Ghoul";
+						//Debug.Log ("Spawning " + monster1.name + " at (x,y) " + monster1.transform.position.x + " , " + monster1.transform.position.y);
 						GameObject monster2 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
 						monster2.name = "Ghoul";
+						//Debug.Log ("Spawning " + monster2.name + " at (x,y) " + monster2.transform.position.x + " , " + monster2.transform.position.y);
 						int random2 = Random.Range (0, 2);
 						if (random2 == 0) {
 							GameObject monster3 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
 							monster3.name = "Dhole";
+							//Debug.Log ("Spawning " + monster3.name + " at (x,y) " + monster3.transform.position.x + " , " + monster3.transform.position.y);
 						} else {
 							GameObject monster3 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
 							monster3.name = "Ghoul";
+							//Debug.Log ("Spawning " + monster3.name + " at (x,y) " + monster3.transform.position.x + " , " + monster3.transform.position.y);
 
 						}
-					} else if (random <= GlobalData.alertLevelSlums * 20) {
-						GameObject monster1 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
-						monster1.name = "Ghoul";
-						GameObject monster2 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
-						monster2.name = "Ghoul";
+
+						// alert level x 5 < Random roll < alert level x 15 (10% for first entry)
+					} else if (random <= GlobalData.alertLevelSlums * 15) {
+
+						// 20% chance to spawn ghoul
+						int random2 = Random.Range (0, 5);
+						if (random2 == 0) {
+							GameObject monster1 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
+							monster1.name = "Ghoul";
+						// else spawn husk
+						} else {
+							//Debug.Log ("Spawning " + monster1.name + " at (x,y) " + monster1.transform.position.x + " , " + monster1.transform.position.y);
+							GameObject monster2 = Instantiate (husk, spawnZone.transform.position, Quaternion.identity);
+							monster2.name = "Husk";
+							//Debug.Log ("Spawning " + monster2.name + " at (x,y) " + monster2.transform.position.x + " , " + monster2.transform.position.y);
+						}
+
+			// alert level x 15 < Random roll < alert level x 30 (15% for first entry)
 					} else if (random <= GlobalData.alertLevelSlums * 30) {
-						GameObject monster1 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
-						monster1.name = "Ghoul";
+						GameObject monster1 = Instantiate (husk, spawnZone.transform.position, Quaternion.identity);
+						monster1.name = "Husk";
+						//Debug.Log ("Spawning " + monster1.name + " at (x,y) " + monster1.transform.position.x + " , " + monster1.transform.position.y);
 					}
+
 				} else if (spawnZone.name == "OutdoorsMonsterSpawn") {
 					if (random <= GlobalData.alertLevelSlums * 10) {
 						GameObject monster1 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
 						monster1.name = "Dhole";
+						//Debug.Log ("Spawning " + monster1.name + " at (x,y) " + monster1.transform.position.x + " , " + monster1.transform.position.y);
 						GameObject monster2 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
 						monster2.name = "Dhole";
+						//Debug.Log ("Spawning " + monster2.name + " at (x,y) " + monster2.transform.position.x + " , " + monster2.transform.position.y);
 						int random2 = Random.Range (0, 2);
 						if (random2 == 0) {
 							GameObject monster3 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
 							monster3.name = "Dhole";
+							//Debug.Log ("Spawning " + monster3.name + " at (x,y) " + monster3.transform.position.x + " , " + monster3.transform.position.y);
 						} else {
 							GameObject monster3 = Instantiate (ghoul, spawnZone.transform.position, Quaternion.identity);
 							monster3.name = "Ghoul";
+							//Debug.Log ("Spawning " + monster3.name + " at (x,y) " + monster3.transform.position.x + " , " + monster3.transform.position.y);
 
 						}
 					} else if (random <= GlobalData.alertLevelSlums * 20) {
 						GameObject monster1 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
 						monster1.name = "Dhole";
+						//Debug.Log ("Spawning " + monster1.name + " at (x,y) " + monster1.transform.position.x + " , " + monster1.transform.position.y);
 						GameObject monster2 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
 						monster2.name = "Dhole";
+						//Debug.Log ("Spawning " + monster2.name + " at (x,y) " + monster2.transform.position.x + " , " + monster2.transform.position.y);
 					} else if (random <= GlobalData.alertLevelSlums * 30) {
 						GameObject monster1 = Instantiate (dhole, spawnZone.transform.position, Quaternion.identity);
 						monster1.name = "Dhole";
+						//Debug.Log ("Spawning " + monster1.name + " at (x,y) " + monster1.transform.position.x + " , " + monster1.transform.position.y);
 					}
 				}
 			}
@@ -212,7 +240,7 @@ public class Game : MonoBehaviour {
 			if (!GlobalData.inventoryON) {
 				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
 				if (hit.collider != null) {
-					if (hit.collider.gameObject.tag == "EnemyHitbox") {
+					if (hit.collider.gameObject.tag == "EnemyHitbox" && hit.collider.transform.parent.gameObject.GetComponent<Monster>().isVisibleToPlayers) {
 						GameObject enemy = hit.collider.transform.parent.gameObject;
 						gui.enemyBox.SetActive (true);
 						GUI.enemyName = enemy.name;
@@ -393,12 +421,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	// UI end
-
-	void Awake ()
-	{
-		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
-
+	void ReloadGUI () {
 		if (GlobalData.worldmap != true) {
 			gui = GameObject.Find ("GUI").GetComponent <GUI> ();
 
@@ -420,6 +443,15 @@ public class Game : MonoBehaviour {
 			lineOfSightMask = ~(playerMask | enemyMask | furnitureMask);
 			pathFindingMask = ~(playerMask | enemyMask); // Furniture still blocks walking
 		}
+	}
+
+	// UI end
+
+	void Awake ()
+	{
+		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
+
+		ReloadGUI();
 
 
 		if (GlobalData.nextEntry != null) {
@@ -445,6 +477,10 @@ public class Game : MonoBehaviour {
 	void Start () {
 		player.transform.position = new Vector3 (GlobalData.playerSpawnX, GlobalData.playerSpawnY, player.transform.position.z);
 
+
+		ReloadGUI();
+		Debug.Log ("Game start event triggered, GUI reloaded");
+
 		if (!GlobalData.worldmap) {
 			grid = new Grid ();
 			GlobalData.grid = grid;
@@ -461,7 +497,6 @@ public class Game : MonoBehaviour {
 
 	void Update ()
 	{
-
 		// UI stuff
 		UpdateUI(player, gui);
 		player.PauseControls ();

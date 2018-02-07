@@ -812,6 +812,8 @@ public class Player : MonoBehaviour {
 		int x = (int)Mathf.Floor (transform.position.x);
 		int y = (int)Mathf.Floor (transform.position.y);
 
+		Debug.Log("The grid is: " + grid);
+		Debug.Log("The player position is: " + transform.position.x + " " + transform.position.y);
 		return grid.GetTileAt (x, y);
 	}
 
@@ -1166,7 +1168,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void getItem (Item item) {
+	public void getItem (Item item) {
 		if (inventory.Count < GlobalData.inventorySize) {
 			inventory.Add (item);
 			Debug.Log ("Received an item in inventory: " + item.name);

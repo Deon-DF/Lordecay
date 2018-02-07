@@ -22,15 +22,17 @@ public class MapGen : MonoBehaviour {
 		if (SceneManager.GetActiveScene ().name == "Slums") {
 			
 			GameObject border = Resources.Load ("Tiled2Unity/Prefabs/Border") as GameObject;
-			GameObject citytile1 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			GameObject citytile2 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			GameObject citytile3 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse1") as GameObject;
-			GameObject citytile4 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			GameObject citytile5 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			GameObject citytile6 = Resources.Load ("Tiled2Unity/Prefabs/TownHouse2") as GameObject;
-			GameObject citytile7 = Resources.Load ("Tiled2Unity/Prefabs/Motel1") as GameObject;
-			GameObject citytile8 = Resources.Load ("Tiled2Unity/Prefabs/Cafe1") as GameObject;
-			GameObject citytile9 = Resources.Load ("Tiled2Unity/Prefabs/School1") as GameObject;
+			GameObject citytile1 = Resources.Load ("Tiled2Unity/Prefabs/THouse1") as GameObject;
+			GameObject citytile2 = Resources.Load ("Tiled2Unity/Prefabs/THouse2") as GameObject;
+			GameObject citytile3 = Resources.Load ("Tiled2Unity/Prefabs/THouse3") as GameObject;
+			GameObject citytile4 = Resources.Load ("Tiled2Unity/Prefabs/THouse4") as GameObject;
+			GameObject citytile5 = Resources.Load ("Tiled2Unity/Prefabs/THouse1") as GameObject;
+			GameObject citytile6 = Resources.Load ("Tiled2Unity/Prefabs/THouse2") as GameObject;
+			GameObject citytile7 = Resources.Load ("Tiled2Unity/Prefabs/THouse3") as GameObject;
+			GameObject citytile8 = Resources.Load ("Tiled2Unity/Prefabs/THouse4") as GameObject;
+			GameObject citytile9 = Resources.Load ("Tiled2Unity/Prefabs/Motel1") as GameObject;
+			GameObject citytile10 = Resources.Load ("Tiled2Unity/Prefabs/Cafe1") as GameObject;
+			GameObject citytile11 = Resources.Load ("Tiled2Unity/Prefabs/School1") as GameObject;
 
 			List<GameObject> citytiles;
 
@@ -43,7 +45,9 @@ public class MapGen : MonoBehaviour {
 			if (citytile6 != null) {citytiles.Add (citytile6);}
 			if (citytile7 != null) {citytiles.Add (citytile7);}
 			if (citytile8 != null) {citytiles.Add (citytile8);}
-			if (citytile8 != null) {citytiles.Add (citytile9);}
+			if (citytile9 != null) {citytiles.Add (citytile9);}
+			if (citytile10 != null) {citytiles.Add (citytile10);}
+			if (citytile11 != null) {citytiles.Add (citytile11);}
 
 			GameObject mapborder = Instantiate (border, new Vector3 (0, 100, 0), Quaternion.identity);
 

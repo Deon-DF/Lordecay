@@ -176,6 +176,9 @@ public class Monster : MonoBehaviour {
 				}
 			}
 		} else {
+			if (aggroRememberCounter <= 0) {
+				isAggressive = false;
+			}
 			return false;
 		}
 
@@ -251,10 +254,12 @@ public class Monster : MonoBehaviour {
 				moveDirection = direction * Vector3.up;
 				if (!isStunned && !isRooted) {
 					eRigidBody.velocity = moveDirection * moveSpeed;
+					Debug.Log ("set velocity to " + eRigidBody.velocity);
 					isPathFinding = false;
 					isMoving = true;
 				} else {
 					eRigidBody.velocity = new Vector2 (0f, 0f);
+					Debug.Log ("Stopping because no line of sight");
 					isPathFinding = false;
 					isMoving = false;
 				}

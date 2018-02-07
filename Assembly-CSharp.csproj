@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\LootArea.cs" />
      <Compile Include="Assets\Resources\Tiled2Unity\Scripts\Runtime\CircleObject.cs" />
      <Compile Include="Assets\Resources\Tiled2Unity\Scripts\Runtime\GPUInstancing.cs" />
      <Compile Include="Assets\Resources\Tiled2Unity\Scripts\Runtime\GameObjectExtensions.cs" />
@@ -93,6 +94,7 @@
      <None Include="Assets\Resources\Tiled2Unity\Shaders\Tiled2Unity.cginc" />
      <None Include="Assets\Resources\Tiled2Unity\Imported\TowhHouse2.tiled2unity.xml" />
      <None Include="Assets\Resources\Tiled2Unity\Imported\Cafe1.tiled2unity.xml" />
+     <None Include="Assets\Resources\Tiled2Unity\Imported\TownHouse3.tiled2unity.xml" />
      <None Include="Assets\Resources\Tiled2Unity\Tiled2Unity.export.txt" />
      <None Include="Assets\Resources\Tiled2Unity\Imported\School1.tiled2unity.xml" />
      <None Include="Assets\Resources\Tiled2Unity\Shaders\shaDepth.shader" />
@@ -111,6 +113,7 @@
      <None Include="Assets\Resources\Tiled2Unity\Shaders\shaDepthColorKey.shader" />
      <None Include="Assets\Resources\Tiled2Unity\Shaders\shaDepthColorKey-Instanced.shader" />
      <None Include="Assets\Resources\Tiled2Unity\License.txt" />
+     <None Include="Assets\Resources\Tiled2Unity\Imported\TownHouse4.tiled2unity.xml" />
      <None Include="Assets\Resources\Tiled2Unity\Imported\_ReadMe.txt" />
      <None Include="Assets\Resources\Tiled2Unity\Imported\test.tiled2unity.xml" />
      <None Include="Assets\Resources\Tiled2Unity\Meshes\_ReadMe.txt" />

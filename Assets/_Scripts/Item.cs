@@ -491,6 +491,22 @@ public class Item {
 		if (itemtype == Type.Clothing) {
 			switch (ItemName) {
 
+			case "Leather jacket":
+				type = Type.Clothing;
+				subtype = SubType.Shirt;
+				name = "Leather Jacket";
+				weight = 2.5f;
+				cost = 40;
+				bluntArmor = 3;
+				pierceArmor = 3;
+				fireArmor = 3;
+				coldArmor = 3;
+				acidArmor = 2;
+				itemsprite = "Sprites/UI/Items/leatherJacket";
+				color = new Color (0.3f, 0.3f, 0.3f);
+				isEquippable = true;
+				break;
+
 			case "Rags":
 				type = Type.Clothing;
 				subtype = SubType.Rags;
@@ -510,11 +526,23 @@ public class Item {
 				name = "Shirt";
 				weight = 0.5f;
 				cost = 10;
-				bluntArmor = 2;
-				pierceArmor = 2;
 				fireArmor = 1;
 				coldArmor = 1;
 				itemsprite = "Sprites/UI/Items/shirt";
+				isEquippable = true;
+				break;
+
+			case "Sports jacket":
+				type = Type.Clothing;
+				subtype = SubType.Shirt;
+				name = "Sports Jacket";
+				weight = 1f;
+				cost = 20;
+				bluntArmor = 1;
+				pierceArmor = 1;
+				fireArmor = 1;
+				coldArmor = 1;
+				itemsprite = "Sprites/UI/Items/sportsJacket";
 				isEquippable = true;
 				break;
 
@@ -532,12 +560,39 @@ public class Item {
 				subtype = SubType.Trousers;
 				name = "Camo Pants";
 				weight = 2f;
-				cost = 15;
+				cost = 25;
 				bluntArmor = 1;
 				pierceArmor = 1;
 				fireArmor = 1;
 				coldArmor = 1;
 				itemsprite = "Sprites/UI/Items/camoPants";
+				isEquippable = true;
+				break;
+
+			case "Jeans":
+				type = Type.Pants;
+				subtype = SubType.Trousers;
+				name = "Jeans";
+				weight = 1.5f;
+				cost = 15;
+				pierceArmor = 1;
+				fireArmor = 1;
+				coldArmor = 1;
+				itemsprite = "Sprites/UI/Items/jeans";
+				color = new Color (0.3f, 0.3f, 1f);
+				isEquippable = true;
+				break;
+
+			case "Sports pants":
+				type = Type.Pants;
+				subtype = SubType.Trousers;
+				name = "Sports Pants";
+				weight = 1f;
+				cost = 10;
+				fireArmor = 1;
+				coldArmor = 1;
+				itemsprite = "Sprites/UI/Items/sportsPants";
+				color = new Color (0.3f, 0.3f, 0.3f);
 				isEquippable = true;
 				break;
 
@@ -555,16 +610,27 @@ public class Item {
 				subtype = SubType.Boots;
 				name = "Leather Boots";
 				weight = 2f;
-				cost = 25;
+				cost = 20;
 				pierceArmor = 2;
 				bluntArmor = 2;
 				fireArmor = 1;
 				coldArmor = 1;
 				acidArmor = 1;
 				itemsprite = "Sprites/UI/Items/leatherBoots";
-				movespeedBonus = 0.2f;
+				movespeedBonus = 0.1f;
 				isEquippable = true;
 				color = new Color (0.47f, 0.31f, 0f);
+				break;
+
+			case "Sneakers":
+				type = Type.Boots;
+				subtype = SubType.Boots;
+				name = "Sneakers";
+				weight = 1.5f;
+				cost = 25;
+				itemsprite = "Sprites/UI/Items/sneakers";
+				movespeedBonus = 0.25f;
+				isEquippable = true;
 				break;
 
 			default: 

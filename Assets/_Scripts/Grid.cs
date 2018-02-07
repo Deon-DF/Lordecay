@@ -19,8 +19,13 @@ public class Grid {
 		}
 	}
 
-	public Tile GetTileAt (int x, int y) {
-		return tiles [x, y];
+	public Tile GetTileAt (int x, int y)
+	{
+		if (tiles [x, y] != null) {
+			return tiles [x, y];
+		} else {
+			return new Tile(1, 1, true);
+		}
 	}
 
 	public Grid (int width = 100, int height = 100) {
