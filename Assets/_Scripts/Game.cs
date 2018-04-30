@@ -17,13 +17,6 @@ public class Game : MonoBehaviour {
 
 	Grid grid;
 
-	// UI
-	GameObject healthbar;
-	GameObject staminabar;
-
-	Image WeaponUI;
-
-
 	// masks for layers
 	int playerMask;
 	int furnitureMask;
@@ -222,7 +215,8 @@ public class Game : MonoBehaviour {
 				}
 			}
 		}
-		player.grid = grid;
+		GlobalData.grid = grid;
+		player.grid = GlobalData.grid;
 	}
 
 	// PATHFINDING END
@@ -269,9 +263,9 @@ public class Game : MonoBehaviour {
 		}
 
 		if (!GlobalData.worldmap) {
-			WeaponUI.sprite = Resources.Load<Sprite>(player.Weapon.itemsprite);
-			healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / player.MaxHealth, 1, 1);
-			staminabar.transform.localScale = new Vector3 (player.Stamina * 1.0f / player.MaxStamina, 1, 1);
+			gui.WeaponUI.sprite = Resources.Load<Sprite>(player.Weapon.itemsprite);
+			gui.healthbar.transform.localScale = new Vector3 (player.Health * 1.0f / player.MaxHealth, 1, 1);
+			gui.staminabar.transform.localScale = new Vector3 (player.Stamina * 1.0f / player.MaxStamina, 1, 1);
 
 			if (GlobalData.inventoryON) {
 				gui.inventoryBG.SetActive (true);
@@ -425,11 +419,6 @@ public class Game : MonoBehaviour {
 		if (GlobalData.worldmap != true) {
 			gui = GameObject.Find ("GUI").GetComponent <GUI> ();
 
-			healthbar = GameObject.Find ("Healthbar");
-			staminabar = GameObject.Find ("Staminabar");
-//		staminabar = GameObject.Find ("Staminabar");
-			WeaponUI = GameObject.Find ("WeaponUI").GetComponent<Image> ();
-
 			// Load resources and variables
 			passable_tile = Resources.Load ("Prefabs/UI/passable_tile") as GameObject;
 			impassable_tile = Resources.Load ("Prefabs/UI/impassable_tile") as GameObject;
@@ -449,10 +438,17 @@ public class Game : MonoBehaviour {
 
 	void Awake ()
 	{
+		gui = GameObject.Find ("GUI").GetComponent <GUI> ();
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
 
 		ReloadGUI();
 
+
+		if (!GlobalData.worldmap) {
+			grid = new Grid ();
+			GlobalData.grid = grid;
+			PathfindingRedraw (grid, player);
+		}
 
 		if (GlobalData.nextEntry != null) {
 			GameObject entrylist = GameObject.FindGameObjectWithTag ("Entrypoint");
@@ -481,11 +477,6 @@ public class Game : MonoBehaviour {
 		ReloadGUI();
 		Debug.Log ("Game start event triggered, GUI reloaded");
 
-		if (!GlobalData.worldmap) {
-			grid = new Grid ();
-			GlobalData.grid = grid;
-			PathfindingRedraw (grid, player);
-		}
 
 		if (!GlobalData.worldmap) {
 			IncreaseAlertLevel();
@@ -507,6 +498,10 @@ public class Game : MonoBehaviour {
 			player.Cooldown ();
 		} else {
 			player.pRigidbody.velocity = new Vector2 (0f, 0f);
+		}
+
+		if (player.grid == null) {
+			PathfindingRedraw (grid, player);
 		}
 
 		// Monster controls and behavior

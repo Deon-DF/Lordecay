@@ -1,122 +1,133 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GUI : MonoBehaviour {
 
 	private static bool guiExists = false;
 
-	public GameObject inventoryBG;
-	public GameObject inventoryTooltip;
 
 	// Stats
 
-	public GameObject strengthText;
-	public GameObject perceptionText;
-	public GameObject intelligenceText;
-	public GameObject toughnessText;
 
-	public GameObject healthText;
-	public GameObject sanityText;
-	public GameObject staminaText;
-	public GameObject accuracyText;
+	[HideInInspector] public GameObject strengthText;
+	[HideInInspector] public GameObject perceptionText;
+	[HideInInspector] public GameObject intelligenceText;
+	[HideInInspector] public GameObject toughnessText;
 
-	public GameObject bluntDamageText;
-	public GameObject pierceDamageText;
-	public GameObject fireDamageText;
-	public GameObject coldDamageText;
-	public GameObject acidDamageText;
+	[HideInInspector] public GameObject healthText;
+	[HideInInspector] public GameObject sanityText;
+	[HideInInspector] public GameObject staminaText;
+	[HideInInspector] public GameObject accuracyText;
 
-	public GameObject bluntArmorText;
-	public GameObject pierceArmorText;
-	public GameObject fireArmorText;
-	public GameObject coldArmorText;
-	public GameObject acidArmorText;
+	[HideInInspector] public GameObject bluntDamageText;
+	[HideInInspector] public GameObject pierceDamageText;
+	[HideInInspector] public GameObject fireDamageText;
+	[HideInInspector] public GameObject coldDamageText;
+	[HideInInspector] public GameObject acidDamageText;
+
+	[HideInInspector] public GameObject bluntArmorText;
+	[HideInInspector] public GameObject pierceArmorText;
+	[HideInInspector] public GameObject fireArmorText;
+	[HideInInspector] public GameObject coldArmorText;
+	[HideInInspector] public GameObject acidArmorText;
+
 
 	// Inventory GUI
 
-	public GameObject equipmentBox;
-	public GameObject equipmentSlotHelmet;
-	public GameObject equipmentSlotMask;
-	public GameObject equipmentSlotBodyarmor;
-	public GameObject equipmentSlotClothing;
-	public GameObject equipmentSlotPants;
-	public GameObject equipmentSlotBoots;
-	public GameObject equipmentSlotWeapon;
-	public GameObject equipmentSlotOffhand;
+	[HideInInspector] public GameObject inventoryBG;
+	[HideInInspector] public GameObject inventoryTooltip;
 
-	public GameObject removeAttachmentsButton;
+	[HideInInspector] public GameObject equipmentBox;
+	[HideInInspector] public GameObject equipmentSlotHelmet;
+	[HideInInspector] public GameObject equipmentSlotMask;
+	[HideInInspector] public GameObject equipmentSlotBodyarmor;
+	[HideInInspector] public GameObject equipmentSlotClothing;
+	[HideInInspector] public GameObject equipmentSlotPants;
+	[HideInInspector] public GameObject equipmentSlotBoots;
+	[HideInInspector] public GameObject equipmentSlotWeapon;
+	[HideInInspector] public GameObject equipmentSlotOffhand;
 
-	public GameObject inventoryBox;
-	public GameObject inventorySlot1;
-	public GameObject inventorySlot2;
-	public GameObject inventorySlot3;
-	public GameObject inventorySlot4;
-	public GameObject inventorySlot5;
-	public GameObject inventorySlot6;
-	public GameObject inventorySlot7;
-	public GameObject inventorySlot8;
-	public GameObject inventorySlot9;
-	public GameObject inventorySlot10;
-	public GameObject inventorySlot11;
-	public GameObject inventorySlot12;
-	public GameObject inventorySlot13;
-	public GameObject inventorySlot14;
-	public GameObject inventorySlot15;
-	public GameObject inventorySlot16;
-	public GameObject inventorySlot17;
-	public GameObject inventorySlot18;
-	public GameObject inventorySlot19;
-	public GameObject inventorySlot20;
-	public GameObject inventorySlot21;
-	public GameObject inventorySlot22;
-	public GameObject inventorySlot23;
-	public GameObject inventorySlot24;
-	public GameObject inventorySlot25;
+	[HideInInspector] public GameObject removeAttachmentsButton;
 
-	public GameObject inventorySlot1q;
-	public GameObject inventorySlot2q;
-	public GameObject inventorySlot3q;
-	public GameObject inventorySlot4q;
-	public GameObject inventorySlot5q;
-	public GameObject inventorySlot6q;
-	public GameObject inventorySlot7q;
-	public GameObject inventorySlot8q;
-	public GameObject inventorySlot9q;
-	public GameObject inventorySlot10q;
-	public GameObject inventorySlot11q;
-	public GameObject inventorySlot12q;
-	public GameObject inventorySlot13q;
-	public GameObject inventorySlot14q;
-	public GameObject inventorySlot15q;
-	public GameObject inventorySlot16q;
-	public GameObject inventorySlot17q;
-	public GameObject inventorySlot18q;
-	public GameObject inventorySlot19q;
-	public GameObject inventorySlot20q;
-	public GameObject inventorySlot21q;
-	public GameObject inventorySlot22q;
-	public GameObject inventorySlot23q;
-	public GameObject inventorySlot24q;
-	public GameObject inventorySlot25q;
+	[HideInInspector] public GameObject inventoryBox;
+	[HideInInspector] public GameObject inventorySlot1;
+	[HideInInspector] public GameObject inventorySlot2;
+	[HideInInspector] public GameObject inventorySlot3;
+	[HideInInspector] public GameObject inventorySlot4;
+	[HideInInspector] public GameObject inventorySlot5;
+	[HideInInspector] public GameObject inventorySlot6;
+	[HideInInspector] public GameObject inventorySlot7;
+	[HideInInspector] public GameObject inventorySlot8;
+	[HideInInspector] public GameObject inventorySlot9;
+	[HideInInspector] public GameObject inventorySlot10;
+	[HideInInspector] public GameObject inventorySlot11;
+	[HideInInspector] public GameObject inventorySlot12;
+	[HideInInspector] public GameObject inventorySlot13;
+	[HideInInspector] public GameObject inventorySlot14;
+	[HideInInspector] public GameObject inventorySlot15;
+	[HideInInspector] public GameObject inventorySlot16;
+	[HideInInspector] public GameObject inventorySlot17;
+	[HideInInspector] public GameObject inventorySlot18;
+	[HideInInspector] public GameObject inventorySlot19;
+	[HideInInspector] public GameObject inventorySlot20;
+	[HideInInspector] public GameObject inventorySlot21;
+	[HideInInspector] public GameObject inventorySlot22;
+	[HideInInspector] public GameObject inventorySlot23;
+	[HideInInspector] public GameObject inventorySlot24;
+	[HideInInspector] public GameObject inventorySlot25;
 
-	public GameObject groundBox;
-	public GameObject leftArrow;
-	public GameObject rightArrow;
-	public GameObject groundSlot1;
-	public GameObject groundSlot2;
-	public GameObject groundSlot3;
-	public GameObject groundSlot4;
-	public GameObject groundSlot5;
+	[HideInInspector] public GameObject inventorySlot1q;
+	[HideInInspector] public GameObject inventorySlot2q;
+	[HideInInspector] public GameObject inventorySlot3q;
+	[HideInInspector] public GameObject inventorySlot4q;
+	[HideInInspector] public GameObject inventorySlot5q;
+	[HideInInspector] public GameObject inventorySlot6q;
+	[HideInInspector] public GameObject inventorySlot7q;
+	[HideInInspector] public GameObject inventorySlot8q;
+	[HideInInspector] public GameObject inventorySlot9q;
+	[HideInInspector] public GameObject inventorySlot10q;
+	[HideInInspector] public GameObject inventorySlot11q;
+	[HideInInspector] public GameObject inventorySlot12q;
+	[HideInInspector] public GameObject inventorySlot13q;
+	[HideInInspector] public GameObject inventorySlot14q;
+	[HideInInspector] public GameObject inventorySlot15q;
+	[HideInInspector] public GameObject inventorySlot16q;
+	[HideInInspector] public GameObject inventorySlot17q;
+	[HideInInspector] public GameObject inventorySlot18q;
+	[HideInInspector] public GameObject inventorySlot19q;
+	[HideInInspector] public GameObject inventorySlot20q;
+	[HideInInspector] public GameObject inventorySlot21q;
+	[HideInInspector] public GameObject inventorySlot22q;
+	[HideInInspector] public GameObject inventorySlot23q;
+	[HideInInspector] public GameObject inventorySlot24q;
+	[HideInInspector] public GameObject inventorySlot25q;
+
+	[HideInInspector] public GameObject groundBox;
+	[HideInInspector] public GameObject leftArrow;
+	[HideInInspector] public GameObject rightArrow;
+	[HideInInspector] public GameObject groundSlot1;
+	[HideInInspector] public GameObject groundSlot2;
+	[HideInInspector] public GameObject groundSlot3;
+	[HideInInspector] public GameObject groundSlot4;
+	[HideInInspector] public GameObject groundSlot5;
+
+	// Player stats and health
+
+	[HideInInspector] public GameObject healthbar;
+	[HideInInspector] public GameObject staminabar;
+	[HideInInspector] public Image WeaponUI;
+
 
 	// Enemy stats and health
 
-	public GameObject enemyBox;
-	public GameObject enemyNameUI;
-	public GameObject enemyStatusUI;
-	public GameObject enemyHealthBar;
-	public static string enemyName = "Monster";
-	public static string enemyStatus = "";
+	[HideInInspector] public GameObject enemyBox;
+	[HideInInspector] public GameObject enemyNameUI;
+	[HideInInspector] public GameObject enemyStatusUI;
+	[HideInInspector] public GameObject enemyHealthBar;
+	[HideInInspector] public static string enemyName = "Monster";
+	[HideInInspector] public static string enemyStatus = "";
 
 
 	public GameObject GetGroundSlotByIndex (int index) {
@@ -278,6 +289,10 @@ public class GUI : MonoBehaviour {
 		}
 
 		// Find UI elements
+
+		healthbar = GameObject.Find ("Healthbar");
+		staminabar = GameObject.Find ("Staminabar");
+		WeaponUI = GameObject.Find ("WeaponUI").GetComponent<Image> ();
 
 		enemyNameUI = GameObject.Find("EnemyName").gameObject;
 		enemyStatusUI = GameObject.Find("EnemyStatus").gameObject;

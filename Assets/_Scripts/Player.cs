@@ -812,8 +812,8 @@ public class Player : MonoBehaviour {
 		int x = (int)Mathf.Floor (transform.position.x);
 		int y = (int)Mathf.Floor (transform.position.y);
 
-		Debug.Log("The grid is: " + grid);
-		Debug.Log("The player position is: " + transform.position.x + " " + transform.position.y);
+		//Debug.Log("The grid is: " + grid);
+		//Debug.Log("The player position is: " + transform.position.x + " " + transform.position.y);
 		return grid.GetTileAt (x, y);
 	}
 
@@ -1350,6 +1350,8 @@ public class Player : MonoBehaviour {
 
 	void Start () {
 
+		grid = GlobalData.grid;
+
 		// GUI
 		overlay = GameObject.Find ("Hiteffect");
 		overlay.SetActive(false);
@@ -1391,6 +1393,13 @@ public class Player : MonoBehaviour {
 	{
 
 		RecalculateStatsInfluence();
+
+		if (grid == null) {
+			Debug.LogWarning("The grid has become null!");
+			Debug.LogWarning("The Globaldata.grid is now: " + GlobalData.grid);
+			grid = GlobalData.grid;
+
+		}
 
 		DrawRelative ();
 		if (health <= 0) {

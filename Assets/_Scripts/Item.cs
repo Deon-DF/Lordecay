@@ -543,6 +543,7 @@ public class Item {
 				fireArmor = 1;
 				coldArmor = 1;
 				itemsprite = "Sprites/UI/Items/sportsJacket";
+				color = new Color (0.3f, 0.3f, 0.3f);
 				isEquippable = true;
 				break;
 

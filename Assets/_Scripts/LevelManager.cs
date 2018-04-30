@@ -7,7 +7,6 @@ public class LevelManager: MonoBehaviour {
 
 	public void LoadArea () {
 		GlobalData.worldmap = false;
-		GlobalData.nextEntry = GlobalData.nextEntry;
 		SceneManager.LoadScene (GlobalData.nextEntry);
 	}
 }
