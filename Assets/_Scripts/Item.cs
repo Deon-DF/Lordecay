@@ -736,8 +736,8 @@ public class Item {
 				name = "Pistol";
 				weight = 0.5f;
 				cost = 100;
-				pierceMinDamage = 25;
-				pierceMaxDamage = 50;
+				pierceMinDamage = 40;
+				pierceMaxDamage = 60;
 				stunfactor = 0.5f;
 				isAOE = false;
 				isLoud = true;
@@ -751,6 +751,31 @@ public class Item {
 
 				attachment1_types.Add (Attachment.Type.RangedScope);
 				attachment2_types.Add (Attachment.Type.RangedHandle);
+				break;
+
+			case "Shotgun":
+				type = Type.Weapon;
+				subtype = SubType.Shotgun;
+				attacktype = AttackType.RangedCone;
+				attackcooldown = 0.6f;
+				name = "Shotgun";
+				weight = 1.5f;
+				cost = 200;
+				pierceMinDamage = 30;
+				pierceMaxDamage = 40;
+				stunfactor = 0.5f;
+				isAOE = false;
+				isLoud = true;
+				soundDistance = 20f;
+				itemsprite = "Sprites/UI/Items/shotgun";
+				isEquippable = true;
+				color = new Color (0.3f, 0.3f, 0.3f);
+
+				// = "Scope (red dot, reflex sight)";
+				//attachment2_description = "Handle (pistol grips)";
+
+				//attachment1_types.Add (Attachment.Type.RangedScope);
+				//attachment2_types.Add (Attachment.Type.RangedHandle);
 				break;
 
 			default: 

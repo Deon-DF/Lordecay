@@ -503,7 +503,7 @@ public class Player : MonoBehaviour {
 			clubSpriteRenderer.enabled = false;
 		}
 
-		if (weapon.subtype == Item.SubType.Pistol) {
+		if (weapon.subtype == Item.SubType.Pistol || weapon.subtype == Item.SubType.Shotgun) { //TODO! CHANGE PISTOL SPRITE TO SHOTGUN SPRITE
 			pistolSpriteRenderer.enabled = true;
 			if (lastMove.x >= 0) {
 				pistolSpriteRenderer.sortingOrder = pSpriteRenderer.sortingOrder + 10;
@@ -549,6 +549,22 @@ public class Player : MonoBehaviour {
 			madeLoudSound = false;
 		}
 	}
+		
+// COMBAT INTERACTION
+
+	void SpawnSweep (string origin, AttackArc type, Vector3 position, float TTL) {
+		AttackArc sweep = Instantiate (type, position, Quaternion.identity);
+
+		sweep.origin = origin;
+		sweep.TTL = TTL;
+		sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
+		sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
+		sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
+		sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
+		sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
+		sweep.stunfactor = Weapon.stunfactor;
+		sweep.isAOE = Weapon.isAOE;
+	}
 
 // CONTROLS 
 
@@ -583,7 +599,7 @@ public class Player : MonoBehaviour {
 			Item newItem11 = new Item(Item.Type.WeaponAttachment, "Red Dot");
 			Item newItem12 = new Item(Item.Type.WeaponAttachment, "Custom Grip");
 			Item newItem13 = new Item(Item.Type.Mask, "Gas Mask");// actually gives army helmet
-			Item newItem14 = new Item(Item.Type.Clothing, "Rags");// actually gives shirt
+			Item newItem14 = new Item(Item.Type.Weapon, "Shotgun");// actually gives shirt
 			getItem (newItem);
 			getItem (newItem2);
 			getItem (newItem3);
@@ -622,6 +638,8 @@ public class Player : MonoBehaviour {
 			moveSprintModifier = 1f;
 		}
 	}
+
+
 
 	public void MouseControls ()
 	{
@@ -667,7 +685,7 @@ public class Player : MonoBehaviour {
 					Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint (mousePosition);
 
 					Vector3 targetPosition = new Vector3 (mouseInWorld.x, mouseInWorld.y, 0f);
-					AttackArc sweep;
+					//AttackArc sweep;
 
 					if (!Physics2D.Linecast (transform.position, targetPosition, lineOfSightMask)) {
 
@@ -676,20 +694,11 @@ public class Player : MonoBehaviour {
 						if (accuracyFactor > 0) {
 							offset = new Vector3 (Random.Range (-accuracyFactor, accuracyFactor), Random.Range (-accuracyFactor, accuracyFactor), 0);
 						} else {
-							offset = new Vector3 (0,0,0);
+							offset = new Vector3 (0, 0, 0);
 						}
 					
-						sweep = Instantiate (player_attack_shot, targetPosition + offset, Quaternion.identity);
+						SpawnSweep ("player", player_attack_shot, targetPosition + offset, 0.2f);
 
-						sweep.origin = "player";
-						sweep.TTL = 0.2f;
-						sweep.bluntDamage = Random.Range (BluntMinDamage, BluntMaxDamage + 1);
-						sweep.pierceDamage = Random.Range (PierceMinDamage, PierceMaxDamage + 1);
-						sweep.fireDamage = Random.Range (FireMinDamage, FireMaxDamage + 1);
-						sweep.coldDamage = Random.Range (ColdMinDamage, ColdMaxDamage + 1);
-						sweep.acidDamage = Random.Range (AcidMinDamage, AcidMaxDamage + 1);
-						sweep.stunfactor = Weapon.stunfactor;
-						sweep.isAOE = Weapon.isAOE;
 						attackCooldownCounter = weapon.attackcooldown;
 						isAttacking = true;
 
@@ -700,7 +709,51 @@ public class Player : MonoBehaviour {
 						}
 					} else {
 						Debug.Log ("Cannot shoot outside of line of sight!");
-						DrawLine(transform.position, targetPosition, Color.red, 0.1f);
+						DrawLine (transform.position, targetPosition, Color.red, 0.1f);
+					}
+				} else if (weapon.attacktype == Item.AttackType.RangedCone) {
+					Vector2 mousePosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
+					Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint (mousePosition);
+
+					Vector3 targetPosition = new Vector3 (mouseInWorld.x, mouseInWorld.y, 0f);
+
+					if (!Physics2D.Linecast (transform.position, targetPosition, lineOfSightMask)) {
+
+						float accuracyFactor = (100 - Accuracy) * 2.0f / 100;
+						Vector3 offset;Vector3 offset2;Vector3 offset3;Vector3 offset4;Vector3 offset5;Vector3 offset6;
+
+						if (accuracyFactor > 0) {
+							offset = new Vector3 (Random.Range (-accuracyFactor, accuracyFactor), Random.Range (-accuracyFactor, accuracyFactor), 0);
+						} else {
+							offset = new Vector3 (0, 0, 0);
+						}
+
+						// extra offsets for shotgun shot
+						offset2 = new Vector3 (Random.Range (-0.2f, 0.2f), Random.Range (-0.2f, 0.2f), 0f);
+						offset3 = new Vector3 (Random.Range (-0.2f, 0.2f), Random.Range (-0.2f, 0.2f), 0f);
+						offset4 = new Vector3 (Random.Range (-0.2f, 0.2f), Random.Range (-0.2f, 0.2f), 0f);
+						offset5 = new Vector3 (Random.Range (-0.2f, 0.2f), Random.Range (-0.2f, 0.2f), 0f);
+						offset6 = new Vector3 (Random.Range (-0.2f, 0.2f), Random.Range (-0.2f, 0.2f), 0f);
+
+						SpawnSweep ("player", player_attack_shot, targetPosition + offset, 0.2f);
+						SpawnSweep ("player", player_attack_shot, targetPosition + offset + offset2, 0.2f);
+						SpawnSweep ("player", player_attack_shot, targetPosition + offset + offset3, 0.2f);
+						SpawnSweep ("player", player_attack_shot, targetPosition + offset + offset4, 0.2f);
+						SpawnSweep ("player", player_attack_shot, targetPosition + offset + offset5, 0.2f);
+						SpawnSweep ("player", player_attack_shot, targetPosition + offset + offset6, 0.2f);
+
+
+						attackCooldownCounter = weapon.attackcooldown;
+						isAttacking = true;
+
+						if (weapon.isLoud) {
+							madeLoudSound = true;
+							madeLoudSoundCounter = weapon.soundDuration;
+							soundDistance = weapon.soundDistance;
+						}
+					} else {
+						Debug.Log ("Cannot shoot outside of line of sight!");
+						DrawLine (transform.position, targetPosition, Color.red, 0.1f);
 					}
 				}
 			}
